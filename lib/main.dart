@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/index_binding.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+      ),
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.unknown
+        },
       ),
     );
   }

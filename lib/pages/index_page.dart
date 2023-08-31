@@ -29,11 +29,15 @@ class IndexPage extends StatelessWidget {
             Text(
               "古神图鉴",
               style: Theme.of(context).textTheme.headlineMedium,
-            ).onClick(() => Get.toNamed(RouteNames.guildZombie)),
+            ).onClick(() => Get.toNamed(RouteNames.guildZombieList)),
             Text(
               "任务攻略",
               style: Theme.of(context).textTheme.headlineMedium,
             ).onClick(() => Get.toNamed(RouteNames.whitelist)),
+            Text(
+              "主菜单按钮",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ).onClick(() => Get.toNamed(RouteNames.mainMenu)),
           ],
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class ViewUtils {
 
-  static AppBar getAppBar(String title) {
+  static AppBar getAppBar(String title, {List<Widget>? actions}) {
     return AppBar(
       backgroundColor: Colors.white30,
       title: Text(
@@ -13,6 +13,7 @@ class ViewUtils {
           fontSize: 18,
         ),
       ),
+      actions: actions,
       leading: InkWell(
         onTap: () {
           Get.back();

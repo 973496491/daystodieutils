@@ -1,13 +1,18 @@
 import 'package:daystodieutils/core/safe_map.dart';
 import 'package:daystodieutils/net/resp_common.dart';
 
-class WhiteListResp extends RespCommon {
-  WhiteListResp({this.id, this.name, this.author, this.desc});
+class ZombieListResp extends RespCommon {
+  ZombieListResp({
+    this.id,
+    this.zombieType,
+    this.zombieName,
+    this.zombieHp,
+  });
 
   int? id;
-  String? name;
-  String? author;
-  String? desc;
+  String? zombieType;
+  String? zombieName;
+  String? zombieHp;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -26,11 +31,11 @@ class WhiteListResp extends RespCommon {
   T? parseObject<T>(data) {
     if (data != null) {
       var map = SafeMap(data);
-      return WhiteListResp(
+      return ZombieListResp(
         id: map["id"].value,
-        name: map["name"].value,
-        author: map["author"].value,
-        desc: map["desc"].value,
+        zombieType: map["zombieType"].value,
+        zombieName: map["zombieName"].value,
+        zombieHp: map["zombieHp"].value,
       ) as T;
     } else {
       return null;

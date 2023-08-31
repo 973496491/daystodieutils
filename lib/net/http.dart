@@ -6,22 +6,25 @@ import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
 
 import 'http_api.dart';
+import 'http_content_type.dart';
 
 class Http {
   static Future<Map<String, dynamic>> get(
     String path, {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
+    String? contentType,
   }) {
-    return _request(path, "get", params: params);
+    return _request(path, "get", params: params, contentType: contentType);
   }
 
   static Future<Map<String, dynamic>> post(
     String path, {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
+    String? contentType,
   }) {
-    return _request(path, "post", params: params, data: data);
+    return _request(path, "post", params: params, data: data, contentType: contentType);
   }
 
   // 配置 Dio 实例
@@ -38,6 +41,7 @@ class Http {
     String method, {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
+    String? contentType,
   }) async {
     try {
       _dio.options.headers["Access-Control-Allow-Origin"] = "*";
@@ -46,6 +50,11 @@ class Http {
       _dio.options.headers["Access-Control-Allow-Methods"] = "*";
 
       _dio.options.headers["token"] = UserManager.getToken();
+
+      if (true == contentType?.isNotEmpty) {
+        "[Dio]\n 手动指定Content-Type: $contentType".logD();
+        _dio.options.contentType = contentType;
+      }
 
       "[Dio]\nurl: ${HttpApi.baseUrl}$path\nheaders: ${_dio.options.headers.toString()}\nparams: ${params.toString()}\ndata:${data.toString()}"
           .logD();
@@ -65,23 +74,27 @@ class Http {
             return dataMap;
           } catch (e) {
             "解析响应数据异常: $e".logE();
-            return Future.error('解析响应数据异常');
+            return Future.value(_generateErrorMap("解析响应数据异常"));
           }
         } else {
-          return Future.error('解析响应数据异常');
+          return Future.value(_generateErrorMap("解析响应数据异常"));
         }
       } else {
         "response.data is null".logE();
-        return Future.error("服务器异常");
+        return Future.value(_generateErrorMap("服务器异常"));
       }
     } on DioException catch (e, _) {
       String errorMessage = _dioError(e);
       errorMessage.logE();
-      return Future.error(errorMessage);
+      return Future.value(_generateErrorMap(errorMessage));
     } catch (e, _) {
       "未知异常".logE();
-      return Future.error("未知异常");
+      return Future.value(_generateErrorMap("未知异常"));
     }
+  }
+
+  static Map<String, dynamic> _generateErrorMap(String message) {
+    return {"message": message};
   }
 
   static String _dioError(DioException error) {

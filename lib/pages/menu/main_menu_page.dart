@@ -1,19 +1,17 @@
-import 'package:daystodieutils/pages/whitelist/whitelist_controller.dart';
+import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
+import 'package:daystodieutils/pages/menu/main_menu_controller.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../net/entity/whitelist_resp.dart';
-
-class WhitelistPage extends GetView<WhitelistController> {
-  const WhitelistPage({Key? key}) : super(key: key);
+class MainMenuPage extends GetView<MainMenuController> {
+  const MainMenuPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ViewUtils.getAppBar("白名单列表"),
+      appBar: ViewUtils.getAppBar("主菜单按钮"),
       backgroundColor: Colors.white30,
       body: SafeArea(
         child: Column(
@@ -21,22 +19,14 @@ class WhitelistPage extends GetView<WhitelistController> {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(bottom: 30),
-                child: GetBuilder<WhitelistController>(
-                  id: WhitelistController.idListView,
+                child: GetBuilder<MainMenuController>(
+                  id: MainMenuController.idListView,
                   builder: (_) {
-                    return RefreshIndicator(
-                      displacement: 5,
-                      onRefresh: () => Future.sync(
-                        () => _.pagingController.refresh(),
-                      ),
-                      child: PagedListView<int, WhiteListResp>(
-                        pagingController: _.pagingController,
-                        builderDelegate:
-                            PagedChildBuilderDelegate<WhiteListResp>(
-                          itemBuilder: (context, item, index) =>
-                              _itemWhitelist(_, context, item),
-                        ),
-                      ),
+                    return ListView.builder(
+                      itemCount: _.itemList.length,
+                      itemBuilder: (context, index) {
+                        return _itemBtnListWidget(_, context, _.itemList[index]);
+                      },
                     );
                   },
                 ),
@@ -49,7 +39,7 @@ class WhitelistPage extends GetView<WhitelistController> {
       floatingActionButton: SizedBox(
         width: 110,
         height: 35,
-        child: GetBuilder<WhitelistController>(
+        child: GetBuilder<MainMenuController>(
           builder: (_) {
             return ElevatedButton(
               child: const Text(
@@ -59,7 +49,7 @@ class WhitelistPage extends GetView<WhitelistController> {
                   fontSize: 16,
                 ),
               ),
-              onPressed: () => _.showAddWhitelistDialog(context),
+              onPressed: () => _.showEditBtnInfoDialog(context, true),
             );
           },
         ),
@@ -67,10 +57,10 @@ class WhitelistPage extends GetView<WhitelistController> {
     );
   }
 
-  _itemWhitelist(
-    WhitelistController controller,
+  _itemBtnListWidget(
+    MainMenuController controller,
     BuildContext context,
-    WhiteListResp? item,
+    MainMenuItemResp? item,
   ) {
     return Container(
       margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
@@ -90,16 +80,9 @@ class WhitelistPage extends GetView<WhitelistController> {
                   ),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 4,
                   child: Text(
-                    "作者: ${item?.author}",
-                    style: const TextStyle(fontSize: 18, color: Colors.black87),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    "描述: ${item?.desc}",
+                    "链接: ${item?.url}",
                     style: const TextStyle(fontSize: 18, color: Colors.black87),
                   ),
                 ),
@@ -109,6 +92,6 @@ class WhitelistPage extends GetView<WhitelistController> {
           const Divider(height: 1, color: Colors.black26),
         ],
       ),
-    ).onClick(() => controller.showEditDialog(context, item?.id));
+    ).onClick(() => controller.showEditDialog(context, item!));
   }
 }
