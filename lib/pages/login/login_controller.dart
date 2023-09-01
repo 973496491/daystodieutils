@@ -2,7 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/entity/login_resp.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/net/http_api.dart';
+import 'package:daystodieutils/module/http_api.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';

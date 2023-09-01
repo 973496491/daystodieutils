@@ -1,17 +1,17 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/net/entity/zombie_list_resp.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/net/http_api.dart';
+import 'package:daystodieutils/module/http_api.dart';
 import 'package:daystodieutils/net/http_config.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 
 class ZombieListController extends GetxController {
   static const String idListView = "idListView";
 
   int _pageIndex = 0;
-  final int _pageSize = 20;
   String? zombieType;
   String? zombieName;
   bool isRefresh = true;
@@ -39,7 +39,7 @@ class ZombieListController extends GetxController {
     var resp =
         RespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
     var data = resp.data;
-    if  (isRefresh) {
+    if (isRefresh) {
       zombieList = data ?? [];
     } else {
       if (HttpConfig.isOk(bizCode: resp.code)) {
@@ -92,5 +92,16 @@ class ZombieListController extends GetxController {
       zombieName = result?[1];
       getZombieList();
     }
+  }
+
+  void toDetailPage(int? id, bool canEdit) {
+    if (id == null) return;
+    var parameters = {
+      "id": "$id",
+    };
+    Get.toNamed(
+      RouteNames.guildZombie,
+      parameters: parameters,
+    );
   }
 }

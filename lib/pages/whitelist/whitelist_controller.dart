@@ -1,5 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/net/http_api.dart';
+import 'package:daystodieutils/module/http_api.dart';
 import 'package:daystodieutils/net/http_config.dart';
 import 'package:daystodieutils/net/http_content_type.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
@@ -45,7 +45,11 @@ class WhitelistController extends GetxController {
   }
 
   Future<List<WhiteListResp>> _getWhiteList(int pageKey) async {
-    var respMap = await Http.get(HttpApi.whitelist);
+    var params = {
+      "pageIndex": pageKey,
+      "pageSize": _pageSize,
+    };
+    var respMap = await Http.get(HttpApi.whitelist, params: params);
     var resp = RespFactory.parseArray<WhiteListResp>(respMap, WhiteListResp());
     var data = resp.data;
     return data ?? [];

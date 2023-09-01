@@ -1,7 +1,7 @@
 import 'package:daystodieutils/pages/guide/item/guide_item_binding.dart';
 import 'package:daystodieutils/pages/guide/item/guide_item_page.dart';
-import 'package:daystodieutils/pages/guide/zombie/guide_zombie_binding.dart';
-import 'package:daystodieutils/pages/guide/zombie/guide_zombie_page.dart';
+import 'package:daystodieutils/pages/guide/zombie/info/guide_zombie_binding.dart';
+import 'package:daystodieutils/pages/guide/zombie/info/guide_zombie_page.dart';
 import 'package:daystodieutils/pages/guide/zombie/list/zombie_list_binding.dart';
 import 'package:daystodieutils/pages/guide/zombie/list/zombie_list_page.dart';
 import 'package:daystodieutils/pages/index_binding.dart';
@@ -41,7 +41,7 @@ class RoutePages {
     ),
     GetPage(
       name: RouteNames.mainMenu,
-      page: () => MainMenuPage(),
+      page: () => const MainMenuPage(),
       binding: MainMenuBinding(),
     ),
   ];

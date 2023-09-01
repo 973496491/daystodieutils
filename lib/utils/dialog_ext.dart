@@ -1,5 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:flutter/material.dart';
 
 extension DialogExt on BuildContext {

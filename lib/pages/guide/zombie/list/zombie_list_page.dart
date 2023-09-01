@@ -56,7 +56,7 @@ class ZombieListPage extends GetView<ZombieListController> {
                     return ListView.builder(
                       itemCount: _.zombieList.length,
                       itemBuilder: (context, index) {
-                        return _itemZombieListWidget(_.zombieList[index]);
+                        return _itemZombieListWidget(_, _.zombieList[index]);
                       },
                     );
                   },
@@ -88,7 +88,7 @@ class ZombieListPage extends GetView<ZombieListController> {
     );
   }
 
-  _itemZombieListWidget(ZombieListResp? item) {
+  _itemZombieListWidget(ZombieListController controller, ZombieListResp? item) {
     return Container(
       margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
       child: Column(
@@ -116,6 +116,6 @@ class ZombieListPage extends GetView<ZombieListController> {
           const Divider(height: 1, color: Colors.black26),
         ],
       ),
-    );
+    ).onClick(() => controller.toDetailPage(item?.id, false));
   }
 }

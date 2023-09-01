@@ -13,4 +13,11 @@ A few resources to get you started if this is your first Flutter project:
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+samples, guidance on mobile development, and a full API reference
+
+```
+source ~/.bash_profile
+flutter build web --web-renderer html
+```
+
+<base href="http://123.207.77.55:13888/daystodie/">

@@ -1,7 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/net/http_api.dart';
+import 'package:daystodieutils/module/http_api.dart';
 import 'package:daystodieutils/net/http_config.dart';
 import 'package:daystodieutils/net/http_content_type.dart';
 import 'package:daystodieutils/net/resp_factory.dart';

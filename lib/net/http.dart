@@ -5,7 +5,7 @@ import 'package:daystodieutils/net/http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
 
-import 'http_api.dart';
+import '../module/http_api.dart';
 import 'http_content_type.dart';
 
 class Http {

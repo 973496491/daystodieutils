@@ -3,7 +3,7 @@ class HttpApi {
   static const String _testUrl = "http://localhost:7777/api";
   static const String _prodUrl = "http://123.207.77.55:7777/api";
 
-  static const String baseUrl = _prodUrl;
+  static const String baseUrl = _testUrl;
 
   /// 登录
   static const String login = "/users/login";
@@ -19,6 +19,9 @@ class HttpApi {
 
   /// 获取古神列表
   static const String getZombieList = "/info/getAllZombieList";
+
+  /// 获取古神详情
+  static const String getZombieDetail = "/info/getZombieInfo";
 
   /// 获取所有主菜单按钮
   static const String getMainMenuItemList = "/config/mainMenuBtn";
