@@ -1,12 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/module/http_api.dart';
+import 'package:daystodieutils/module/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class MainMenuController extends GetxController {
@@ -23,9 +24,9 @@ class MainMenuController extends GetxController {
   }
 
   void _getItemInfoList() async {
-    var respMap = await Http.get(HttpApi.getMainMenuItemList);
+    var respMap = await Http.get(NHttpApi.getMainMenuItemList);
     var resp =
-    RespFactory.parseArray<MainMenuItemResp>(respMap, MainMenuItemResp());
+        RespFactory.parseArray<MainMenuItemResp>(respMap, MainMenuItemResp());
     var data = resp.data;
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       itemList = data!;
@@ -56,7 +57,7 @@ class MainMenuController extends GetxController {
       case _typeDelete:
         {
           // ignore: use_build_context_synchronously
-          _deleteItem(context, item.id!);
+          _deleteItem(item.id!);
           break;
         }
       case _typeEdit:
@@ -68,25 +69,25 @@ class MainMenuController extends GetxController {
     }
   }
 
-  void _deleteItem(BuildContext context, int id) async {
+  void _deleteItem(int id) async {
     var reqMap = {"id": "$id"};
     var resp = await Http.post(
-      HttpApi.deleteMainMenuBtnInfo,
+      NHttpApi.deleteMainMenuBtnInfo,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
-    if (!context.mounted) return;
     if (NHttpConfig.isOk(map: resp)) {
-      context.showMessageDialog(
-        "删除成功.",
-        function: () => _getItemInfoList(),
-      );
+      var result = await Get.context?.showMessageDialog("删除成功.");
+      if (result != null) {
+        _getItemInfoList();
+      }
     } else {
-      context.showMessageDialog(NHttpConfig.message(resp) ?? "删除失败");
+      Get.context?.showMessageDialog(NHttpConfig.message(resp) ?? "删除失败");
     }
   }
 
-  void showEditBtnInfoDialog(BuildContext context, bool isAdd, {MainMenuItemResp? item}) async {
+  void showEditBtnInfoDialog(BuildContext context, bool isAdd,
+      {MainMenuItemResp? item}) async {
     var title = "添加主菜单按钮信息";
     if (!isAdd) title = "编辑主菜单按钮信息";
 
@@ -100,35 +101,27 @@ class MainMenuController extends GetxController {
       cancelLabel: "取消",
       style: AdaptiveStyle.iOS,
       textFields: [
-        DialogTextField(
-            hintText: "请输入按钮 Name",
-            initialText: item?.name ?? ""
-        ),
-        DialogTextField(
-            hintText: "请输入跳转地址 Url",
-            initialText: item?.url ?? ""
-        ),
+        DialogTextField(hintText: "请输入按钮 Name", initialText: item?.name ?? ""),
+        DialogTextField(hintText: "请输入跳转地址 Url", initialText: item?.url ?? ""),
       ],
     );
-    if (context.mounted) {
-      _addBtnItem(result, context, isAdd, id: item?.id);
-    }
+    _addBtnItem(result, isAdd, id: item?.id);
   }
 
-  void _addBtnItem(List<String>? result, BuildContext context, bool isAdd, {int? id}) {
+  void _addBtnItem(List<String>? result, bool isAdd, {int? id}) {
     if (result == null) return;
     if (true != result.isNotEmpty) {
-      context.showMessageDialog("请输入正确的按钮信息.");
+      Get.context?.showMessageDialog("请输入正确的按钮信息.");
       return;
     }
     if (result.length != 2) {
-      context.showMessageDialog("请输入正确的按钮信息.");
+      Get.context?.showMessageDialog("请输入正确的按钮信息.");
       return;
     }
     var name = result[0];
     var url = result[1];
     if (name.isEmpty || url.isEmpty) {
-      context.showMessageDialog("请输入正确的按钮信息.");
+      Get.context?.showMessageDialog("请输入正确的按钮信息.");
       return;
     }
     var data = {
@@ -136,42 +129,43 @@ class MainMenuController extends GetxController {
       "url": url,
     };
     if (isAdd) {
-      _addItem(data, context);
+      _addItem(data);
     } else {
       data["id"] = "$id";
-      _editItem(context, data);
+      _editItem(data);
     }
   }
 
-  void _addItem(Map<String, String> info, BuildContext context) async {
+  void _addItem(Map<String, String> info) async {
     var respMap = await Http.post(
-      HttpApi.addMainMenuItem,
+      NHttpApi.addMainMenuItem,
       data: info,
       contentType: NHttpContentType.formUrlencoded.type,
     );
-    if (!context.mounted) return;
     if (NHttpConfig.isOk(map: respMap)) {
-      context.showMessageDialog("添加按钮信息成功.",
-          function: () => _getItemInfoList());
+      var result = await Get.context?.showMessageDialog("添加按钮信息成功.");
+      if (result != null) {
+        _getItemInfoList();
+      }
     } else {
-      context.showMessageDialog(
-          NHttpConfig.message(respMap) ?? "添加按钮信息失败");
+      Get.context?.showMessageDialog(
+        NHttpConfig.message(respMap) ?? "添加按钮信息失败",
+      );
     }
   }
 
-  void _editItem(BuildContext context, Map<String, String> info) async {
+  void _editItem(Map<String, String> info) async {
     var resp = await Http.post(
-      HttpApi.editMainMenuBtnInfo,
+      NHttpApi.editMainMenuBtnInfo,
       data: info,
     );
-    if (!context.mounted) return;
     if (NHttpConfig.isOk(map: resp)) {
-      context.showMessageDialog(
-        "编辑成功.",
-        function: () => _getItemInfoList(),
-      );
+      var result = await Get.context?.showMessageDialog("编辑成功.");
+      if (result != null) {
+        _getItemInfoList();
+      }
     } else {
-      context.showMessageDialog(NHttpConfig.message(resp) ?? "编辑失败");
+      Get.context?.showMessageDialog(NHttpConfig.message(resp) ?? "编辑失败");
     }
   }
 }

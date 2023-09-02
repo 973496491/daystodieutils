@@ -1,5 +1,6 @@
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
+import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,10 +34,18 @@ class IndexPage extends StatelessWidget {
             _optionWidget(
               "任务攻略   ",
               Icons.question_answer_outlined,
-              () => Get.toNamed(RouteNames.whitelist),
+              () => Get.context?.showMessageDialog("敬请期待"),
+              "我要联机",
+              Icons.menu,
+                  () => Get.context?.showMessageDialog("敬请期待"),
+            ),
+            _optionWidget(
               "主菜单按钮",
               Icons.menu,
-              () => Get.toNamed(RouteNames.mainMenu),
+                  () => Get.toNamed(RouteNames.mainMenu),
+              "更多功能   ",
+              Icons.question_answer_outlined,
+                  () => Get.context?.showMessageDialog("敬请期待"),
             ),
           ],
         ),

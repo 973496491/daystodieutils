@@ -1,8 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/module/n_http_request.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/entity/login_resp.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/module/http_api.dart';
+import 'package:daystodieutils/module/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
@@ -43,10 +44,7 @@ class LoginController extends GetxController {
       Get.context?.showMessageDialog("请输入正确的账号密码.");
       return;
     }
-    var respMap = await Http.post(
-      HttpApi.login,
-      data: {"username": username, "password": password},
-    );
+    var respMap = await NHttpRequest.login(username, password);
     var resp = RespFactory.parseObject<LoginResp>(respMap, LoginResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var token = resp.data?.token;

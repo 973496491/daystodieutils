@@ -72,16 +72,17 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                        //设置四周圆角 角度
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4.0)),
-                        //设置四周边框
-                        border: Border.all(
-                            width: 0.5, color: Colors.deepPurpleAccent),
-                      ),
                       width: 700,
                       margin: const EdgeInsets.only(top: 30),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                        border: Border.all(
+                          width: 0.5,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -101,20 +102,18 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                             child: GetBuilder<GuideZombieController>(
                               id: GuideZombieController.idEdit,
                               builder: (context) {
-                                return Expanded(
-                                  child: TextField(
-                                    maxLines: null,
-                                    keyboardType: TextInputType.multiline,
-                                    enabled: controller.canEdit,
-                                    controller: _.raidersEditController,
-                                    style: const TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 16,
-                                    ),
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                      ),
+                                return TextField(
+                                  maxLines: null,
+                                  keyboardType: TextInputType.multiline,
+                                  enabled: controller.canEdit,
+                                  controller: _.raidersEditController,
+                                  style: const TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
                                     ),
                                   ),
                                 );
@@ -144,7 +143,7 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                 if (_.canDelete) {
                                   return Container(
                                     margin: const EdgeInsets.only(left: 20),
-                                    child: _optionWidget("删除", () => null),
+                                    child: _optionWidget("删除", () => _.delete()),
                                   );
                                 } else {
                                   return Container();
@@ -159,7 +158,7 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                     margin: const EdgeInsets.only(left: 20),
                                     child: _optionWidget(
                                       "提交",
-                                      () => _.commitUpdate(),
+                                      () => _.commit(),
                                     ),
                                   );
                                 } else {

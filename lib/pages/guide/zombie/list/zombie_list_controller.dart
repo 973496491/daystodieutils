@@ -24,7 +24,8 @@ class ZombieListController extends GetxController {
   }
 
   void getZombieList() async {
-    var respMap = await NHttpRequest.getZombieList(_pageIndex, zombieType, zombieName);
+    var respMap =
+        await NHttpRequest.getZombieList(_pageIndex, zombieType, zombieName);
     var resp =
         RespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
     var data = resp.data;
@@ -83,14 +84,23 @@ class ZombieListController extends GetxController {
     }
   }
 
-  void toDetailPage(int? id, bool canEdit) {
+  void toDetailPage(String? id, bool canEdit) {
     if (id == null) return;
     var parameters = {
-      "id": "$id",
+      "id": id,
+      "canEdit": "$canEdit",
     };
     Get.toNamed(
       RouteNames.guildZombie,
       parameters: parameters,
-    );
+    )?.then((value) {
+      if (value != null) {
+        var result = value as Map<String, dynamic>;
+        var needReload = result["needReload"];
+        if (true == needReload) {
+          onRefresh();
+        }
+      }
+    });
   }
 }

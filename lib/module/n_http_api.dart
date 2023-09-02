@@ -1,9 +1,9 @@
-class HttpApi {
+class NHttpApi {
 
   static const String _testUrl = "http://localhost:7777/api";
   static const String _prodUrl = "http://123.207.77.55:7777/api";
 
-  static const String baseUrl = _testUrl;
+  static const String baseUrl = _prodUrl;
 
   /// 登录
   static const String login = "/users/login";
@@ -25,6 +25,12 @@ class HttpApi {
 
   /// 更新古神详情
   static const String updateZombieDetail = "/info/update/zombieInfo";
+
+  /// 插入古神详情
+  static const String insertZombieDetail = "/info/insert/zombieInfo";
+
+  /// 插入古神详情
+  static const String deleteZombieDetail = "/info/delete/zombieInfo";
 
   /// 获取所有主菜单按钮
   static const String getMainMenuItemList = "/config/mainMenuBtn";

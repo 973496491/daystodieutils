@@ -68,19 +68,23 @@ class ZombieListPage extends GetView<ZombieListController> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: SizedBox(
-        width: 110,
-        height: 35,
+        width: 100,
+        height: 100,
         child: GetBuilder<ZombieListController>(
           builder: (_) {
-            return ElevatedButton(
-              child: const Text(
-                "添加",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
+            return Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 0.5,
+                  color: Colors.blueAccent,
                 ),
               ),
-              onPressed: () => {},
+              child: IconButton(
+                color: Colors.blue,
+                icon: const Icon(Icons.add),
+                onPressed: () => _.toDetailPage("-1", true),
+              ),
             );
           },
         ),
@@ -116,6 +120,6 @@ class ZombieListPage extends GetView<ZombieListController> {
           const Divider(height: 1, color: Colors.black26),
         ],
       ),
-    ).onClick(() => controller.toDetailPage(item?.id, false));
+    ).onClick(() => controller.toDetailPage("${item?.id}", false));
   }
 }

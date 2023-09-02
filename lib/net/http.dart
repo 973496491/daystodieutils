@@ -5,7 +5,7 @@ import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
 
-import '../module/http_api.dart';
+import '../module/n_http_api.dart';
 import 'n_http_content_type.dart';
 
 class Http {
@@ -29,7 +29,7 @@ class Http {
 
   // 配置 Dio 实例
   static final BaseOptions _options = BaseOptions(
-    baseUrl: HttpApi.baseUrl,
+    baseUrl: NHttpApi.baseUrl,
     connectTimeout: NHttpConfig.connectTimeout,
     receiveTimeout: NHttpConfig.receiveTimeout,
   );
@@ -56,7 +56,7 @@ class Http {
         _dio.options.contentType = contentType;
       }
 
-      "[Dio]\nurl: ${HttpApi.baseUrl}$path\nheaders: ${_dio.options.headers.toString()}\nparams: ${params.toString()}\ndata:${data.toString()}"
+      "[Dio]\nurl: ${NHttpApi.baseUrl}$path\nheaders: ${_dio.options.headers.toString()}\nparams: ${params.toString()}\ndata:${data.toString()}"
           .logD();
 
       Response response = await _dio.request(

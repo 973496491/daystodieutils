@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:daystodieutils/module/n_http_request.dart';
 import 'package:daystodieutils/net/entity/zombie_detail_resp.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
@@ -14,6 +12,8 @@ class GuideZombieController extends GetxController {
   static const String idEdit = "idEdit";
   static const String idCommit = "idCommit";
   static const String idDelete = "idDelete";
+
+  bool isNewItem = false;
 
   bool canEdit = false;
   bool canCommit = false;
@@ -42,7 +42,7 @@ class GuideZombieController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    _initZombieListData();
+    _initInfo();
   }
 
   @override
@@ -57,12 +57,17 @@ class GuideZombieController extends GetxController {
     super.onClose();
   }
 
-  void _initZombieListData() async {
+  void _initInfo() {
     var id = Get.parameters["id"];
-    if (id == null) {
-      Get.context?.showMessageDialog("古神id为空, 获取失败.");
-      return;
+    if (id == null || id == "-1") {
+      isNewItem = true;
+    } else {
+      isNewItem = false;
+      _initZombieListData(id);
     }
+  }
+
+  void _initZombieListData(String id) async {
     var respMap = await NHttpRequest.getZombieDetail(id);
     var resp = RespFactory.parseObject(respMap, ZombieDetailResp());
     var data = resp.data;
@@ -111,14 +116,18 @@ class GuideZombieController extends GetxController {
     }
   }
 
-  void commitUpdate() async {
-    if (_id == null) {
-      Get.context?.showMessageDialog("id is null .");
-      return;
+  void commit() async {
+    var result =
+        await Get.context?.showAskMessageDialog("是否提交修改?\n此操作将返回上级页面.");
+    if (result != null) {
+      _commit();
     }
+  }
+
+  void _commit() async {
     changeCanEdit();
     var respMap = await NHttpRequest.updateZombieDetail(
-      _id!,
+      _id,
       nameEditController.text,
       typeEditController.text,
       hpEditController.text,
@@ -128,9 +137,39 @@ class GuideZombieController extends GetxController {
       raidersEditController.text,
     );
     if (NHttpConfig.isOk(map: respMap)) {
-      Get.context?.showMessageDialog(NHttpConfig.message(respMap) ?? "提交失败.");
+      var result = await Get.context?.showMessageDialog(
+        NHttpConfig.message(respMap) ?? "成功",
+      );
+      if (result != null) {
+        Get.back(result: {"needReload", true});
+      }
     } else {
-      Get.context?.showMessageDialog(NHttpConfig.message(respMap) ?? "成功");
+      Get.context?.showMessageDialog(NHttpConfig.message(respMap) ?? "提交失败.");
+    }
+  }
+
+  void delete() async {
+    var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
+    if (result != null) {
+      _delete();
+    }
+  }
+
+  void _delete() async {
+    if (_id == null) {
+      Get.context?.showMessageDialog("条目不存在");
+      return;
+    }
+    var respMap = await NHttpRequest.deleteZombieDetail(_id);
+    if (NHttpConfig.isOk(map: respMap)) {
+      var result = await Get.context?.showMessageDialog(
+        NHttpConfig.message(respMap) ?? "删除成功",
+      );
+      if (result != null) {
+        Get.back(result: {"needReload", true});
+      }
+    } else {
+      Get.context?.showMessageDialog(NHttpConfig.message(respMap) ?? "删除失败.");
     }
   }
 }

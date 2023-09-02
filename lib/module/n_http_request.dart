@@ -1,9 +1,20 @@
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 
-import 'http_api.dart';
+import 'n_http_api.dart';
 
 class NHttpRequest {
+  static login(
+    String username,
+    String password,
+  ) {
+    return Http.post(
+      NHttpApi.login,
+      data: {"username": username, "password": password},
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
   /// 获取古神列表
   static getZombieList(
     dynamic pageIndex,
@@ -21,7 +32,7 @@ class NHttpRequest {
       reqMap["zombieName"] = zombieName;
     }
     return Http.post(
-      HttpApi.getZombieList,
+      NHttpApi.getZombieList,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
@@ -33,7 +44,7 @@ class NHttpRequest {
       "id": "$id",
     };
     return Http.post(
-      HttpApi.getZombieDetail,
+      NHttpApi.getZombieDetail,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
@@ -41,7 +52,7 @@ class NHttpRequest {
 
   /// 更新古神详情
   static updateZombieDetail(
-    int id,
+    int? id,
     String? zombieName,
     String? zombieType,
     String? zombieHp,
@@ -50,7 +61,10 @@ class NHttpRequest {
     String? precautions,
     String? raiders,
   ) async {
-    var reqMap = <String, String>{"id": "$id"};
+    var reqMap = <String, String>{};
+    if (null != id) {
+      reqMap["id"] = "$id";
+    }
     if (true == zombieName?.isNotEmpty) {
       reqMap["name"] = "$zombieName";
     }
@@ -72,10 +86,25 @@ class NHttpRequest {
     if (true == raiders?.isNotEmpty) {
       reqMap["raiders"] = "$raiders";
     }
+    String url;
+    if (id != null) {
+      url = NHttpApi.updateZombieDetail;
+    } else {
+      url = NHttpApi.insertZombieDetail;
+    }
     return Http.post(
-      HttpApi.updateZombieDetail,
+      url,
       data: reqMap,
       contentType: NHttpContentType.applicationJson.type,
+    );
+  }
+
+  static deleteZombieDetail(int? id) {
+    var reqMap = <String, String>{"id": "${id}"};
+    return Http.post(
+      NHttpApi.deleteZombieDetail,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
   }
 }
