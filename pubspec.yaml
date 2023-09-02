@@ -30,6 +30,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   # banner
   card_swiper: ^3.0.1
+  image_network: ^2.5.4+1
 
 dev_dependencies:
   flutter_test:

@@ -23,6 +23,9 @@ class HttpApi {
   /// 获取古神详情
   static const String getZombieDetail = "/info/getZombieInfo";
 
+  /// 更新古神详情
+  static const String updateZombieDetail = "/info/update/zombieInfo";
+
   /// 获取所有主菜单按钮
   static const String getMainMenuItemList = "/config/mainMenuBtn";
 

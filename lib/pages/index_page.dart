@@ -14,7 +14,7 @@ class IndexPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _optionWidget(
-              "登录      ",
+              "管理员登录",
               Icons.manage_accounts,
               () => _loginController().showLoginDialog(context),
               "白名单列表",

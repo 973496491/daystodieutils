@@ -1,9 +1,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
+import 'package:daystodieutils/module/n_http_request.dart';
 import 'package:daystodieutils/net/entity/zombie_list_resp.dart';
-import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/module/http_api.dart';
-import 'package:daystodieutils/net/http_config.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,7 @@ import 'package:get/get.dart';
 class ZombieListController extends GetxController {
   static const String idListView = "idListView";
 
-  int _pageIndex = 0;
+  int _pageIndex = NHttpConfig.defaultPageIndex;
   String? zombieType;
   String? zombieName;
   bool isRefresh = true;
@@ -25,24 +24,14 @@ class ZombieListController extends GetxController {
   }
 
   void getZombieList() async {
-    var reqMap = <String, dynamic>{
-      "pageIndex": _pageIndex,
-      "pageSize": _pageSize,
-    };
-    if (zombieType != null) {
-      reqMap["zombieType"] = zombieType;
-    }
-    if (zombieName != null) {
-      reqMap["zombieName"] = zombieName;
-    }
-    var respMap = await Http.post(HttpApi.getZombieList, data: reqMap);
+    var respMap = await NHttpRequest.getZombieList(_pageIndex, zombieType, zombieName);
     var resp =
         RespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
     var data = resp.data;
     if (isRefresh) {
       zombieList = data ?? [];
     } else {
-      if (HttpConfig.isOk(bizCode: resp.code)) {
+      if (NHttpConfig.isOk(bizCode: resp.code)) {
         _pageIndex++;
         if (true == data?.isNotEmpty) {
           zombieList.addAll(data!);

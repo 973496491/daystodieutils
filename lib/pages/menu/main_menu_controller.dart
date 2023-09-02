@@ -2,8 +2,8 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/module/http_api.dart';
-import 'package:daystodieutils/net/http_config.dart';
-import 'package:daystodieutils/net/http_content_type.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
+import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class MainMenuController extends GetxController {
     var resp =
     RespFactory.parseArray<MainMenuItemResp>(respMap, MainMenuItemResp());
     var data = resp.data;
-    if (HttpConfig.isOk(bizCode: resp.code)) {
+    if (NHttpConfig.isOk(bizCode: resp.code)) {
       itemList = data!;
     }
     update([idListView]);
@@ -73,16 +73,16 @@ class MainMenuController extends GetxController {
     var resp = await Http.post(
       HttpApi.deleteMainMenuBtnInfo,
       data: reqMap,
-      contentType: HttpContentType.formUrlencoded.type,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
     if (!context.mounted) return;
-    if (HttpConfig.isOk(map: resp)) {
+    if (NHttpConfig.isOk(map: resp)) {
       context.showMessageDialog(
         "删除成功.",
         function: () => _getItemInfoList(),
       );
     } else {
-      context.showMessageDialog(HttpConfig.message(resp) ?? "删除失败");
+      context.showMessageDialog(NHttpConfig.message(resp) ?? "删除失败");
     }
   }
 
@@ -147,15 +147,15 @@ class MainMenuController extends GetxController {
     var respMap = await Http.post(
       HttpApi.addMainMenuItem,
       data: info,
-      contentType: HttpContentType.formUrlencoded.type,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
     if (!context.mounted) return;
-    if (HttpConfig.isOk(map: respMap)) {
+    if (NHttpConfig.isOk(map: respMap)) {
       context.showMessageDialog("添加按钮信息成功.",
           function: () => _getItemInfoList());
     } else {
       context.showMessageDialog(
-          HttpConfig.message(respMap) ?? "添加按钮信息失败");
+          NHttpConfig.message(respMap) ?? "添加按钮信息失败");
     }
   }
 
@@ -165,13 +165,13 @@ class MainMenuController extends GetxController {
       data: info,
     );
     if (!context.mounted) return;
-    if (HttpConfig.isOk(map: resp)) {
+    if (NHttpConfig.isOk(map: resp)) {
       context.showMessageDialog(
         "编辑成功.",
         function: () => _getItemInfoList(),
       );
     } else {
-      context.showMessageDialog(HttpConfig.message(resp) ?? "编辑失败");
+      context.showMessageDialog(NHttpConfig.message(resp) ?? "编辑失败");
     }
   }
 }

@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
 
 import 'guide_zombie_controller.dart';
 
@@ -22,63 +22,103 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 30),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CachedNetworkImage(
-                              width: 250,
-                              height: 300,
-                              imageUrl: "http://via.placeholder.com/250x300",
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ImageNetwork(
+                            width: 400,
+                            height: 550,
+                            image:
+                                "https://jiurizhipeizhe-1300866055.cos.ap-shanghai.myqcloud.com/Info_Image/%E5%85%8B%E5%9B%BE%E6%A0%BC%E4%BA%9A.png",
+                            curve: Curves.easeIn,
+                            onPointer: true,
+                            debugPrint: false,
+                            fullScreen: true,
+                            fitAndroidIos: BoxFit.cover,
+                            fitWeb: BoxFitWeb.cover,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          Container(
+                            width: 700,
+                            margin: const EdgeInsets.only(left: 50),
+                            child: Column(
+                              children: [
+                                const Divider(color: Colors.black12),
+                                _itemWidget(
+                                    "名        称: ", _.nameEditController,
+                                    isFirst: true),
+                                const Divider(color: Colors.black12),
+                                _itemWidget(
+                                    "类        型: ", _.typeEditController),
+                                const Divider(color: Colors.black12),
+                                _itemWidget("初始血量: ", _.hpEditController),
+                                const Divider(color: Colors.black12),
+                                _itemWidget(
+                                    "掉  落  物: ", _.bootyListEditController),
+                                const Divider(color: Colors.black12),
+                                _itemWidget(
+                                    "尸体材料: ", _.corpseDropEditController),
+                                const Divider(color: Colors.black12),
+                                _itemWidget(
+                                    "注意事项: ", _.precautionsEditController),
+                                const Divider(color: Colors.black12),
+                              ],
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 50),
-                              child: SizedBox(
-                                height: 300,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _itemWidget("名称:", _.zombieName),
-                                    _itemWidget("类型:", _.zombieType),
-                                    _itemWidget("初始血量:", _.zombieHp),
-                                    _itemWidget("掉落物:", _.bootyList),
-                                    _itemWidget("尸体材料:", _.corpseDrop),
-                                    _itemWidget("注意事项:", _.precautions),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                     Container(
+                      decoration: BoxDecoration(
+                        //设置四周圆角 角度
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4.0)),
+                        //设置四周边框
+                        border: Border.all(
+                            width: 0.5, color: Colors.deepPurpleAccent),
+                      ),
+                      width: 700,
                       margin: const EdgeInsets.only(top: 30),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            "攻略",
-                            style: TextStyle(
-                              color: Colors.deepPurpleAccent,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            child: const Text(
+                              "攻略",
+                              style: TextStyle(
+                                color: Colors.deepPurpleAccent,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 10),
-                            child: Text(
-                              _.raiders,
-                              style: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 16,
-                              ),
+                            child: GetBuilder<GuideZombieController>(
+                              id: GuideZombieController.idEdit,
+                              builder: (context) {
+                                return Expanded(
+                                  child: TextField(
+                                    maxLines: null,
+                                    keyboardType: TextInputType.multiline,
+                                    enabled: controller.canEdit,
+                                    controller: _.raidersEditController,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -86,38 +126,46 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                     ),
                     Center(
                       child: Container(
-                        margin: const EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 50),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
-                              width: 110,
-                              height: 35,
-                              child: ElevatedButton(
-                                child: const Text(
-                                  "编辑",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                onPressed: () {},
-                              ),
+                            GetBuilder<GuideZombieController>(
+                                id: GuideZombieController.idEdit,
+                                builder: (_) {
+                                  return _optionWidget(
+                                    _.editText,
+                                    () => _.changeCanEdit(),
+                                  );
+                                }),
+                            GetBuilder<GuideZombieController>(
+                              id: GuideZombieController.idDelete,
+                              builder: (context) {
+                                if (_.canDelete) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(left: 20),
+                                    child: _optionWidget("删除", () => null),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
                             ),
-                            Container(
-                              width: 110,
-                              height: 35,
-                              margin: const EdgeInsets.only(left: 20),
-                              child: ElevatedButton(
-                                child: const Text(
-                                  "删除",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                onPressed: () {},
-                              ),
+                            GetBuilder<GuideZombieController>(
+                              id: GuideZombieController.idCommit,
+                              builder: (_) {
+                                if (_.canCommit) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(left: 20),
+                                    child: _optionWidget(
+                                      "提交",
+                                      () => _.commitUpdate(),
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -131,29 +179,93 @@ class GuideZombiePage extends GetView<GuideZombieController> {
     );
   }
 
-  _itemWidget(String desc, String value) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          desc,
-          style: const TextStyle(
-            color: Colors.blueAccent,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10),
-          child: Text(
-            value,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ],
+  Widget _itemWidget(
+    String desc,
+    TextEditingController textController, {
+    bool isFirst = false,
+  }) {
+    var marginTop = 20.0;
+    if (isFirst) marginTop = 0;
+
+    FocusNode? focusNode;
+    if (isFirst) {
+      focusNode = FocusNode();
+      _controller().focusNode = focusNode;
+    }
+    return Container(
+      margin: EdgeInsets.only(top: marginTop),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _infoItemTitle(desc),
+          _infoItemContent(textController, focusNode),
+        ],
+      ),
     );
+  }
+
+  Widget _infoItemTitle(String name) {
+    return Text(
+      name,
+      style: const TextStyle(
+        color: Colors.blueAccent,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _infoItemContent(
+      TextEditingController textController, FocusNode? focusNode) {
+    var controller = Get.find<GuideZombieController>();
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        height: 55,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(left: 10),
+        child: GetBuilder<GuideZombieController>(
+          id: GuideZombieController.idEdit,
+          builder: (context) {
+            return TextField(
+              maxLines: 1,
+              focusNode: focusNode,
+              enabled: controller.canEdit,
+              controller: textController,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+              ),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _optionWidget(String title, Function()? function) {
+    return SizedBox(
+      width: 120,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: function,
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  GuideZombieController _controller() {
+    return Get.find<GuideZombieController>();
   }
 }

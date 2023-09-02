@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:daystodieutils/module/user/user_manager.dart';
-import 'package:daystodieutils/net/http_config.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
 
 import '../module/http_api.dart';
-import 'http_content_type.dart';
+import 'n_http_content_type.dart';
 
 class Http {
   static Future<Map<String, dynamic>> get(
@@ -30,8 +30,8 @@ class Http {
   // 配置 Dio 实例
   static final BaseOptions _options = BaseOptions(
     baseUrl: HttpApi.baseUrl,
-    connectTimeout: HttpConfig.connectTimeout,
-    receiveTimeout: HttpConfig.receiveTimeout,
+    connectTimeout: NHttpConfig.connectTimeout,
+    receiveTimeout: NHttpConfig.receiveTimeout,
   );
 
   static final Dio _dio = Dio(_options);

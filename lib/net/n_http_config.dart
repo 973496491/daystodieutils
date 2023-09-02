@@ -1,4 +1,4 @@
-class HttpConfig {
+class NHttpConfig {
   static const int _success = 0;
 
   static bool isOk({Map<String, dynamic>? map, int? bizCode}) {

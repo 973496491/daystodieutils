@@ -1,7 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/module/http_api.dart';
-import 'package:daystodieutils/net/http_config.dart';
-import 'package:daystodieutils/net/http_content_type.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
+import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -13,12 +13,12 @@ import '../../net/resp_factory.dart';
 
 class WhitelistController extends GetxController {
   static const String idListView = "idListView";
-  static const int _pageSize = HttpConfig.defaultPageIndex;
+  static const int _pageSize = NHttpConfig.defaultPageIndex;
   static const String _typeEdit = "edit";
   static const String _typeDelete = "_delete";
 
   final PagingController<int, WhiteListResp> pagingController =
-      PagingController(firstPageKey: HttpConfig.defaultPageIndex);
+      PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
   @override
   void onInit() {
@@ -107,11 +107,11 @@ class WhitelistController extends GetxController {
   void _addWhitelist(Map<String, String> info, BuildContext context) async {
     var respMap = await Http.post(HttpApi.addWhitelist, data: info);
     if (!context.mounted) return;
-    if (HttpConfig.isOk(map: respMap)) {
+    if (NHttpConfig.isOk(map: respMap)) {
       context.showMessageDialog("添加白名单成功.",
-          function: () => _fetchPage(HttpConfig.defaultPageIndex));
+          function: () => _fetchPage(NHttpConfig.defaultPageIndex));
     } else {
-      context.showMessageDialog(HttpConfig.message(respMap) ?? "添加白名单失败");
+      context.showMessageDialog(NHttpConfig.message(respMap) ?? "添加白名单失败");
     }
   }
 
@@ -149,16 +149,16 @@ class WhitelistController extends GetxController {
     var resp = await Http.post(
       HttpApi.deleteWhitelist,
       data: reqMap,
-      contentType: HttpContentType.formUrlencoded.type,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
     if (!context.mounted) return;
-    if (HttpConfig.isOk(map: resp)) {
+    if (NHttpConfig.isOk(map: resp)) {
       context.showMessageDialog(
         "删除成功.",
-        function: () => _fetchPage(HttpConfig.defaultPageIndex),
+        function: () => _fetchPage(NHttpConfig.defaultPageIndex),
       );
     } else {
-      context.showMessageDialog(HttpConfig.message(resp) ?? "删除失败");
+      context.showMessageDialog(NHttpConfig.message(resp) ?? "删除失败");
     }
   }
 }
