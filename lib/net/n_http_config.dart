@@ -18,4 +18,5 @@ class NHttpConfig {
   static const Duration receiveTimeout = Duration(seconds: 1000 * 10);
 
   static const int defaultPageIndex = 1;
+  static const int defaultPageSize = 20;
 }

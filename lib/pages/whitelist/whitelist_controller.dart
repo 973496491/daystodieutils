@@ -13,12 +13,12 @@ import '../../net/resp_factory.dart';
 
 class WhitelistController extends GetxController {
   static const String idListView = "idListView";
-  static const int _pageSize = NHttpConfig.defaultPageIndex;
+  static const int _pageSize = NHttpConfig.defaultPageSize;
   static const String _typeEdit = "edit";
   static const String _typeDelete = "_delete";
 
   final PagingController<int, WhiteListResp> pagingController =
-      PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
+      PagingController(firstPageKey: 1);
 
   @override
   void onInit() {
@@ -103,7 +103,11 @@ class WhitelistController extends GetxController {
   }
 
   void _addWhitelist(Map<String, String> info) async {
-    var respMap = await Http.post(NHttpApi.addWhitelist, data: info);
+    var respMap = await Http.post(
+      NHttpApi.addWhitelist,
+      data: info,
+      contentType: NHttpContentType.applicationJson.type,
+    );
     if (NHttpConfig.isOk(map: respMap)) {
       var result = await Get.context?.showMessageDialog("添加白名单成功.");
       if (result != null) {
@@ -140,6 +144,10 @@ class WhitelistController extends GetxController {
           _deleteItem(id);
           break;
         }
+      case _typeEdit: {
+        Get.context?.showMessageDialog("开发中");
+        break;
+      }
     }
   }
 

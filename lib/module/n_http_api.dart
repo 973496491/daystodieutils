@@ -3,7 +3,7 @@ class NHttpApi {
   static const String _testUrl = "http://localhost:7777/api";
   static const String _prodUrl = "http://123.207.77.55:7777/api";
 
-  static const String baseUrl = _prodUrl;
+  static const String baseUrl = _testUrl;
 
   /// 登录
   static const String login = "/users/login";
