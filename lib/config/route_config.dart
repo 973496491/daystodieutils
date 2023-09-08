@@ -8,9 +8,12 @@ import 'package:daystodieutils/pages/index_binding.dart';
 import 'package:daystodieutils/pages/index_page.dart';
 import 'package:daystodieutils/pages/menu/main_menu_binding.dart';
 import 'package:daystodieutils/pages/menu/main_menu_page.dart';
+import 'package:daystodieutils/pages/service/join/join_service_page.dart';
 import 'package:daystodieutils/pages/whitelist/whitelist_binding.dart';
 import 'package:daystodieutils/pages/whitelist/whitelist_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+
+import '../pages/service/join/join_service_binding.dart';
 
 class RoutePages {
   static List<GetPage> routeList = [
@@ -44,6 +47,11 @@ class RoutePages {
       page: () => const MainMenuPage(),
       binding: MainMenuBinding(),
     ),
+    GetPage(
+      name: RouteNames.joinServicePage,
+      page: () => const JoinServicePage(),
+      binding: JoinServiceBinding(),
+    ),
   ];
 }
 
@@ -54,4 +62,5 @@ class RouteNames {
   static String guildZombie = "/guildZombie";
   static String guildZombieList = "/guildZombieList";
   static String mainMenu = "/mainMenu";
+  static String joinServicePage = "/joinServicePage";
 }

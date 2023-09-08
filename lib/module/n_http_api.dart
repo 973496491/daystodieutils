@@ -3,7 +3,7 @@ class NHttpApi {
   static const String _testUrl = "http://localhost:7777/api";
   static const String _prodUrl = "http://123.207.77.55:7777/api";
 
-  static const String baseUrl = _testUrl;
+  static const String baseUrl = _prodUrl;
 
   /// 登录
   static const String login = "/users/login";
@@ -43,4 +43,7 @@ class NHttpApi {
 
   /// 编辑主菜单按钮
   static const String editMainMenuBtnInfo = "/config/update/mainMenuBtn";
+
+  /// 查询招人服务器信息
+  static const String serviceList = "/info/getJoinServiceList";
 }

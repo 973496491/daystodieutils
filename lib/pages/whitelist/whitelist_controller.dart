@@ -18,7 +18,7 @@ class WhitelistController extends GetxController {
   static const String _typeDelete = "_delete";
 
   final PagingController<int, WhiteListResp> pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
   @override
   void onInit() {

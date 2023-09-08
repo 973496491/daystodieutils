@@ -107,4 +107,23 @@ class NHttpRequest {
       contentType: NHttpContentType.formUrlencoded.type,
     );
   }
+
+  /// 获取古神列表
+  static getZombieList() async {
+    var reqMap = <String, dynamic>{
+      "pageIndex": "$pageIndex",
+      "pageSize": 20,
+    };
+    if (zombieType != null) {
+      reqMap["zombieType"] = zombieType;
+    }
+    if (zombieName != null) {
+      reqMap["zombieName"] = zombieName;
+    }
+    return Http.post(
+      NHttpApi.serviceList,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
 }
