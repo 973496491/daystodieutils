@@ -1,9 +1,10 @@
-import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
 import 'package:daystodieutils/pages/menu/main_menu_controller.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../module/entity/main_menu_item_resp.dart';
 
 class MainMenuPage extends GetView<MainMenuController> {
   const MainMenuPage({Key? key}) : super(key: key);

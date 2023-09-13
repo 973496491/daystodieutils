@@ -1,7 +1,8 @@
+import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_network/image_network.dart';
 
 import 'guide_zombie_controller.dart';
 
@@ -28,18 +29,40 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ImageNetwork(
-                            width: 400,
-                            height: 550,
-                            image:
-                                "https://jiurizhipeizhe-1300866055.cos.ap-shanghai.myqcloud.com/Info_Image/%E5%85%8B%E5%9B%BE%E6%A0%BC%E4%BA%9A.png",
-                            curve: Curves.easeIn,
-                            onPointer: true,
-                            debugPrint: false,
-                            fullScreen: true,
-                            fitAndroidIos: BoxFit.cover,
-                            fitWeb: BoxFitWeb.cover,
-                            borderRadius: BorderRadius.circular(7),
+                          GetBuilder<GuideZombieController>(
+                            id: GuideZombieController.idIcon,
+                            builder: (context) {
+                              if (_.iconUrl == null) {
+                                return Container(
+                                  width: 400,
+                                  height: 550,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage("assets/images/temp.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                ).onClick(() => _.selectImage());
+                              } else {
+                                return Container(
+                                  width: 400,
+                                  height: 550,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(_.iconUrl ?? ""),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                ).onClick(() => _.selectImage());
+                              }
+                            },
                           ),
                           Container(
                             width: 700,
@@ -143,7 +166,8 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                 if (_.canDelete) {
                                   return Container(
                                     margin: const EdgeInsets.only(left: 20),
-                                    child: _optionWidget("删除", () => _.delete()),
+                                    child:
+                                        _optionWidget("删除", () => _.delete()),
                                   );
                                 } else {
                                   return Container();
@@ -170,6 +194,10 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      width: double.infinity,
+                      height: 30,
+                    )
                   ],
                 ),
               );
@@ -215,7 +243,9 @@ class GuideZombiePage extends GetView<GuideZombieController> {
   }
 
   Widget _infoItemContent(
-      TextEditingController textController, FocusNode? focusNode) {
+    TextEditingController textController,
+    FocusNode? focusNode,
+  ) {
     var controller = Get.find<GuideZombieController>();
     return Expanded(
       child: Container(
@@ -247,7 +277,10 @@ class GuideZombiePage extends GetView<GuideZombieController> {
     );
   }
 
-  Widget _optionWidget(String title, Function()? function) {
+  Widget _optionWidget(
+    String title,
+    Function()? function,
+  ) {
     return SizedBox(
       width: 120,
       height: 40,

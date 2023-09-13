@@ -1,18 +1,13 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class ZombieListResp extends RespCommon {
-  ZombieListResp({
-    this.id,
-    this.zombieType,
-    this.zombieName,
-    this.zombieHp,
-  });
+import '../../net/n_resp_common.dart';
+
+class MainMenuItemResp extends NRespCommon {
+  MainMenuItemResp({this.id, this.name, this.url});
 
   int? id;
-  String? zombieType;
-  String? zombieName;
-  String? zombieHp;
+  String? name;
+  String? url;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -31,11 +26,10 @@ class ZombieListResp extends RespCommon {
   T? parseObject<T>(data) {
     if (data != null) {
       var map = SafeMap(data);
-      return ZombieListResp(
+      return MainMenuItemResp(
         id: map["id"].value,
-        zombieType: map["zombieType"].value,
-        zombieName: map["zombieName"].value,
-        zombieHp: map["zombieHp"].value,
+        name: map["name"].value,
+        url: map["url"].value,
       ) as T;
     } else {
       return null;

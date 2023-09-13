@@ -1,13 +1,13 @@
-import 'package:daystodieutils/net/entity/zombie_list_resp.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../module/entity/zombie_list_resp.dart';
 import 'zombie_list_controller.dart';
 
 class ZombieListPage extends GetView<ZombieListController> {
-  ZombieListPage({Key? key}) : super(key: key);
+  const ZombieListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/module/n_http_request.dart';
+import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
-import 'package:daystodieutils/net/entity/login_resp.dart';
-import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/module/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
-import 'package:daystodieutils/net/resp_factory.dart';
+import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../module/entity/login_resp.dart';
 
 class LoginController extends GetxController {
   void showLoginDialog(BuildContext context) async {
@@ -45,7 +44,7 @@ class LoginController extends GetxController {
       return;
     }
     var respMap = await NHttpRequest.login(username, password);
-    var resp = RespFactory.parseObject<LoginResp>(respMap, LoginResp());
+    var resp = NRespFactory.parseObject<LoginResp>(respMap, LoginResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var token = resp.data?.token;
       if (token != null) {

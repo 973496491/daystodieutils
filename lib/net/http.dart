@@ -5,9 +5,6 @@ import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
 
-import '../module/n_http_api.dart';
-import 'n_http_content_type.dart';
-
 class Http {
   static Future<Map<String, dynamic>> get(
     String path, {
@@ -24,12 +21,20 @@ class Http {
     Map<String, dynamic>? data,
     String? contentType,
   }) {
-    return _request(path, "post", params: params, data: data, contentType: contentType);
+    return _request(path, "post",
+        params: params, data: data, contentType: contentType);
+  }
+
+  static Future postFile(
+    String path,
+    FormData formData,
+  ) {
+    return _request(path, "post", formData: formData);
   }
 
   // 配置 Dio 实例
   static final BaseOptions _options = BaseOptions(
-    baseUrl: NHttpApi.baseUrl,
+    baseUrl: NHttpConfig.baseUrl,
     connectTimeout: NHttpConfig.connectTimeout,
     receiveTimeout: NHttpConfig.receiveTimeout,
   );
@@ -42,6 +47,7 @@ class Http {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
     String? contentType,
+    FormData? formData,
   }) async {
     try {
       _dio.options.headers["Access-Control-Allow-Origin"] = "*";
@@ -56,13 +62,26 @@ class Http {
         _dio.options.contentType = contentType;
       }
 
-      "[Dio]\nurl: ${NHttpApi.baseUrl}$path\nheaders: ${_dio.options.headers.toString()}\nparams: ${params.toString()}\ndata:${data.toString()}"
+      "[Dio]\n"
+          "url: ${NHttpConfig.baseUrl}$path\n"
+          "headers: ${_dio.options.headers.toString()}\n"
+          "params: ${params.toString()}\n"
+          "data:${data.toString()}]\n"
+          "fromData: $formData"
           .logD();
+
+      Object? body;
+      if (formData != null) {
+        body = formData;
+        "[Dio]\n 当前Body为图片参数".logD();
+      } else {
+        body = data;
+      }
 
       Response response = await _dio.request(
         path,
         queryParameters: params,
-        data: data,
+        data: body,
         options: Options(method: method),
       );
       "[Dio]\nresp: ${response.toString()}".logD();

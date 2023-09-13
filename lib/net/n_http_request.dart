@@ -1,5 +1,6 @@
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
+import 'package:dio/dio.dart';
 
 import 'n_http_api.dart';
 
@@ -60,6 +61,7 @@ class NHttpRequest {
     String? corpseDrop,
     String? precautions,
     String? raiders,
+    String? iconUrl,
   ) async {
     var reqMap = <String, String>{};
     if (null != id) {
@@ -86,6 +88,9 @@ class NHttpRequest {
     if (true == raiders?.isNotEmpty) {
       reqMap["raiders"] = "$raiders";
     }
+    if (true == iconUrl?.isNotEmpty) {
+      reqMap["imageUrl"] = "$iconUrl";
+    }
     String url;
     if (id != null) {
       url = NHttpApi.updateZombieDetail;
@@ -100,7 +105,7 @@ class NHttpRequest {
   }
 
   static deleteZombieDetail(int? id) {
-    var reqMap = <String, String>{"id": "${id}"};
+    var reqMap = <String, String>{"id": "$id"};
     return Http.post(
       NHttpApi.deleteZombieDetail,
       data: reqMap,
@@ -108,22 +113,38 @@ class NHttpRequest {
     );
   }
 
-  /// 获取古神列表
-  static getZombieList() async {
-    var reqMap = <String, dynamic>{
-      "pageIndex": "$pageIndex",
-      "pageSize": 20,
-    };
-    if (zombieType != null) {
-      reqMap["zombieType"] = zombieType;
-    }
-    if (zombieName != null) {
-      reqMap["zombieName"] = zombieName;
-    }
-    return Http.post(
-      NHttpApi.serviceList,
-      data: reqMap,
-      contentType: NHttpContentType.formUrlencoded.type,
-    );
+  // /// 获取古神列表
+  // static getZombieList() async {
+  //   var reqMap = <String, dynamic>{
+  //     "pageIndex": "$pageIndex",
+  //     "pageSize": 20,
+  //   };
+  //   if (zombieType != null) {
+  //     reqMap["zombieType"] = zombieType;
+  //   }
+  //   if (zombieName != null) {
+  //     reqMap["zombieName"] = zombieName;
+  //   }
+  //   return Http.post(
+  //     NHttpApi.serviceList,
+  //     data: reqMap,
+  //     contentType: NHttpContentType.formUrlencoded.type,
+  //   );
+  // }
+
+  /// 获取cos临时密钥
+  static getCosPrivateKey() {
+    return Http.post(NHttpApi.getCosPrivateKey);
+  }
+
+  static uploadImage(
+    String fileName,
+    MultipartFile imageFile,
+  ) {
+    var reqMap = FormData.fromMap({
+      "fileName": fileName,
+      "file": imageFile,
+    });
+    return Http.postFile(NHttpApi.uploadImage, reqMap);
   }
 }

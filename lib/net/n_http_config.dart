@@ -1,5 +1,11 @@
 class NHttpConfig {
+
   static const int _success = 0;
+
+  static const String _testUrl = "http://localhost:7777/api";
+  static const String _prodUrl = "http://123.207.77.55:7777/api";
+
+  static const String baseUrl = _prodUrl;
 
   static bool isOk({Map<String, dynamic>? map, int? bizCode}) {
     if (null != bizCode) return bizCode == _success;

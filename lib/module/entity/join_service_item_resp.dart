@@ -1,12 +1,21 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class MainMenuItemResp extends RespCommon {
-  MainMenuItemResp({this.id, this.name, this.url});
+import '../../net/n_resp_common.dart';
+
+class JoinServiceItemResp extends NRespCommon {
+  JoinServiceItemResp({
+    this.id,
+    this.name,
+    this.desc,
+    this.qqRoom,
+    this.qqRoomUrl,
+  });
 
   int? id;
   String? name;
-  String? url;
+  String? desc;
+  String? qqRoom;
+  String? qqRoomUrl;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -25,10 +34,12 @@ class MainMenuItemResp extends RespCommon {
   T? parseObject<T>(data) {
     if (data != null) {
       var map = SafeMap(data);
-      return MainMenuItemResp(
+      return JoinServiceItemResp(
         id: map["id"].value,
         name: map["name"].value,
-        url: map["url"].value,
+        desc: map["desc"].value,
+        qqRoom: map["qqRoom"].value,
+        qqRoomUrl: map["qqRoomUrl"].value,
       ) as T;
     } else {
       return null;

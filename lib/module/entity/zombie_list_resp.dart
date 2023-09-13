@@ -1,20 +1,19 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class JoinServiceItemResp extends RespCommon {
-  JoinServiceItemResp({
+import '../../net/n_resp_common.dart';
+
+class ZombieListResp extends NRespCommon {
+  ZombieListResp({
     this.id,
-    this.name,
-    this.desc,
-    this.qqRoom,
-    this.qqRoomUrl,
+    this.zombieType,
+    this.zombieName,
+    this.zombieHp,
   });
 
   int? id;
-  String? name;
-  String? desc;
-  String? qqRoom;
-  String? qqRoomUrl;
+  String? zombieType;
+  String? zombieName;
+  String? zombieHp;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -33,12 +32,11 @@ class JoinServiceItemResp extends RespCommon {
   T? parseObject<T>(data) {
     if (data != null) {
       var map = SafeMap(data);
-      return JoinServiceItemResp(
+      return ZombieListResp(
         id: map["id"].value,
-        name: map["name"].value,
-        desc: map["desc"].value,
-        qqRoom: map["qqRoom"].value,
-        qqRoomUrl: map["qqRoomUrl"].value,
+        zombieType: map["zombieType"].value,
+        zombieName: map["zombieName"].value,
+        zombieHp: map["zombieHp"].value,
       ) as T;
     } else {
       return null;

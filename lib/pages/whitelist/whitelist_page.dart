@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../net/entity/whitelist_resp.dart';
+import '../../module/entity/whitelist_resp.dart';
 
 class WhitelistPage extends GetView<WhitelistController> {
   const WhitelistPage({Key? key}) : super(key: key);

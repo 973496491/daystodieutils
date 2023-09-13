@@ -1,7 +1,8 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class ZombieDetailResp extends RespCommon {
+import '../../net/n_resp_common.dart';
+
+class ZombieDetailResp extends NRespCommon {
   ZombieDetailResp({
     this.id,
     this.name,
@@ -11,7 +12,7 @@ class ZombieDetailResp extends RespCommon {
     this.corpseDrop,
     this.precautions,
     this.raiders,
-    this.imageKey,
+    this.imageUrl,
   });
 
   int? id;
@@ -22,7 +23,7 @@ class ZombieDetailResp extends RespCommon {
   String? corpseDrop;
   String? precautions;
   String? raiders;
-  String? imageKey;
+  String? imageUrl;
 
   @override
   T? parseObject<T>(data) {
@@ -37,7 +38,7 @@ class ZombieDetailResp extends RespCommon {
         corpseDrop: map["corpseDrop"].value,
         precautions: map["precautions"].value,
         raiders: map["raiders"].value,
-        imageKey: map["imageKey"].value,
+        imageUrl: map["imageUrl"].value,
       ) as T;
     } else {
       return null;

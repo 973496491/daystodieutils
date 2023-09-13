@@ -1,11 +1,12 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
-import 'package:daystodieutils/module/n_http_request.dart';
-import 'package:daystodieutils/net/entity/zombie_list_resp.dart';
+import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
-import 'package:daystodieutils/net/resp_factory.dart';
+import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../../module/entity/zombie_list_resp.dart';
 
 class ZombieListController extends GetxController {
   static const String idListView = "idListView";
@@ -27,7 +28,7 @@ class ZombieListController extends GetxController {
     var respMap =
         await NHttpRequest.getZombieList(_pageIndex, zombieType, zombieName);
     var resp =
-        RespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
+        NRespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
     var data = resp.data;
     if (isRefresh) {
       zombieList = data ?? [];

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/index_binding.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -13,8 +14,14 @@ void main() {
   runApp(const MyApp());
 }
 
-void _init() {
+void _init() async {
   SpUtil.init();
+
+  // 图片加载
+  WidgetsFlutterBinding.ensureInitialized();
+  await FastCachedImageConfig.init(
+    clearCacheAfter: const Duration(days: 15),
+  );
 }
 
 class MyApp extends StatelessWidget {

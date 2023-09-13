@@ -1,15 +1,16 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/module/n_http_api.dart';
+import 'package:daystodieutils/net/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../net/entity/whitelist_resp.dart';
+import '../../module/entity/whitelist_resp.dart';
 import '../../net/http.dart';
-import '../../net/resp_factory.dart';
+import '../../net/n_resp_factory.dart';
 
 class WhitelistController extends GetxController {
   static const String idListView = "idListView";
@@ -50,12 +51,15 @@ class WhitelistController extends GetxController {
       "pageSize": _pageSize,
     };
     var respMap = await Http.get(NHttpApi.whitelist, params: params);
-    var resp = RespFactory.parseArray<WhiteListResp>(respMap, WhiteListResp());
+    var resp = NRespFactory.parseArray<WhiteListResp>(respMap, WhiteListResp());
     var data = resp.data;
     return data ?? [];
   }
 
   void showAddWhitelistDialog(BuildContext context) async {
+    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
+
     final result = await showTextInputDialog(
       context: context,
       title: "添加白名单",
@@ -119,6 +123,9 @@ class WhitelistController extends GetxController {
   }
 
   void showEditDialog(BuildContext context, int? id) async {
+    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
+
     var key = await showConfirmationDialog(
       context: context,
       title: "请选择功能项",
@@ -152,6 +159,9 @@ class WhitelistController extends GetxController {
   }
 
   void _deleteItem(int id) async {
+    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
+
     var reqMap = {"id": "$id"};
     var resp = await Http.post(
       NHttpApi.deleteWhitelist,

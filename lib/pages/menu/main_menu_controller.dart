@@ -1,14 +1,15 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/net/entity/main_menu_item_resp.dart';
+import 'package:daystodieutils/net/n_http_api.dart';
 import 'package:daystodieutils/net/http.dart';
-import 'package:daystodieutils/module/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
-import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
+import '../../module/entity/main_menu_item_resp.dart';
+import '../../net/n_resp_factory.dart';
 
 class MainMenuController extends GetxController {
   static const String idListView = "idListView";
@@ -26,7 +27,7 @@ class MainMenuController extends GetxController {
   void _getItemInfoList() async {
     var respMap = await Http.get(NHttpApi.getMainMenuItemList);
     var resp =
-        RespFactory.parseArray<MainMenuItemResp>(respMap, MainMenuItemResp());
+        NRespFactory.parseArray<MainMenuItemResp>(respMap, MainMenuItemResp());
     var data = resp.data;
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       itemList = data!;
@@ -35,6 +36,9 @@ class MainMenuController extends GetxController {
   }
 
   void showEditDialog(BuildContext context, MainMenuItemResp item) async {
+    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
+
     var key = await showConfirmationDialog(
       context: context,
       title: "请选择功能项",
@@ -88,6 +92,9 @@ class MainMenuController extends GetxController {
 
   void showEditBtnInfoDialog(BuildContext context, bool isAdd,
       {MainMenuItemResp? item}) async {
+    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
+
     var title = "添加主菜单按钮信息";
     if (!isAdd) title = "编辑主菜单按钮信息";
 

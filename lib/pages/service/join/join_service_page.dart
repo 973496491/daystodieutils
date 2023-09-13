@@ -1,11 +1,10 @@
-import 'package:daystodieutils/net/entity/join_service_item_resp.dart';
 import 'package:daystodieutils/pages/menu/main_menu_controller.dart';
-import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../module/entity/join_service_item_resp.dart';
 import 'join_service_controller.dart';
 
 class JoinServicePage extends GetView<JoinServiceController> {

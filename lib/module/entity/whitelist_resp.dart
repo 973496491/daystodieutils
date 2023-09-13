@@ -1,7 +1,8 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class WhiteListResp extends RespCommon {
+import '../../net/n_resp_common.dart';
+
+class WhiteListResp extends NRespCommon {
   WhiteListResp({this.id, this.name, this.author, this.desc});
 
   int? id;

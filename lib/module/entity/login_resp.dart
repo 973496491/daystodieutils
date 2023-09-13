@@ -1,7 +1,8 @@
 import 'package:daystodieutils/core/safe_map.dart';
-import 'package:daystodieutils/net/resp_common.dart';
 
-class LoginResp extends RespCommon {
+import '../../net/n_resp_common.dart';
+
+class LoginResp extends NRespCommon {
   LoginResp({this.token});
 
   String? token;

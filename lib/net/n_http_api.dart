@@ -1,10 +1,5 @@
 class NHttpApi {
 
-  static const String _testUrl = "http://localhost:7777/api";
-  static const String _prodUrl = "http://123.207.77.55:7777/api";
-
-  static const String baseUrl = _prodUrl;
-
   /// 登录
   static const String login = "/users/login";
 
@@ -46,4 +41,10 @@ class NHttpApi {
 
   /// 查询招人服务器信息
   static const String serviceList = "/info/getJoinServiceList";
+
+  /// 获取腾讯云COS临时密钥
+  static const String getCosPrivateKey = "/file/getCosTmpSecretId";
+
+  /// 上传图片
+  static const String uploadImage = "/file/uploadImage";
 }

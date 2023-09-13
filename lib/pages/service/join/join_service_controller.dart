@@ -1,10 +1,11 @@
-import 'package:daystodieutils/module/n_http_api.dart';
-import 'package:daystodieutils/net/entity/join_service_item_resp.dart';
+import 'package:daystodieutils/net/n_http_api.dart';
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
-import 'package:daystodieutils/net/resp_factory.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import '../../../module/entity/join_service_item_resp.dart';
+import '../../../net/n_resp_factory.dart';
 
 class JoinServiceController extends GetxController {
 
@@ -47,7 +48,7 @@ class JoinServiceController extends GetxController {
       "pageSize": _pageSize,
     };
     var respMap = await Http.get(NHttpApi.whitelist, params: params);
-    var resp = RespFactory.parseArray<JoinServiceItemResp>(respMap, JoinServiceItemResp());
+    var resp = NRespFactory.parseArray<JoinServiceItemResp>(respMap, JoinServiceItemResp());
     var data = resp.data;
     return data ?? [];
   }
