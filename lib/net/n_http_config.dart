@@ -2,8 +2,8 @@ class NHttpConfig {
 
   static const int _success = 0;
 
-  static const String _testUrl = "http://localhost:7777/api";
-  static const String _prodUrl = "http://123.207.77.55:7777/api";
+  static const String _testUrl = "https://localhost:7777/api";
+  static const String _prodUrl = "https://www.lolko.xyz/api";
 
   static const String baseUrl = _prodUrl;
 
