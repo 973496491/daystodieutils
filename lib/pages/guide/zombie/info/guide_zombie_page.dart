@@ -211,7 +211,7 @@ class GuideZombiePage extends GetView<GuideZombieController> {
     TextEditingController textController, {
     bool isFirst = false,
   }) {
-    var marginTop = 20.0;
+    var marginTop = 0.0;
     if (isFirst) marginTop = 0;
 
     FocusNode? focusNode;
@@ -222,7 +222,7 @@ class GuideZombiePage extends GetView<GuideZombieController> {
     return Container(
       margin: EdgeInsets.only(top: marginTop),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _infoItemTitle(desc),
           _infoItemContent(textController, focusNode),
@@ -232,12 +232,16 @@ class GuideZombiePage extends GetView<GuideZombieController> {
   }
 
   Widget _infoItemTitle(String name) {
-    return Text(
-      name,
-      style: const TextStyle(
-        color: Colors.blueAccent,
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(top: 27, bottom: 27),
+      child: Text(
+        name,
+        style: const TextStyle(
+          height: 0.76,
+          color: Colors.blueAccent,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -250,14 +254,14 @@ class GuideZombiePage extends GetView<GuideZombieController> {
     return Expanded(
       child: Container(
         width: double.infinity,
-        height: 55,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(left: 10),
         child: GetBuilder<GuideZombieController>(
           id: GuideZombieController.idEdit,
           builder: (context) {
             return TextField(
-              maxLines: 1,
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
               focusNode: focusNode,
               enabled: controller.canEdit,
               controller: textController,
@@ -266,6 +270,8 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                 fontSize: 16,
               ),
               decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(top: 25, bottom: 27),
+                isDense: true,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),

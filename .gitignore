@@ -30,7 +30,10 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-/build/
+/build/388daaf5b681d69e5e52de4206324d4a
+/build/flutter_assets
+/build/*.dill
+/build/*.json
 
 # Symbolication related
 app.*.symbols

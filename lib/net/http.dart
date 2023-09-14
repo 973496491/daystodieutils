@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+
+import '../config/pem.dart';
 
 class Http {
   static Future<Map<String, dynamic>> get(
@@ -63,11 +67,11 @@ class Http {
       }
 
       "[Dio]\n"
-          "url: ${NHttpConfig.baseUrl}$path\n"
-          "headers: ${_dio.options.headers.toString()}\n"
-          "params: ${params.toString()}\n"
-          "data:${data.toString()}]\n"
-          "fromData: $formData"
+              "url: ${NHttpConfig.baseUrl}$path\n"
+              "headers: ${_dio.options.headers.toString()}\n"
+              "params: ${params.toString()}\n"
+              "data:${data.toString()}]\n"
+              "fromData: $formData"
           .logD();
 
       Object? body;

@@ -2,6 +2,7 @@ import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../module/entity/zombie_list_resp.dart';
 import 'zombie_list_controller.dart';
@@ -49,15 +50,28 @@ class ZombieListPage extends GetView<ZombieListController> {
           children: [
             Expanded(
               child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 30),
                 child: GetBuilder<ZombieListController>(
                   id: ZombieListController.idListView,
                   builder: (_) {
-                    return ListView.builder(
-                      itemCount: _.zombieList.length,
-                      itemBuilder: (context, index) {
-                        return _itemZombieListWidget(_, _.zombieList[index]);
-                      },
+                    return SizedBox(
+                      width: 1000,
+                      child: RefreshIndicator(
+                        displacement: 5,
+                        onRefresh: () => Future.sync(
+                          () => _.pagingController.refresh(),
+                        ),
+                        child: PagedListView<int, ZombieListResp>(
+                          pagingController: _.pagingController,
+                          builderDelegate:
+                              PagedChildBuilderDelegate<ZombieListResp>(
+                            itemBuilder: (context, item, index) =>
+                                _itemZombieListWidget(_, item),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -92,34 +106,43 @@ class ZombieListPage extends GetView<ZombieListController> {
     );
   }
 
-  _itemZombieListWidget(ZombieListController controller, ZombieListResp? item) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
+  _itemZombieListWidget(
+    ZombieListController controller,
+    ZombieListResp? item,
+  ) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
                   "名称: ${item?.zombieName}",
                   style: const TextStyle(fontSize: 18, color: Colors.black87),
                 ),
-                Text(
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
                   "类型: ${item?.zombieType}",
                   style: const TextStyle(fontSize: 18, color: Colors.black87),
                 ),
-                Text(
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
                   "血量: ${item?.zombieHp}",
                   style: const TextStyle(fontSize: 18, color: Colors.black87),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const Divider(height: 1, color: Colors.black26),
-        ],
-      ),
+        ),
+        const Divider(height: 1, color: Colors.black26),
+      ],
     ).onClick(() => controller.toDetailPage("${item?.id}", false));
   }
 }

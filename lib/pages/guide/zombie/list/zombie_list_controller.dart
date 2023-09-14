@@ -5,60 +5,55 @@ import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../module/entity/zombie_list_resp.dart';
 
 class ZombieListController extends GetxController {
   static const String idListView = "idListView";
+  static const int _pageSize = NHttpConfig.defaultPageSize;
 
-  int _pageIndex = NHttpConfig.defaultPageIndex;
   String? zombieType;
   String? zombieName;
-  bool isRefresh = true;
 
-  List<ZombieListResp> zombieList = [];
+  final PagingController<int, ZombieListResp> pagingController =
+  PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
   @override
-  void onReady() {
-    super.onReady();
-    getZombieList();
+  void onInit() {
+    pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    super.onInit();
   }
 
-  void getZombieList() async {
-    var respMap =
-        await NHttpRequest.getZombieList(_pageIndex, zombieType, zombieName);
-    var resp =
-        NRespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
-    var data = resp.data;
-    if (isRefresh) {
-      zombieList = data ?? [];
-    } else {
-      if (NHttpConfig.isOk(bizCode: resp.code)) {
-        _pageIndex++;
-        if (true == data?.isNotEmpty) {
-          zombieList.addAll(data!);
-        }
+  void _fetchPage(int pageKey) async {
+    try {
+      final newItems = await _getZombieList(pageKey);
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(newItems, nextPageKey);
       }
+      update([idListView]);
+    } catch (error) {
+      pagingController.error = error;
     }
-    update([idListView]);
   }
 
-  void onRefresh() {
-    resetParams();
-    getZombieList();
-  }
-
-  void onLoadMore() {
-    _pageIndex++;
-    isRefresh = false;
-    getZombieList();
+  Future<List<ZombieListResp>> _getZombieList(int pageKey) async {
+    var respMap =
+        await NHttpRequest.getZombieList(pageKey, zombieType, zombieName);
+    var resp = NRespFactory.parseArray<ZombieListResp>(respMap, ZombieListResp());
+    var data = resp.data;
+    return data ?? [];
   }
 
   void resetParams() {
-    _pageIndex = 0;
     zombieType = null;
     zombieName = null;
-    isRefresh = true;
   }
 
   void showSearchDialog(BuildContext context) async {
@@ -81,7 +76,7 @@ class ZombieListController extends GetxController {
       resetParams();
       zombieType = result?[0];
       zombieName = result?[1];
-      getZombieList();
+      pagingController.refresh();
     }
   }
 
@@ -99,7 +94,7 @@ class ZombieListController extends GetxController {
         var result = value as Map<String, dynamic>;
         var needReload = result["needReload"];
         if (true == needReload) {
-          onRefresh();
+          pagingController.refresh();
         }
       }
     });
