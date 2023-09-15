@@ -1,53 +1,60 @@
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
+import 'package:daystodieutils/pages/index_controller.dart' as mic;
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class IndexPage extends StatelessWidget {
+class IndexPage extends GetView<mic.IndexController>  {
   const IndexPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _optionWidget(
-              "管理员登录",
-              Icons.manage_accounts,
-              () => _loginController().showLoginDialog(context),
-              "白名单列表",
-              Icons.playlist_add_check_outlined,
-              () => Get.toNamed(RouteNames.whitelist),
-              isFirstLine: true,
-            ),
-            _optionWidget(
-              "物品图鉴   ",
-              Icons.backup_table,
-              () => Get.toNamed(RouteNames.guildItem),
-              "古神图鉴   ",
-              Icons.join_inner_outlined,
-              () => Get.toNamed(RouteNames.guildZombieList),
-            ),
-            _optionWidget(
-              "任务攻略   ",
-              Icons.question_answer_outlined,
-              () => Get.context?.showMessageDialog("敬请期待"),
-              "我要联机   ",
-              Icons.add_home_outlined,
-              () => Get.toNamed(RouteNames.joinServicePage),
-            ),
-            _optionWidget(
-              "主菜单按钮",
-              Icons.menu,
-              () => Get.toNamed(RouteNames.mainMenu),
-              "更多功能   ",
-              Icons.question_answer_outlined,
-              () => Get.context?.showMessageDialog("敬请期待"),
-            ),
-          ],
+      body: SafeArea(
+        child: GetBuilder<mic.IndexController>(
+          builder: (_) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _optionWidget(
+                    "管理员登录",
+                    Icons.manage_accounts,
+                        () => _loginController().showLoginDialog(context),
+                    "白名单列表",
+                    Icons.playlist_add_check_outlined,
+                        () => _.toWhitelistPage(),
+                    isFirstLine: true,
+                  ),
+                  _optionWidget(
+                    "物品图鉴   ",
+                    Icons.backup_table,
+                        () => Get.toNamed(RouteNames.guildItemList),
+                    "古神图鉴   ",
+                    Icons.join_inner_outlined,
+                        () => Get.toNamed(RouteNames.guildZombieList),
+                  ),
+                  _optionWidget(
+                    "任务攻略   ",
+                    Icons.question_answer_outlined,
+                        () => Get.context?.showMessageDialog("敬请期待"),
+                    "我要联机   ",
+                    Icons.add_home_outlined,
+                        () => Get.toNamed(RouteNames.joinServicePage),
+                  ),
+                  _optionWidget(
+                    "主菜单按钮",
+                    Icons.menu,
+                        () => _.toMainMenuPage(),
+                    "更多功能   ",
+                    Icons.question_answer_outlined,
+                        () => Get.context?.showMessageDialog("敬请期待"),
+                  ),
+                ],
+              ),
+            );
+          }
         ),
       ),
     );

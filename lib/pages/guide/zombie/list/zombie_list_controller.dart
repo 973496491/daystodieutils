@@ -11,13 +11,12 @@ import '../../../../module/entity/zombie_list_resp.dart';
 
 class ZombieListController extends GetxController {
   static const String idListView = "idListView";
-  static const int _pageSize = NHttpConfig.defaultPageSize;
 
   String? zombieType;
   String? zombieName;
 
   final PagingController<int, ZombieListResp> pagingController =
-  PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
+      PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
   @override
   void onInit() {
@@ -30,7 +29,7 @@ class ZombieListController extends GetxController {
   void _fetchPage(int pageKey) async {
     try {
       final newItems = await _getZombieList(pageKey);
-      final isLastPage = newItems.length < _pageSize;
+      final isLastPage = newItems.length < NHttpConfig.defaultPageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
       } else {

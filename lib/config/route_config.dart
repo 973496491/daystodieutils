@@ -1,5 +1,5 @@
-import 'package:daystodieutils/pages/guide/item/guide_item_binding.dart';
-import 'package:daystodieutils/pages/guide/item/guide_item_page.dart';
+import 'package:daystodieutils/pages/guide/item/list/item_list_binding.dart';
+import 'package:daystodieutils/pages/guide/item/list/item_list_page.dart';
 import 'package:daystodieutils/pages/guide/zombie/info/guide_zombie_binding.dart';
 import 'package:daystodieutils/pages/guide/zombie/info/guide_zombie_page.dart';
 import 'package:daystodieutils/pages/guide/zombie/list/zombie_list_binding.dart';
@@ -28,9 +28,9 @@ class RoutePages {
       binding: WhitelistBinding(),
     ),
     GetPage(
-      name: RouteNames.guildItem,
-      page: () => const GuideItemPage(),
-      binding: GuideItemBinding(),
+      name: RouteNames.guildItemList,
+      page: () => const ItemListPage(),
+      binding: ItemListBinding(),
     ),
     GetPage(
       name: RouteNames.guildZombie,
@@ -58,7 +58,7 @@ class RoutePages {
 class RouteNames {
   static String index = "/";
   static String whitelist = "/whitelist";
-  static String guildItem = "/guildItem";
+  static String guildItemList = "/guildItemList";
   static String guildZombie = "/guildZombie";
   static String guildZombieList = "/guildZombieList";
   static String mainMenu = "/mainMenu";

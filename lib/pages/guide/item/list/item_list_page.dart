@@ -1,31 +1,32 @@
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../module/entity/zombie_list_resp.dart';
-import 'zombie_list_controller.dart';
+import '../../../../module/entity/item_list_resp.dart';
+import 'item_list_controller.dart';
 
-class ZombieListPage extends GetView<ZombieListController> {
-  const ZombieListPage({Key? key}) : super(key: key);
+class ItemListPage extends GetView<ItemListController> {
+  const ItemListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ViewUtils.getAppBar(
-        "古神列表",
+        "道具列表",
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GetBuilder<ZombieListController>(builder: (_) {
+            child: GetBuilder<ItemListController>(builder: (_) {
               return const Text(
                 "搜索",
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 16,
                 ),
-              ).onClick(() => _.showSearchDialog(context));
+              ).onClick(() => {});
             }),
           ),
         ],
@@ -39,8 +40,8 @@ class ZombieListPage extends GetView<ZombieListController> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 30),
-                child: GetBuilder<ZombieListController>(
-                  id: ZombieListController.idListView,
+                child: GetBuilder<ItemListController>(
+                  id: ItemListController.idListView,
                   builder: (_) {
                     return SizedBox(
                       width: 1000,
@@ -49,14 +50,7 @@ class ZombieListPage extends GetView<ZombieListController> {
                         onRefresh: () => Future.sync(
                           () => _.pagingController.refresh(),
                         ),
-                        child: PagedListView<int, ZombieListResp>(
-                          pagingController: _.pagingController,
-                          builderDelegate:
-                              PagedChildBuilderDelegate<ZombieListResp>(
-                            itemBuilder: (context, item, index) =>
-                                _itemZombieListWidget(_, item),
-                          ),
-                        ),
+                        child: _gridViewWidget(_),
                       ),
                     );
                   },
@@ -70,7 +64,7 @@ class ZombieListPage extends GetView<ZombieListController> {
       floatingActionButton: SizedBox(
         width: 100,
         height: 100,
-        child: GetBuilder<ZombieListController>(
+        child: GetBuilder<ItemListController>(
           builder: (_) {
             return Container(
               decoration: BoxDecoration(
@@ -92,43 +86,51 @@ class ZombieListPage extends GetView<ZombieListController> {
     );
   }
 
-  _itemZombieListWidget(
-    ZombieListController controller,
-    ZombieListResp? item,
-  ) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Text(
-                  "名称: ${item?.zombieName}",
-                  style: const TextStyle(fontSize: 18, color: Colors.black87),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  "类型: ${item?.zombieType}",
-                  style: const TextStyle(fontSize: 18, color: Colors.black87),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  "血量: ${item?.zombieHp}",
-                  style: const TextStyle(fontSize: 18, color: Colors.black87),
-                ),
-              ),
-            ],
+  _gridViewWidget(ItemListController controller) {
+    return PagedGridView<int, ItemListResp>(
+      pagingController: controller.pagingController,
+      builderDelegate: PagedChildBuilderDelegate<ItemListResp>(
+        itemBuilder: (context, item, index) => _itemWidget(item),
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        crossAxisSpacing: 10, // 横轴方向子元素的间距。
+        mainAxisSpacing: 10, // 主轴方向的间距。
+      ),
+    );
+  }
+
+  _itemWidget(ItemListResp? item) {
+    double imageSize = 80;
+    return Card(
+      color: Colors.white,
+      elevation: 5,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "名称: ${item?.name ?? "--"}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+            ),
           ),
-        ),
-        const Divider(height: 1, color: Colors.black26),
-      ],
-    ).onClick(() => controller.toDetailPage("${item?.id}", false));
+          Container(
+            width: imageSize,
+            height: imageSize,
+            margin: const EdgeInsets.only(top: 20),
+            child: FastCachedImage(
+              url: item?.thumbnailUrl ?? "",
+              width: imageSize,
+              height: imageSize,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    ).onClick(() {});
   }
 }

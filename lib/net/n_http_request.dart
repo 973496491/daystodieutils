@@ -147,4 +147,9 @@ class NHttpRequest {
     });
     return Http.postFile(NHttpApi.uploadImage, reqMap);
   }
+
+  /// 查询道具列表
+  static getItemList() {
+    return Http.get(NHttpApi.getItemList);
+  }
 }

@@ -47,4 +47,7 @@ class NHttpApi {
 
   /// 上传图片
   static const String uploadImage = "/file/uploadImage";
+
+  /// 查询道具列表
+  static const String getItemList = "/info/getItemList";
 }
