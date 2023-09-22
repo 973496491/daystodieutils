@@ -1,3 +1,5 @@
+import 'package:daystodieutils/pages/guide/item/info/item_info_binding.dart';
+import 'package:daystodieutils/pages/guide/item/info/item_info_page.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_binding.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_page.dart';
 import 'package:daystodieutils/pages/guide/zombie/info/guide_zombie_binding.dart';
@@ -52,6 +54,11 @@ class RoutePages {
       page: () => const JoinServicePage(),
       binding: JoinServiceBinding(),
     ),
+    GetPage(
+      name: RouteNames.itemInfo,
+      page: () => const ItemInfoPage(),
+      binding: ItemInfoBinding(),
+    ),
   ];
 }
 
@@ -63,4 +70,5 @@ class RouteNames {
   static String guildZombieList = "/guildZombieList";
   static String mainMenu = "/mainMenu";
   static String joinServicePage = "/joinServicePage";
+  static String itemInfo = "/itemInfo";
 }

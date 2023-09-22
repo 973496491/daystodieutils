@@ -50,4 +50,16 @@ class NHttpApi {
 
   /// 查询道具列表
   static const String getItemList = "/info/getItemList";
+
+  /// 查询道具详情
+  static const String getItemInfo = "/info/getItemInfo";
+
+  /// 删除道具
+  static const String deleteItem = "/info/deleteItemInfo";
+
+  /// 更新道具
+  static const String updateItemInfo = "/info/updateItemInfo";
+
+  /// 插入道具
+  static const String insertItemInfo = "/info/insertItemInfo";
 }

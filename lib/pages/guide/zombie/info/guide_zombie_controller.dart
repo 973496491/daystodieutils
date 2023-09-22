@@ -10,7 +10,7 @@ import 'package:get/get.dart' hide MultipartFile;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 
-import '../../../../module/entity/uplpad_image_resp.dart';
+import '../../../../module/entity/upload_image_resp.dart';
 import '../../../../module/entity/zombie_detail_resp.dart';
 
 class GuideZombieController extends GetxController {
@@ -109,9 +109,7 @@ class GuideZombieController extends GetxController {
     raidersEditController.setText(raiders);
 
     iconUrl = data.imageUrl;
-    if (iconUrl == null) {
-
-    } else {
+    if (iconUrl != null) {
       update([idIcon]);
     }
   }

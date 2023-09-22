@@ -26,7 +26,7 @@ class ItemListPage extends GetView<ItemListController> {
                   color: Colors.black87,
                   fontSize: 16,
                 ),
-              ).onClick(() => {});
+              ).onClick(() => _.showSearchDialog());
             }),
           ),
         ],
@@ -131,6 +131,6 @@ class ItemListPage extends GetView<ItemListController> {
           ),
         ],
       ),
-    ).onClick(() {});
+    ).onClick(() => controller.toDetailPage("${item?.id}", false));
   }
 }

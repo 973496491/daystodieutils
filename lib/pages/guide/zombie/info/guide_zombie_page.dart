@@ -1,4 +1,3 @@
-import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';

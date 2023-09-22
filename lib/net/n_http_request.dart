@@ -1,10 +1,12 @@
 import 'package:daystodieutils/net/http.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:dio/dio.dart';
 
 import 'n_http_api.dart';
 
 class NHttpRequest {
+  /// 登录
   static login(
     String username,
     String password,
@@ -149,7 +151,81 @@ class NHttpRequest {
   }
 
   /// 查询道具列表
-  static getItemList() {
-    return Http.get(NHttpApi.getItemList);
+  static getItemList(
+    int pageIndex, {
+    String? name,
+  }) {
+    var reqMap = <String, String>{
+      "pageIndex": "$pageIndex",
+      "pageSize": "${NHttpConfig.defaultPageSize}"
+    };
+    if (name != null) {
+      reqMap["name"] = name;
+    }
+    return Http.get(
+      NHttpApi.getItemList,
+      params: reqMap,
+    );
+  }
+
+  /// 获取道具详情
+  static getItemInfo(String id) {
+    var reqMap = <String, String>{"id": "$id"};
+    return Http.post(
+      NHttpApi.getItemInfo,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 删除道具
+  static deleteItem(String id) {
+    var reqMap = <String, String>{"id": "$id"};
+    return Http.post(
+      NHttpApi.deleteItem,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 更新道具详情
+  static updateItemInfo(
+    int? id,
+    String? itemName,
+    String? getWay,
+    String? introduction,
+    String? iconUrl,
+    String? thumbnailUrl,
+  ) async {
+    var reqMap = <String, String>{};
+    if (null != id) {
+      reqMap["id"] = "$id";
+    }
+    if (true == itemName?.isNotEmpty) {
+      reqMap["name"] = "$itemName";
+    }
+    if (true == getWay?.isNotEmpty) {
+      reqMap["getWay"] = "$getWay";
+    }
+    if (true == introduction?.isNotEmpty) {
+      reqMap["introduction"] = "$introduction";
+    }
+    if (true == iconUrl?.isNotEmpty) {
+      reqMap["imageUrl"] = "$iconUrl";
+    }
+    if (true == thumbnailUrl?.isNotEmpty) {
+      reqMap["thumbnailUrl"] = "$thumbnailUrl";
+    }
+    String url;
+    if (id != null) {
+      url = NHttpApi.updateItemInfo;
+    } else {
+      url = NHttpApi.insertItemInfo;
+    }
+    return Http.post(
+      url,
+      data: reqMap,
+      contentType: NHttpContentType.applicationJson.type,
+    );
   }
 }
