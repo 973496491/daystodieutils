@@ -228,4 +228,18 @@ class NHttpRequest {
       contentType: NHttpContentType.applicationJson.type,
     );
   }
+
+  /// 查询道具列表
+  static getServiceList(
+    int pageIndex,
+  ) {
+    var reqMap = <String, String>{
+      "pageIndex": "$pageIndex",
+      "pageSize": "${NHttpConfig.defaultPageSize}"
+    };
+    return Http.get(
+      NHttpApi.serviceList,
+      params: reqMap,
+    );
+  }
 }

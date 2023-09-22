@@ -13,33 +13,27 @@ class JoinServicePage extends GetView<JoinServiceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ViewUtils.getAppBar("我要联机"),
+      appBar: ViewUtils.getAppBar("服务器列表"),
       backgroundColor: Colors.white30,
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 30),
                 child: GetBuilder<JoinServiceController>(
                   id: JoinServiceController.idListView,
                   builder: (_) {
-                    return RefreshIndicator(
-                      displacement: 5,
-                      onRefresh: () => Future.sync(
-                            () => _.pagingController.refresh(),
-                      ),
-                      child: PagedGridView<int, JoinServiceItemResp>(
-                        pagingController: _.pagingController,
-                        builderDelegate:
-                        PagedChildBuilderDelegate<JoinServiceItemResp>(
-                          itemBuilder: (context, item, index) =>
-                              _itemWhitelist(_, context, item),
+                    return SizedBox(
+                      width: 1000,
+                      child: RefreshIndicator(
+                        displacement: 5,
+                        onRefresh: () => Future.sync(
+                          () => _.pagingController.refresh(),
                         ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          // childAspectRatio: itemWidth / itemHeight,
-                          crossAxisCount: 2,
-                        ),
+                        child: _gridViewWidget(_),
                       ),
                     );
                   },
@@ -49,61 +43,58 @@ class JoinServicePage extends GetView<JoinServiceController> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: SizedBox(
-        width: 110,
-        height: 35,
-        child: GetBuilder<MainMenuController>(
-          builder: (_) {
-            return ElevatedButton(
-              child: const Text(
-                "添加",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () => _.showEditBtnInfoDialog(context, true),
-            );
-          },
-        ),
+    );
+  }
+
+  _gridViewWidget(JoinServiceController controller) {
+    return PagedGridView<int, JoinServiceItemResp>(
+      pagingController: controller.pagingController,
+      builderDelegate: PagedChildBuilderDelegate<JoinServiceItemResp>(
+        itemBuilder: (context, item, index) => _itemWidget(item),
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        crossAxisSpacing: 10, // 横轴方向子元素的间距。
+        mainAxisSpacing: 10, // 主轴方向的间距。
       ),
     );
   }
 
-  _itemWhitelist(
-      JoinServiceController controller,
-      BuildContext context,
-      JoinServiceItemResp? item,
-      ) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
-      color: Colors.transparent,
+  _itemWidget(JoinServiceItemResp? item) {
+    return Card(
+      color: Colors.white,
+      elevation: 5,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    "名称: ${item?.name}",
-                    style: const TextStyle(fontSize: 18, color: Colors.black87),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    "描述: ${item?.desc}",
-                    style: const TextStyle(fontSize: 18, color: Colors.black87),
-                  ),
-                ),
-              ],
+          Text(
+            "名称: ${item?.name ?? "--"}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
             ),
           ),
-          const Divider(height: 1, color: Colors.black26),
+          Text(
+            "QQ群: ${item?.qqRoom ?? "--"}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+            ),
+          ),
+          Text(
+            "描述: ${item?.desc ?? "--"}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+            ),
+          ),
         ],
       ),
     );

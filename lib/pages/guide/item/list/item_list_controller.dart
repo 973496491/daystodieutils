@@ -1,9 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../module/entity/item_list_resp.dart';
