@@ -7,6 +7,7 @@ import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:dio/dio.dart';
@@ -154,6 +155,10 @@ class ItemInfoController extends GetxController {
       if (OkCancelResult.ok == result) {
         _commit();
       }
+    } else if (false == hasItem) {
+      _commit();
+    } else {
+      Get.context?.showAskMessageDialog("未知异常.");
     }
   }
 
@@ -242,9 +247,8 @@ class ItemInfoController extends GetxController {
       return Future.value(true);
     } else {
       var code = NHttpConfig.code(respMap);
-      if (-3 != code) {
-        await Get.context
-            ?.showMessageDialog(NHttpConfig.message(respMap) ?? "");
+      "code: $code".logD();
+      if (-3 == code) {
         return Future.value(false);
       } else {
         return Future.value(null);

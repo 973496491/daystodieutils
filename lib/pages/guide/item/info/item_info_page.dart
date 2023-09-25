@@ -241,7 +241,7 @@ class ItemInfoPage extends GetView<ItemInfoController> {
         child: GetBuilder<ItemInfoController>(
           id: ItemInfoController.idEdit,
           builder: (context) {
-            return TextField(
+            return TextFormField(
               maxLines: null,
               keyboardType: TextInputType.multiline,
               focusNode: focusNode,
