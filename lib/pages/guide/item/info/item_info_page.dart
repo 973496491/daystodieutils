@@ -1,3 +1,4 @@
+import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/pages/guide/item/info/item_info_controller.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
@@ -99,10 +100,15 @@ class ItemInfoPage extends GetView<ItemInfoController> {
                           GetBuilder<ItemInfoController>(
                               id: ItemInfoController.idEdit,
                               builder: (_) {
-                                return _optionWidget(
-                                  _.editText,
-                                  () => _.changeCanEdit(),
-                                );
+                                if (_.status ==
+                                    "${Config.itemStatusReviewed}") {
+                                  return _optionWidget(
+                                    _.editText,
+                                    () => _.changeCanEdit(),
+                                  );
+                                } else {
+                                  return Container();
+                                }
                               }),
                           GetBuilder<ItemInfoController>(
                             id: ItemInfoController.idDelete,
@@ -126,6 +132,38 @@ class ItemInfoPage extends GetView<ItemInfoController> {
                                   child: _optionWidget(
                                     "提交",
                                     () => _.commit(),
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                          GetBuilder<ItemInfoController>(
+                            id: ItemInfoController.idPass,
+                            builder: (_) {
+                              if (_.canPass) {
+                                return Container(
+                                  margin: const EdgeInsets.only(left: 20),
+                                  child: _optionWidget(
+                                    "通过",
+                                    () => _.review(),
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                          GetBuilder<ItemInfoController>(
+                            id: ItemInfoController.idReject,
+                            builder: (_) {
+                              if (_.canReject) {
+                                return Container(
+                                  margin: const EdgeInsets.only(left: 20),
+                                  child: _optionWidget(
+                                    "拒绝",
+                                    () => _.delete(),
                                   ),
                                 );
                               } else {

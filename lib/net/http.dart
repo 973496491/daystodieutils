@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
-
-import '../config/pem.dart';
 
 class Http {
   static Future<Map<String, dynamic>> get(
@@ -59,7 +55,10 @@ class Http {
       _dio.options.headers["Access-Control-Allow-Headers"] = "*";
       _dio.options.headers["Access-Control-Allow-Methods"] = "*";
 
-      _dio.options.headers["token"] = UserManager.getToken();
+      var token = UserManager.getToken();
+      if (token != null) {
+        _dio.options.headers["token"] = token;
+      }
 
       if (true == contentType?.isNotEmpty) {
         "[Dio]\n 手动指定Content-Type: $contentType".logD();

@@ -62,4 +62,10 @@ class NHttpApi {
 
   /// 插入道具
   static const String insertItemInfo = "/info/insertItemInfo";
+
+  /// 审核道具
+  static const String reviewItemInfo = "/info/reviewItemInfo";
+
+  /// 查询道具是否存在
+  static const String getItemNameIsExist = "/info/getItemNameIsExist";
 }

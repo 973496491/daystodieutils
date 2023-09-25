@@ -152,11 +152,13 @@ class NHttpRequest {
 
   /// 查询道具列表
   static getItemList(
-    int pageIndex, {
+    int pageIndex,
+    String status, {
     String? name,
   }) {
     var reqMap = <String, String>{
       "pageIndex": "$pageIndex",
+      "status": status,
       "pageSize": "${NHttpConfig.defaultPageSize}"
     };
     if (name != null) {
@@ -240,6 +242,34 @@ class NHttpRequest {
     return Http.get(
       NHttpApi.serviceList,
       params: reqMap,
+    );
+  }
+
+  /// 通过道具审核
+  static passItemReview(
+    String id,
+  ) async {
+    var reqMap = <String, String>{
+      "id": id
+    };
+    return Http.post(
+      NHttpApi.reviewItemInfo,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 查询道具是否存在
+  static getItemNameIsExist(
+    String name,
+  ) async {
+    var reqMap = <String, String>{
+      "name": name
+    };
+    return Http.post(
+      NHttpApi.getItemNameIsExist,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
@@ -138,7 +139,7 @@ class GuideZombieController extends GetxController {
     var result =
     await Get.context?.showAskMessageDialog(
         "是否提交修改?\n此操作将返回上级页面.");
-    if (result != null) {
+    if (OkCancelResult.ok == result) {
       _commit();
     }
   }
@@ -174,7 +175,7 @@ class GuideZombieController extends GetxController {
     if (!canNext) return;
 
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
-    if (result != null) {
+    if (OkCancelResult.ok == result) {
       _delete();
     }
   }

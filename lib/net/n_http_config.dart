@@ -2,10 +2,10 @@ class NHttpConfig {
 
   static const int _success = 0;
 
-  static const String _testUrl = "https://127.0.0.1:7777/api";
+  static const String _testUrl = "http://127.0.0.1:8080/api";
   static const String _prodUrl = "https://www.lolko.xyz/api";
 
-  static const String baseUrl = _prodUrl;
+  static const String baseUrl = _testUrl;
 
   static bool isOk({Map<String, dynamic>? map, int? bizCode}) {
     if (null != bizCode) return bizCode == _success;
@@ -13,6 +13,11 @@ class NHttpConfig {
     var code = map["code"];
     if (code == null) return false;
     return code == _success;
+  }
+
+  static int? code(Map<String, dynamic>? map) {
+    if (map == null) return null;
+    return map["code"];
   }
 
   static String? message(Map<String, dynamic>? map) {

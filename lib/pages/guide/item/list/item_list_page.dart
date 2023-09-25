@@ -1,3 +1,4 @@
+import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -66,20 +67,24 @@ class ItemListPage extends GetView<ItemListController> {
         height: 100,
         child: GetBuilder<ItemListController>(
           builder: (_) {
-            return Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: 0.5,
-                  color: Colors.blueAccent,
+            if (_.status == "${Config.itemStatusUnreview}") {
+              return Container();
+            } else {
+              return Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: 0.5,
+                    color: Colors.blueAccent,
+                  ),
                 ),
-              ),
-              child: IconButton(
-                color: Colors.blue,
-                icon: const Icon(Icons.add),
-                onPressed: () => _.toDetailPage("-1", true),
-              ),
-            );
+                child: IconButton(
+                  color: Colors.blue,
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _.toDetailPage("-1", true),
+                ),
+              );
+            }
           },
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
 import 'package:daystodieutils/pages/index_controller.dart' as mic;
@@ -41,7 +42,7 @@ class IndexPage extends GetView<mic.IndexController> {
                       _optionWidget(
                         "物品图鉴   ",
                         Icons.backup_table,
-                        () => Get.toNamed(RouteNames.guildItemList),
+                        () => _.toItemPage(Config.itemStatusReviewed),
                         "古神图鉴   ",
                         Icons.join_inner_outlined,
                         () => Get.toNamed(RouteNames.guildZombieList),
@@ -90,10 +91,10 @@ class IndexPage extends GetView<mic.IndexController> {
                       _optionWidget(
                         "物品审核   ",
                         Icons.manage_accounts,
-                            () => Get.context?.showMessageDialog("敬请期待"),
+                        () => _.toItemPage(Config.itemStatusUnreview),
                         "图鉴审核   ",
                         Icons.question_answer_outlined,
-                            () => Get.context?.showMessageDialog("敬请期待"),
+                        () => Get.context?.showMessageDialog("敬请期待"),
                       ),
                       _optionWidget(
                         "主菜单按钮",

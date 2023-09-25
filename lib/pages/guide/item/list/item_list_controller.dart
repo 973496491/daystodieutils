@@ -1,6 +1,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
+import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -10,14 +12,20 @@ import '../../../../net/n_resp_factory.dart';
 
 class ItemListController extends GetxController {
   static const String idListView = "idListView";
+  static const String keyStatus = "keyStatus";
 
   final PagingController<int, ItemListResp> pagingController =
       PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
+  String status = "${Config.itemStatusReviewed}";
   String? filterName;
 
   @override
   void onInit() {
+    var mStatus = Get.parameters[keyStatus];
+    if (mStatus !=  null) {
+      status = mStatus;
+    }
     pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -41,30 +49,29 @@ class ItemListController extends GetxController {
   }
 
   Future<List<ItemListResp>> _getItemList(int pageKey) async {
-    var respMap = await NHttpRequest.getItemList(pageKey, name: filterName);
+    var respMap = await NHttpRequest.getItemList(pageKey, status, name: filterName);
     var resp = NRespFactory.parseArray<ItemListResp>(respMap, ItemListResp());
     var data = resp.data;
     return data ?? [];
   }
 
-  void toDetailPage(String? id, bool canEdit) {
+  void toDetailPage(String? id, bool canEdit) async {
     if (id == null) return;
     var parameters = {
       "id": id,
       "canEdit": "$canEdit",
+      keyStatus: status,
     };
-    Get.toNamed(
+    var result = await Get.toNamed(
       RouteNames.itemInfo,
       parameters: parameters,
-    )?.then((value) {
-      if (value != null) {
-        var result = value as Map<String, dynamic>;
-        var needReload = result["needReload"];
-        if (true == needReload) {
-          pagingController.refresh();
-        }
+    );
+    "$result".logD();
+    if (result != null) {
+      if (true == result) {
+        pagingController.refresh();
       }
-    });
+    }
   }
 
   void showSearchDialog() async {
