@@ -69,7 +69,7 @@ class Http {
               "url: ${NHttpConfig.baseUrl}$path\n"
               "headers: ${_dio.options.headers.toString()}\n"
               "params: ${params.toString()}\n"
-              "data:${data.toString()}]\n"
+              "data:${data.toString()}\n"
               "fromData: $formData"
           .logD();
 

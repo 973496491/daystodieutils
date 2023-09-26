@@ -162,7 +162,7 @@ class GuideZombieController extends GetxController {
         NHttpConfig.message(respMap) ?? "成功",
       );
       if (result != null) {
-        Get.back(result: {"needReload", true});
+        Get.back(result: true);
       }
     } else {
       Get.context?.showMessageDialog(
@@ -191,7 +191,7 @@ class GuideZombieController extends GetxController {
         NHttpConfig.message(respMap) ?? "删除成功",
       );
       if (result != null) {
-        Get.back(result: {"needReload", true});
+        Get.back(result: true);
       }
     } else {
       Get.context?.showMessageDialog(
@@ -219,7 +219,7 @@ class GuideZombieController extends GetxController {
     var fileName = "$zombieName$suffix";
 
     var file = MultipartFile.fromBytes(bytes.toList(), filename: fileName);
-    var respMap = await NHttpRequest.uploadImage(zombieName, file);
+    var respMap = await NHttpRequest.uploadImage(fileName, file);
     var resp = NRespFactory.parseObject(respMap, UploadImageResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var url = resp.data?.url;

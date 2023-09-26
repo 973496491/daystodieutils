@@ -52,7 +52,7 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                   height: 550,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(_.iconUrl ?? ""),
+                                      image: NetworkImage("${_.iconUrl}?${DateTime.now().millisecondsSinceEpoch.toString()}"),
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: const BorderRadius.all(

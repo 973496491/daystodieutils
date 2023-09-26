@@ -79,23 +79,18 @@ class ZombieListController extends GetxController {
     }
   }
 
-  void toDetailPage(String? id, bool canEdit) {
+  void toDetailPage(String? id, bool canEdit) async {
     if (id == null) return;
     var parameters = {
       "id": id,
       "canEdit": "$canEdit",
     };
-    Get.toNamed(
+    var result = await Get.toNamed(
       RouteNames.guildZombie,
       parameters: parameters,
-    )?.then((value) {
-      if (value != null) {
-        var result = value as Map<String, dynamic>;
-        var needReload = result["needReload"];
-        if (true == needReload) {
-          pagingController.refresh();
-        }
-      }
-    });
+    );
+    if (true == result) {
+      pagingController.refresh();
+    }
   }
 }
