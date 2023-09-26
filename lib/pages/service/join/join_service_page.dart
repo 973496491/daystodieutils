@@ -1,5 +1,6 @@
 import 'package:daystodieutils/pages/menu/main_menu_controller.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -53,7 +54,8 @@ class JoinServicePage extends GetView<JoinServiceController> {
         itemBuilder: (context, item, index) => _itemWidget(item),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 5,
+        crossAxisCount: 2,
+        childAspectRatio: 2.5,
         crossAxisSpacing: 10, // 横轴方向子元素的间距。
         mainAxisSpacing: 10, // 主轴方向的间距。
       ),
@@ -61,42 +63,90 @@ class JoinServicePage extends GetView<JoinServiceController> {
   }
 
   _itemWidget(JoinServiceItemResp? item) {
+
     return Card(
       color: Colors.white,
       elevation: 5,
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
-            "名称: ${item?.name ?? "--"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-          Text(
-            "QQ群: ${item?.qqRoom ?? "--"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-          Text(
-            "描述: ${item?.desc ?? "--"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
+          _iconWidget(item?.thumbnailUrl),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start, // 横轴
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 纵轴
+                children: [
+                  Text(
+                    "名称: ${item?.name ?? "--"}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Text(
+                    "QQ群: ${item?.qqRoom ?? "--"}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Text(
+                    "描述: ${item?.desc ?? "--"}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  _iconWidget(String? url) {
+    double imageSize = 130;
+    if (url == null) {
+      return Container(
+        width: imageSize,
+        height: imageSize,
+        margin: const EdgeInsets.only(left: 20),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/temp.jpg"),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        width: imageSize,
+        height: imageSize,
+        margin: const EdgeInsets.only(left: 20),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(url),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 }

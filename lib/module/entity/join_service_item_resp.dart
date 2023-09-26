@@ -9,6 +9,8 @@ class JoinServiceItemResp extends NRespCommon {
     this.desc,
     this.qqRoom,
     this.qqRoomUrl,
+    this.imageUrl,
+    this.thumbnailUrl,
   });
 
   int? id;
@@ -16,6 +18,8 @@ class JoinServiceItemResp extends NRespCommon {
   String? desc;
   String? qqRoom;
   String? qqRoomUrl;
+  String? imageUrl;
+  String? thumbnailUrl;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -40,6 +44,8 @@ class JoinServiceItemResp extends NRespCommon {
         desc: map["desc"].value,
         qqRoom: map["qqRoom"].value,
         qqRoomUrl: map["qqRoomUrl"].value,
+        imageUrl: map["imageUrl"].value,
+        thumbnailUrl: map["thumbnailUrl"].value,
       ) as T;
     } else {
       return null;
