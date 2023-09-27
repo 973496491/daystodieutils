@@ -1,6 +1,4 @@
-import 'package:daystodieutils/pages/menu/main_menu_controller.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

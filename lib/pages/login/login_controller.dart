@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import '../../module/entity/login_resp.dart';
 
 class LoginController extends GetxController {
-  void showLoginDialog(BuildContext context) async {
+  Future<bool> showLoginDialog(BuildContext context) async {
     final result = await showTextInputDialog(
       context: context,
       title: "管理员登录",
@@ -26,22 +26,25 @@ class LoginController extends GetxController {
         ),
       ],
     );
-    _login(result);
+    return _login(result);
   }
 
-  _login(List<String>? value) async {
+  Future<bool> _login(List<String>? value) async {
     if (value == null) {
-      return;
+      UserManager.setToken(null);
+      return Future.value(false);
     }
     if (value.length != 2) {
       Get.context?.showMessageDialog("请输入正确的账号密码.");
-      return;
+      UserManager.setToken(null);
+      return Future.value(false);
     }
     var username = value[0];
     var password = value[1];
     if (username.isEmpty || password.isEmpty) {
       Get.context?.showMessageDialog("请输入正确的账号密码.");
-      return;
+      UserManager.setToken(null);
+      return Future.value(false);
     }
     var respMap = await NHttpRequest.login(username, password);
     var resp = NRespFactory.parseObject<LoginResp>(respMap, LoginResp());
@@ -50,9 +53,15 @@ class LoginController extends GetxController {
       if (token != null) {
         UserManager.setToken(resp.data?.token);
         Get.context?.showMessageDialog("登录成功");
+        return Future.value(true);
+      } else {
+        UserManager.setToken(null);
+        return Future.value(true);
       }
     } else {
+      UserManager.setToken(null);
       Get.context?.showMessageDialog(resp.message ?? "登录失败");
+      return Future.value(false);
     }
   }
 }

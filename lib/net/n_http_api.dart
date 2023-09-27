@@ -68,4 +68,7 @@ class NHttpApi {
 
   /// 查询道具是否存在
   static const String getItemNameIsExist = "/info/getItemNameIsExist";
+
+  /// 提交意见反馈
+  static const String commitFeedback = "/users/addFeedback";
 }

@@ -115,25 +115,6 @@ class NHttpRequest {
     );
   }
 
-  // /// 获取古神列表
-  // static getZombieList() async {
-  //   var reqMap = <String, dynamic>{
-  //     "pageIndex": "$pageIndex",
-  //     "pageSize": 20,
-  //   };
-  //   if (zombieType != null) {
-  //     reqMap["zombieType"] = zombieType;
-  //   }
-  //   if (zombieName != null) {
-  //     reqMap["zombieName"] = zombieName;
-  //   }
-  //   return Http.post(
-  //     NHttpApi.serviceList,
-  //     data: reqMap,
-  //     contentType: NHttpContentType.formUrlencoded.type,
-  //   );
-  // }
-
   /// 获取cos临时密钥
   static getCosPrivateKey() {
     return Http.post(NHttpApi.getCosPrivateKey);
@@ -249,9 +230,7 @@ class NHttpRequest {
   static passItemReview(
     String id,
   ) async {
-    var reqMap = <String, String>{
-      "id": id
-    };
+    var reqMap = <String, String>{"id": id};
     return Http.post(
       NHttpApi.reviewItemInfo,
       data: reqMap,
@@ -263,13 +242,31 @@ class NHttpRequest {
   static getItemNameIsExist(
     String name,
   ) async {
-    var reqMap = <String, String>{
-      "name": name
-    };
+    var reqMap = <String, String>{"name": name};
     return Http.post(
       NHttpApi.getItemNameIsExist,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 提交意见反馈
+  static commitFeedback(
+    String name,
+    String message,
+    String? contactInfo,
+  ) async {
+    var reqMap = <String, String>{
+      "nickname": name,
+      "message": message,
+    };
+    if (true == contactInfo?.isNotEmpty) {
+      reqMap["contactInformation"] = contactInfo!;
+    }
+    return Http.post(
+      NHttpApi.commitFeedback,
+      data: reqMap,
+      contentType: NHttpContentType.applicationJson.type,
     );
   }
 }

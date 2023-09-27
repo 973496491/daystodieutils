@@ -10,6 +10,10 @@ import 'package:daystodieutils/pages/index_binding.dart';
 import 'package:daystodieutils/pages/index_page.dart';
 import 'package:daystodieutils/pages/menu/main_menu_binding.dart';
 import 'package:daystodieutils/pages/menu/main_menu_page.dart';
+import 'package:daystodieutils/pages/message/message_binding.dart';
+import 'package:daystodieutils/pages/message/message_page.dart';
+import 'package:daystodieutils/pages/service/join/detail/join_service_detail_binding.dart';
+import 'package:daystodieutils/pages/service/join/detail/join_service_detail_page.dart';
 import 'package:daystodieutils/pages/service/join/join_service_page.dart';
 import 'package:daystodieutils/pages/whitelist/whitelist_binding.dart';
 import 'package:daystodieutils/pages/whitelist/whitelist_page.dart';
@@ -55,9 +59,19 @@ class RoutePages {
       binding: JoinServiceBinding(),
     ),
     GetPage(
+      name: RouteNames.joinServiceDetailPage,
+      page: () => const JoinServiceDetailPage(),
+      binding: JoinServiceDetailBinding(),
+    ),
+    GetPage(
       name: RouteNames.itemInfo,
       page: () => const ItemInfoPage(),
       binding: ItemInfoBinding(),
+    ),
+    GetPage(
+      name: RouteNames.message,
+      page: () => const MessagePage(),
+      binding: MessageBinding(),
     ),
   ];
 }
@@ -70,5 +84,7 @@ class RouteNames {
   static String guildZombieList = "/guildZombieList";
   static String mainMenu = "/mainMenu";
   static String joinServicePage = "/joinServicePage";
+  static String joinServiceDetailPage = "/joinServiceDetailPage";
   static String itemInfo = "/itemInfo";
+  static String message = "/message";
 }
