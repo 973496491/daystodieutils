@@ -21,4 +21,26 @@ class UserManager {
     var info = getUserInfo();
     return info.token;
   }
+
+  static void setServiceToken(String? token) {
+    UserInfo info = getUserInfo();
+    info.serviceToken = token;
+    SpUtil.putObject(_key, info);
+  }
+
+  static String? getServiceToken() {
+    var info = getUserInfo();
+    return info.serviceToken;
+  }
+
+  static void setServiceKey(String? key) {
+    UserInfo info = getUserInfo();
+    info.serviceKey = key;
+    SpUtil.putObject(_key, info);
+  }
+
+  static String? getServiceKey() {
+    var info = getUserInfo();
+    return info.serviceKey;
+  }
 }

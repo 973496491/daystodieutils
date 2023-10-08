@@ -18,6 +18,9 @@ class IndexPage extends GetView<mic.IndexController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(
+                    height: 100,
+                  ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                     decoration: BoxDecoration(
@@ -82,6 +85,39 @@ class IndexPage extends GetView<mic.IndexController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
+                          "服务器专用",
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                          ),
+                        ),
+                        _optionWidget(
+                          "物品添加   ",
+                          Icons.account_tree_outlined,
+                          () => _.toServiceItemPage(),
+                          "物品查看   ",
+                          Icons.join_inner_outlined,
+                          () => _.showServiceItemPageDialog(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(4.0),
+                      ),
+                      border: Border.all(
+                        width: 0.5,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
                           "管理员功能",
                           style: TextStyle(
                             color: Colors.black87,
@@ -119,7 +155,10 @@ class IndexPage extends GetView<mic.IndexController> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
                 ],
               ),
             ),

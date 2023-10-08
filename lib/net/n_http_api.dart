@@ -3,6 +3,9 @@ class NHttpApi {
   /// 登录
   static const String login = "/users/login";
 
+  /// 服务器登录
+  static const String serviceLogin = "/service/login";
+
   /// 白名单列表
   static const String whitelist = "/config/whitelist";
 
@@ -48,6 +51,9 @@ class NHttpApi {
   /// 上传图片
   static const String uploadImage = "/file/uploadImage";
 
+  /// 上传图片
+  static const String uploadServiceImage = "/file/uploadServiceImage";
+
   /// 查询道具列表
   static const String getItemList = "/info/getItemList";
 
@@ -71,4 +77,19 @@ class NHttpApi {
 
   /// 提交意见反馈
   static const String commitFeedback = "/users/addFeedback";
+
+  /// 查询服务器道具列表
+  static const String getServiceItemList = "/service/getItemList";
+
+  /// 查询服务器道具详情
+  static const String getServiceItemInfo = "/service/getItemInfo";
+
+  /// 删除服务器道具
+  static const String deleteServiceItem = "/service/deleteItemInfo";
+
+  /// 更新道具
+  static const String updateServiceItemInfo = "/service/updateItemInfo";
+
+  /// 插入道具
+  static const String insertServiceItemInfo = "/service/insertItemInfo";
 }

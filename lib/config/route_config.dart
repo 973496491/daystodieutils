@@ -12,6 +12,10 @@ import 'package:daystodieutils/pages/menu/main_menu_binding.dart';
 import 'package:daystodieutils/pages/menu/main_menu_page.dart';
 import 'package:daystodieutils/pages/message/message_binding.dart';
 import 'package:daystodieutils/pages/message/message_page.dart';
+import 'package:daystodieutils/pages/service/item/info/service_item_info_binding.dart';
+import 'package:daystodieutils/pages/service/item/info/service_item_info_page.dart';
+import 'package:daystodieutils/pages/service/item/list/service_item_list_binding.dart';
+import 'package:daystodieutils/pages/service/item/list/service_item_list_page.dart';
 import 'package:daystodieutils/pages/service/join/detail/join_service_detail_binding.dart';
 import 'package:daystodieutils/pages/service/join/detail/join_service_detail_page.dart';
 import 'package:daystodieutils/pages/service/join/join_service_page.dart';
@@ -45,7 +49,7 @@ class RoutePages {
     ),
     GetPage(
       name: RouteNames.guildZombieList,
-      page: () => ZombieListPage(),
+      page: () => const ZombieListPage(),
       binding: ZombieListBinding(),
     ),
     GetPage(
@@ -73,6 +77,16 @@ class RoutePages {
       page: () => const MessagePage(),
       binding: MessageBinding(),
     ),
+    GetPage(
+      name: RouteNames.serviceItemList,
+      page: () => const ServiceItemListPage(),
+      binding: ServiceItemListBinding(),
+    ),
+    GetPage(
+      name: RouteNames.serviceItemInfo,
+      page: () => const ServiceItemInfoPage(),
+      binding: ServiceItemInfoBinding(),
+    ),
   ];
 }
 
@@ -80,11 +94,13 @@ class RouteNames {
   static String index = "/";
   static String whitelist = "/whitelist";
   static String guildItemList = "/guildItemList";
+  static String serviceItemList = "/serviceItemList";
   static String guildZombie = "/guildZombie";
   static String guildZombieList = "/guildZombieList";
   static String mainMenu = "/mainMenu";
   static String joinServicePage = "/joinServicePage";
   static String joinServiceDetailPage = "/joinServiceDetailPage";
   static String itemInfo = "/itemInfo";
+  static String serviceItemInfo = "/serviceItemInfo";
   static String message = "/message";
 }
