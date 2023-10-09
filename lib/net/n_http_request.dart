@@ -1,3 +1,4 @@
+import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
@@ -14,6 +15,21 @@ class NHttpRequest {
     return Http.post(
       NHttpApi.login,
       data: {"username": username, "password": password},
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 服务器登录
+  static serviceLogin(
+    String username,
+    String password,
+  ) {
+    return Http.post(
+      NHttpApi.serviceLogin,
+      data: {
+        "username": username,
+        "password": password,
+      },
       contentType: NHttpContentType.formUrlencoded.type,
     );
   }
@@ -129,6 +145,19 @@ class NHttpRequest {
       "file": imageFile,
     });
     return Http.postFile(NHttpApi.uploadImage, reqMap);
+  }
+
+  static uploadServiceImage(
+    String fileName,
+    String serviceToken,
+    MultipartFile imageFile,
+  ) {
+    var reqMap = FormData.fromMap({
+      "fileName": fileName,
+      "serviceToken": serviceToken,
+      "file": imageFile,
+    });
+    return Http.postFile(NHttpApi.uploadServiceImage, reqMap);
   }
 
   /// 查询道具列表
@@ -267,6 +296,104 @@ class NHttpRequest {
       NHttpApi.commitFeedback,
       data: reqMap,
       contentType: NHttpContentType.applicationJson.type,
+    );
+  }
+
+  /// 查询服务器道具列表
+  static getServiceItemList(
+    int pageIndex,
+    String serviceKey, {
+    String? name,
+  }) {
+    var reqMap = <String, String>{
+      "pageIndex": "$pageIndex",
+      "key": serviceKey,
+      "pageSize": "${NHttpConfig.defaultPageSize}"
+    };
+    if (name != null) {
+      reqMap["name"] = name;
+    }
+    return Http.post(
+      NHttpApi.getServiceItemList,
+      params: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 获取服务器道具详情
+  static getServiceItemInfo(String id) {
+    var reqMap = <String, String>{"id": id};
+    return Http.post(
+      NHttpApi.getServiceItemInfo,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 删除服务器道具
+  static deleteServiceItem(
+    String id,
+    String? serviceToken,
+  ) {
+    var reqMap = <String, String>{
+      "id": id,
+    };
+    if (null != serviceToken) {
+      reqMap["serviceToken"] = serviceToken;
+    }
+    return Http.post(
+      NHttpApi.deleteServiceItem,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 更新服务器道具详情
+  static updateServiceItemInfo(
+    int? id,
+    String? serviceToken,
+    String? itemName,
+    String? getWay,
+    String? introduction,
+    String? iconUrl,
+    String? thumbnailUrl,
+    String? key,
+  ) async {
+    var reqMap = <String, String>{};
+    if (null != serviceToken) {
+      reqMap["serviceToken"] = serviceToken;
+    }
+    if (null != id) {
+      reqMap["id"] = "$id";
+    }
+    if (true == itemName?.isNotEmpty) {
+      reqMap["name"] = "$itemName";
+    }
+    if (true == getWay?.isNotEmpty) {
+      reqMap["getWay"] = "$getWay";
+    }
+    if (true == introduction?.isNotEmpty) {
+      reqMap["introduction"] = "$introduction";
+    }
+    if (true == iconUrl?.isNotEmpty) {
+      reqMap["imageUrl"] = "$iconUrl";
+    }
+    if (true == thumbnailUrl?.isNotEmpty) {
+      reqMap["thumbnailUrl"] = "$thumbnailUrl";
+    }
+    if (true == key?.isNotEmpty) {
+      reqMap["key"] = "$key";
+    }
+    String url;
+    if (id != null) {
+      url = NHttpApi.updateServiceItemInfo;
+    } else {
+      url = NHttpApi.insertServiceItemInfo;
+    }
+    return Http.post(
+      url,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
     );
   }
 

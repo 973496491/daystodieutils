@@ -1,13 +1,11 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/config/config.dart';
-import 'package:daystodieutils/module/entity/item_info_resp.dart';
+import 'package:daystodieutils/module/entity/service_item_info_resp.dart';
 import 'package:daystodieutils/module/entity/upload_image_resp.dart';
+import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
-import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
-import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:dio/dio.dart';
@@ -16,25 +14,22 @@ import 'package:get/get.dart' hide MultipartFile;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 
-class ItemInfoController extends GetxController {
+class ServiceItemInfoController extends GetxController {
   static const String idContent = "idContent";
   static const String idIcon = "idIcon";
   static const String idEdit = "idEdit";
   static const String idCommit = "idCommit";
   static const String idDelete = "idDelete";
-  static const String idReject = "idReject";
-  static const String idPass = "idPass";
 
   final _picker = ImagePickerPlugin();
 
   bool isNewItem = false;
-  String status = "${Config.itemStatusReviewed}";
   bool canEdit = false;
   bool canCommit = false;
-  bool canPass = false;
-  bool canReject = false;
   bool canDelete = true;
   String editText = "编辑";
+
+  String? serviceKey;
 
   int? _id;
   String? itemName;
@@ -50,23 +45,8 @@ class ItemInfoController extends GetxController {
 
   @override
   void onInit() {
-    var mStatus = Get.parameters[ItemListController.keyStatus];
-    if (mStatus != null) {
-      status = mStatus;
-      if ("${Config.itemStatusUnreview}" == mStatus) {
-        canReject = true;
-        canPass = true;
-        canDelete = false;
-        update([idReject, idPass, idDelete]);
-      }
-    }
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
     _initInfo();
+    super.onInit();
   }
 
   @override
@@ -79,6 +59,7 @@ class ItemInfoController extends GetxController {
   }
 
   void _initInfo() {
+    serviceKey = UserManager.getServiceKey();
     var id = Get.parameters["id"];
     if (id == null || id == "-1") {
       isNewItem = true;
@@ -89,8 +70,8 @@ class ItemInfoController extends GetxController {
   }
 
   void _initItemInfoData(String id) async {
-    var respMap = await NHttpRequest.getItemInfo(id);
-    var resp = NRespFactory.parseObject(respMap, ItemInfoResp());
+    var respMap = await NHttpRequest.getServiceItemInfo(id);
+    var resp = NRespFactory.parseObject(respMap, ServiceItemInfoResp());
     var data = resp.data;
     if (data == null) {
       Get.context?.showMessageDialog(resp.message ?? "获取详情失败.");
@@ -116,7 +97,7 @@ class ItemInfoController extends GetxController {
   }
 
   delete() async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = true == UserManager.getServiceToken()?.isNotEmpty;
     if (!canNext) return;
 
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
@@ -130,7 +111,10 @@ class ItemInfoController extends GetxController {
       Get.context?.showMessageDialog("条目不存在");
       return;
     }
-    var respMap = await NHttpRequest.deleteItem("$_id");
+    var respMap = await NHttpRequest.deleteServiceItem(
+      "$_id",
+      UserManager.getServiceToken(),
+    );
     if (NHttpConfig.isOk(map: respMap)) {
       var result = await Get.context?.showMessageDialog(
         NHttpConfig.message(respMap) ?? "删除成功",
@@ -149,36 +133,23 @@ class ItemInfoController extends GetxController {
     if (OkCancelResult.ok != result) {
       return;
     }
-    var hasItem = await getItemNameIsExist();
-    if (true == hasItem) {
-      var result = await Get.context?.showAskMessageDialog("道具已存在, 是否继续提交?");
-      if (OkCancelResult.ok == result) {
-        _commit();
-      }
-    } else if (false == hasItem) {
-      _commit();
-    } else {
-      Get.context?.showAskMessageDialog("未知异常.");
-    }
+    _commit();
   }
 
   void _commit() async {
     changeCanEdit();
-    var respMap = await NHttpRequest.updateItemInfo(
+    var respMap = await NHttpRequest.updateServiceItemInfo(
       _id,
+      UserManager.getServiceToken(),
       nameEditController.text,
       getWayEditController.text,
       introductionEditController.text,
       iconUrl,
       thumbnailUrl,
+      serviceKey,
     );
     if (NHttpConfig.isOk(map: respMap)) {
-      String message;
-      if (status == "${Config.itemStatusReviewed}") {
-        message = NHttpConfig.message(respMap) ?? "成功";
-      } else {
-        message = "已提交, 请耐心等待管理员审核 .";
-      }
+      String message = NHttpConfig.message(respMap) ?? "成功";
       var result = await Get.context?.showMessageDialog(message);
       if (result != null) {
         Get.back(result: true);
@@ -205,61 +176,17 @@ class ItemInfoController extends GetxController {
     }
   }
 
-  void review() async {
-    if (!ViewUtils.checkOptionPermissions(Get.context)) {
-      return;
-    }
-
-    var result = await Get.context?.showAskMessageDialog("是否通过此提交?");
-    if (OkCancelResult.ok == result) {
-      _review();
-    }
-  }
-
-  void _review() async {
-    var hasItem = await getItemNameIsExist();
-    if (true == hasItem) {
-      var result = await Get.context?.showAskMessageDialog("道具已存在, 是否继续通过?");
-      if (OkCancelResult.ok != result) {
-        return;
-      }
-    } else {
-      return;
-    }
-
-    var respMap = await NHttpRequest.passItemReview("$_id");
-    if (NHttpConfig.isOk(map: respMap)) {
-      var result = await Get.context?.showMessageDialog(
-        NHttpConfig.message(respMap) ?? "成功",
-      );
-      if (result != null) {
-        Get.back(result: true);
-      }
-    } else {
-      Get.context?.showMessageDialog(NHttpConfig.message(respMap) ?? "审核失败.");
-    }
-  }
-
-  Future<bool?> getItemNameIsExist() async {
-    var name = nameEditController.text;
-    var respMap = await NHttpRequest.getItemNameIsExist(name);
-    if (NHttpConfig.isOk(map: respMap)) {
-      return Future.value(true);
-    } else {
-      var code = NHttpConfig.code(respMap);
-      "code: $code".logD();
-      if (-3 == code) {
-        return Future.value(false);
-      } else {
-        return Future.value(null);
-      }
-    }
-  }
-
   void selectImage() async {
+    if (!canEdit) return;
+
+    var serviceToken = UserManager.getServiceToken();
+    if (serviceToken == null) {
+      return;
+    }
+
     itemName = nameEditController.text;
     if (itemName!.isEmpty) {
-      Get.context?.showMessageDialog("请输入古神名称再进行后续操作.");
+      Get.context?.showMessageDialog("请输入道具名称再进行后续操作.");
       return;
     }
 
@@ -270,10 +197,11 @@ class ItemInfoController extends GetxController {
     var name = xFile.name;
     var suffix = name.substring(name.lastIndexOf("."));
     var bytes = await xFile.readAsBytes();
-    var fileName = "$itemName$suffix";
+    var fileName = "$itemName$serviceKey$suffix";
 
     var file = MultipartFile.fromBytes(bytes.toList(), filename: fileName);
-    var respMap = await NHttpRequest.uploadImage(fileName, file);
+    var respMap =
+        await NHttpRequest.uploadServiceImage(fileName, serviceToken, file);
     var resp = NRespFactory.parseObject(respMap, UploadImageResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var url = resp.data?.url;
