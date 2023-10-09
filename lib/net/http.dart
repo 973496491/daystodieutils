@@ -73,15 +73,15 @@ class Http {
       logStr += "\ndata:${data.toString()}";
       logStr += "\nfromData: $formData";;
 
-      logStr.logD();
-
       Object? body;
       if (formData != null) {
         body = formData;
-        "[Dio]\n 当前Body为图片参数".logD();
+        logStr += "\n当前Body为图片参数";
       } else {
         body = data;
       }
+
+      logStr.logD();
 
       Response response = await _dio.request(
         path,
