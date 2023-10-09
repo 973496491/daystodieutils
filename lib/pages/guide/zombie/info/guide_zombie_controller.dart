@@ -261,10 +261,10 @@ class GuideZombieController extends GetxController {
   }
 
   void showItemDetailPageDialog(List<String> array) async {
-    "array: $array | ${array.length}".logD();
     if (array.isEmpty) return;
     var actions = array.map((e) => ListDialogEntity(e, e)).toList();
     var result = await Get.context?.showListDialog(actions);
+    if (result == null) return;
     var respMap = await NHttpRequest.getItemIds(result);
     if (NHttpConfig.isOk(map: respMap)) {
       try {
