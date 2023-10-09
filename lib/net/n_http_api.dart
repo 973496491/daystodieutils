@@ -71,4 +71,7 @@ class NHttpApi {
 
   /// 提交意见反馈
   static const String commitFeedback = "/users/addFeedback";
+
+  /// 获取道具Id列表
+  static const String getItemIds = "/info/getItemIds";
 }

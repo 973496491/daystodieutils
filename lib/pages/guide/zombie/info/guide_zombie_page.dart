@@ -52,7 +52,8 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                   height: 550,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage("${_.iconUrl}?${DateTime.now().millisecondsSinceEpoch.toString()}"),
+                                      image: NetworkImage(
+                                          "${_.iconUrl}?${DateTime.now().millisecondsSinceEpoch.toString()}"),
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: const BorderRadius.all(
@@ -78,11 +79,15 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                 const Divider(color: Colors.black12),
                                 _itemWidget("初始血量: ", _.hpEditController),
                                 const Divider(color: Colors.black12),
-                                _itemWidget(
-                                    "掉  落  物: ", _.bootyListEditController),
+                                _itemWidget("掉  落  物: ", _.bootyListEditController)
+                                    .onClick(
+                                      () => _.showItemDetailPageDialog(_.bootyListArray),
+                                ),
                                 const Divider(color: Colors.black12),
-                                _itemWidget(
-                                    "尸体材料: ", _.corpseDropEditController),
+                                _itemWidget("尸体材料: ", _.corpseDropEditController)
+                                    .onClick(
+                                      () => _.showItemDetailPageDialog(_.corpseDropArray),
+                                ),
                                 const Divider(color: Colors.black12),
                                 _itemWidget(
                                     "注意事项: ", _.precautionsEditController),
@@ -258,9 +263,9 @@ class GuideZombiePage extends GetView<GuideZombieController> {
         child: GetBuilder<GuideZombieController>(
           id: GuideZombieController.idEdit,
           builder: (context) {
-            return TextField(
-            maxLines: null,
-            keyboardType: TextInputType.multiline,
+            return TextFormField(
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
               focusNode: focusNode,
               enabled: controller.canEdit,
               controller: textController,

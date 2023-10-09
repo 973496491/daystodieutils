@@ -1,8 +1,10 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:dio/dio.dart';
@@ -34,8 +36,8 @@ class GuideZombieController extends GetxController {
   String zombieName = "--";
   String zombieType = "--";
   String zombieHp = "0";
-  String bootyList = "无"; // 掉落物
-  String corpseDrop = "无"; // 尸体材料
+  List<String> bootyListArray = []; // 掉落物
+  List<String> corpseDropArray = []; // 尸体材料
   String precautions = "无"; // 注意事项
   String raiders = "无";
   String? iconUrl;
@@ -97,11 +99,21 @@ class GuideZombieController extends GetxController {
     zombieHp = data.zombieHp ?? "--";
     hpEditController.setText(zombieHp);
 
-    bootyList = data.bootyList ?? "--";
-    bootyListEditController.setText(bootyList);
+    // 掉落物
+    var bl = data.bootyList;
+    if (bl != null) {
+      bootyListArray = bl.split(",");
+      var bootyList = _parseTextToShow(bootyListArray);
+      bootyListEditController.setText(bootyList);
+    }
 
-    corpseDrop = data.corpseDrop ?? "--";
-    corpseDropEditController.setText(corpseDrop);
+    // 尸体材料
+    var cd = data.corpseDrop;
+    if (cd != null) {
+      corpseDropArray = cd.split(",");
+      var corpseDrop = _parseTextToShow(corpseDropArray);
+      corpseDropEditController.setText(corpseDrop);
+    }
 
     precautions = data.precautions ?? "--";
     precautionsEditController.setText(precautions);
@@ -146,12 +158,13 @@ class GuideZombieController extends GetxController {
 
   void _commit() async {
     changeCanEdit();
+    var bootList = bootyListEditController.text.replaceAll("\n", ",");
     var respMap = await NHttpRequest.updateZombieDetail(
       _id,
       nameEditController.text,
       typeEditController.text,
       hpEditController.text,
-      bootyListEditController.text,
+      bootList,
       corpseDropEditController.text,
       precautionsEditController.text,
       raidersEditController.text,
@@ -168,6 +181,19 @@ class GuideZombieController extends GetxController {
       Get.context?.showMessageDialog(
           NHttpConfig.message(respMap) ?? "提交失败.");
     }
+  }
+
+  String _parseTextToShow(List<String> array) {
+    var str = "";
+    var i = 0;
+    for (var element in array) {
+      if (i > 0) {
+        str += "\n";
+      }
+      str += element;
+      i++;
+    }
+    return str;
   }
 
   void delete() async {
@@ -231,6 +257,31 @@ class GuideZombieController extends GetxController {
       }
     } else {
       Get.context?.showMessageDialog(resp.message!);
+    }
+  }
+
+  void showItemDetailPageDialog(List<String> array) async {
+    "array: $array | ${array.length}".logD();
+    if (array.isEmpty) return;
+    var actions = array.map((e) => ListDialogEntity(e, e)).toList();
+    var result = await Get.context?.showListDialog(actions);
+    var respMap = await NHttpRequest.getItemIds(result);
+    if (NHttpConfig.isOk(map: respMap)) {
+      try {
+        var data = NHttpConfig.data(respMap);
+        var id = (data as List)[0];
+        if (id == null) return;
+        var parameters = {
+          "id": "$id",
+          "canEdit": "${false}",
+        };
+        Get.toNamed(RouteNames.itemInfo, parameters: parameters);
+      } catch (ex) {
+        ex.printError();
+      }
+    } else {
+      var msg = NHttpConfig.message(respMap);
+      Get.context?.showMessageDialog(msg);
     }
   }
 }

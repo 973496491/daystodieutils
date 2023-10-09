@@ -13,114 +13,117 @@ class IndexPage extends GetView<mic.IndexController> {
     return Scaffold(
       body: SafeArea(
         child: GetBuilder<mic.IndexController>(builder: (_) {
-          return Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                        border: Border.all(
+                          width: 0.5,
+                          color: Colors.deepPurpleAccent,
+                        ),
                       ),
-                      border: Border.all(
-                        width: 0.5,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "常用",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 16,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "常用",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        _optionWidget(
-                          "物品图鉴   ",
-                          Icons.backup_table,
-                          () => _.toItemPage(Config.itemStatusReviewed),
-                          "古神图鉴   ",
-                          Icons.join_inner_outlined,
-                          () => Get.toNamed(RouteNames.guildZombieList),
-                        ),
-                        _optionWidget(
-                          "任务攻略   ",
-                          Icons.question_answer_outlined,
-                          () => Get.context?.showMessageDialog("敬请期待"),
-                          "我要联机   ",
-                          Icons.add_home_outlined,
-                          () => Get.toNamed(RouteNames.joinServicePage),
-                        ),
-                        _optionWidget(
-                          "意见反馈   ",
-                          Icons.account_balance_wallet_outlined,
-                          () => Get.toNamed(RouteNames.message),
-                          "更多功能   ",
-                          Icons.question_answer_outlined,
-                          () => Get.context?.showMessageDialog("敬请期待"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
-                      ),
-                      border: Border.all(
-                        width: 0.5,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "管理员功能",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 16,
+                          _optionWidget(
+                            "物品图鉴   ",
+                            Icons.backup_table,
+                            () => _.toItemPage(Config.itemStatusReviewed),
+                            "古神图鉴   ",
+                            Icons.join_inner_outlined,
+                            () => Get.toNamed(RouteNames.guildZombieList),
                           ),
-                        ),
-                        GetBuilder<mic.IndexController>(
-                          id: mic.IndexController.idLogin,
-                          builder: (_) {
-                            return _optionWidget(
-                              _.loginText,
-                              Icons.manage_accounts,
-                              () => _.login(),
-                              "更多功能   ",
-                              Icons.question_answer_outlined,
-                              () => Get.context?.showMessageDialog("敬请期待"),
-                            );
-                          },
-                        ),
-                        _optionWidget(
-                          "物品审核   ",
-                          Icons.add_chart,
-                          () => _.toItemPage(Config.itemStatusUnreview),
-                          "图鉴审核   ",
-                          Icons.add_chart,
-                          () => Get.context?.showMessageDialog("敬请期待"),
-                        ),
-                        _optionWidget(
-                          "主菜单按钮",
-                          Icons.menu,
-                          () => _.toMainMenuPage(),
-                          "白名单列表",
-                          Icons.playlist_add_check_outlined,
-                          () => _.toWhitelistPage(),
-                        ),
-                      ],
+                          _optionWidget(
+                            "任务攻略   ",
+                            Icons.question_answer_outlined,
+                            () => Get.context?.showMessageDialog("敬请期待"),
+                            "我要联机   ",
+                            Icons.add_home_outlined,
+                            () => Get.toNamed(RouteNames.joinServicePage),
+                          ),
+                          _optionWidget(
+                            "意见反馈   ",
+                            Icons.account_balance_wallet_outlined,
+                            () => Get.toNamed(RouteNames.message),
+                            "更多功能   ",
+                            Icons.question_answer_outlined,
+                            () => Get.context?.showMessageDialog("敬请期待"),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                        border: Border.all(
+                          width: 0.5,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "管理员功能",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                            ),
+                          ),
+                          GetBuilder<mic.IndexController>(
+                            id: mic.IndexController.idLogin,
+                            builder: (_) {
+                              return _optionWidget(
+                                _.loginText,
+                                Icons.manage_accounts,
+                                () => _.login(),
+                                "更多功能   ",
+                                Icons.question_answer_outlined,
+                                () => Get.context?.showMessageDialog("敬请期待"),
+                              );
+                            },
+                          ),
+                          _optionWidget(
+                            "物品审核   ",
+                            Icons.add_chart,
+                            () => _.toItemPage(Config.itemStatusUnreview),
+                            "图鉴审核   ",
+                            Icons.add_chart,
+                            () => Get.context?.showMessageDialog("敬请期待"),
+                          ),
+                          _optionWidget(
+                            "主菜单按钮",
+                            Icons.menu,
+                            () => _.toMainMenuPage(),
+                            "白名单列表",
+                            Icons.playlist_add_check_outlined,
+                            () => _.toWhitelistPage(),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           );

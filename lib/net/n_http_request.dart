@@ -269,4 +269,17 @@ class NHttpRequest {
       contentType: NHttpContentType.applicationJson.type,
     );
   }
+
+  /// 查询道具id
+  static getItemIds(
+    String name,
+  ) {
+    var reqMap = <String, String>{
+      "name": name,
+    };
+    return Http.get(
+      NHttpApi.getItemIds,
+      params: reqMap,
+    );
+  }
 }

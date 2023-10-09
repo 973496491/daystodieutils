@@ -25,6 +25,11 @@ class NHttpConfig {
     return map["message"];
   }
 
+  static dynamic data(Map<String, dynamic>? map) {
+    if (map == null) return null;
+    return map["data"];
+  }
+
   static const Duration connectTimeout = Duration(seconds: 1000 * 10);
   static const Duration receiveTimeout = Duration(seconds: 1000 * 10);
 
