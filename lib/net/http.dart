@@ -60,18 +60,20 @@ class Http {
         _dio.options.headers["token"] = token;
       }
 
+      String logStr = "[Dio: $method]";
+      logStr+= "\nurl: ${NHttpConfig.baseUrl}$path";
+
       if (true == contentType?.isNotEmpty) {
-        "[Dio]\n 手动指定Content-Type: $contentType".logD();
         _dio.options.contentType = contentType;
       }
 
-      "[Dio]\n"
-              "url: ${NHttpConfig.baseUrl}$path\n"
-              "headers: ${_dio.options.headers.toString()}\n"
-              "params: ${params.toString()}\n"
-              "data:${data.toString()}\n"
-              "fromData: $formData"
-          .logD();
+      logStr += "\nContent-Type: ${_dio.options.contentType}";
+      logStr += "\ntoken: $token";
+      logStr += "\nparams: ${params.toString()}";
+      logStr += "\ndata:${data.toString()}";
+      logStr += "\nfromData: $formData";;
+
+      logStr.logD();
 
       Object? body;
       if (formData != null) {
