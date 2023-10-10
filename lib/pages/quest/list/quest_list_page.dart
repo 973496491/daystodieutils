@@ -106,7 +106,6 @@ class QuestListPage extends GetView<QuestListController> {
   }
 
   _itemWidget(QuestListResp? item) {
-    double imageSize = 80;
     return Card(
       color: Colors.white,
       elevation: 5,
@@ -114,16 +113,7 @@ class QuestListPage extends GetView<QuestListController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: imageSize,
-            height: imageSize,
-            child: FastCachedImage(
-              url: item?.imageUrl?.thumbnailUrl() ?? "",
-              width: imageSize,
-              height: imageSize,
-              fit: BoxFit.cover,
-            ),
-          ),
+          _iconWidget(item?.imageUrl),
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Text(
@@ -139,5 +129,35 @@ class QuestListPage extends GetView<QuestListController> {
         ],
       ),
     ).onClick(() => controller.toDetailPage(item?.id));
+  }
+
+  _iconWidget(String? url) {
+    double imageSize = 80;
+    if (url != null) {
+      return SizedBox(
+        width: imageSize,
+        height: imageSize,
+        child: FastCachedImage(
+          url: url.thumbnailUrl(),
+          width: imageSize,
+          height: imageSize,
+          fit: BoxFit.cover,
+        ),
+      );
+    } else {
+      return Container(
+        width: imageSize,
+        height: imageSize,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/temp.jpg"),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 }

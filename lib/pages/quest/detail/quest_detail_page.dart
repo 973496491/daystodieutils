@@ -104,6 +104,58 @@ class QuestDetailPage extends GetView<QuestDetailController> {
                       ],
                     ),
                   ),
+                  Container(
+                    width: 700,
+                    margin: const EdgeInsets.only(top: 30),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(4.0),
+                      ),
+                      border: Border.all(
+                        width: 0.5,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: const Text(
+                            "攻略",
+                            style: TextStyle(
+                              color: Colors.deepPurpleAccent,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: GetBuilder<QuestDetailController>(
+                            id: QuestDetailController.idEdit,
+                            builder: (context) {
+                              return TextField(
+                                maxLines: null,
+                                keyboardType: TextInputType.multiline,
+                                enabled: controller.canEdit,
+                                controller: _.raidersEditController,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                ),
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Center(
                     child: Container(
                       margin: const EdgeInsets.only(top: 50),

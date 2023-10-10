@@ -11,6 +11,7 @@ class QuestDetailResp extends NRespCommon {
     this.workstation,
     this.recipes,
     this.introduction,
+    this.raiders,
   });
 
   int? id;
@@ -20,6 +21,7 @@ class QuestDetailResp extends NRespCommon {
   String? workstation;
   String? recipes;
   String? introduction;
+  String? raiders;
 
   @override
   T? parseObject<T>(data) {
@@ -33,6 +35,7 @@ class QuestDetailResp extends NRespCommon {
         workstation: map["workstation"].value,
         recipes: map["recipes"].value,
         introduction: map["introduction"].value,
+        raiders: map["raiders"].value,
       ) as T;
     } else {
       return null;

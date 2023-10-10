@@ -289,6 +289,7 @@ class NHttpRequest {
     String? workstation,
     String? recipes,
     String? introduction,
+    String? raiders,
     String? imageUrl,
   ) async {
     var reqMap = <String, String>{
@@ -311,6 +312,9 @@ class NHttpRequest {
     }
     if (true == introduction?.isNotEmpty) {
       reqMap["introduction"] = introduction!;
+    }
+    if (true == raiders?.isNotEmpty) {
+      reqMap["raiders"] = raiders!;
     }
     String url;
     if (id != null) {

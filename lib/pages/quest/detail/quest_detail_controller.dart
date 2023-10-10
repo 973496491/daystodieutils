@@ -27,6 +27,7 @@ class QuestDetailController extends GetxController {
   TextEditingController workstationEditController = TextEditingController();
   TextEditingController recipesEditController = TextEditingController();
   TextEditingController introductionEditController = TextEditingController();
+  TextEditingController raidersEditController = TextEditingController();
 
   String? _id;
   String? itemName;
@@ -48,6 +49,7 @@ class QuestDetailController extends GetxController {
     workstationEditController.dispose();
     recipesEditController.dispose();
     introductionEditController.dispose();
+    raidersEditController.dispose();
     focusNode?.dispose();
     super.onClose();
   }
@@ -71,9 +73,9 @@ class QuestDetailController extends GetxController {
 
     itemName = data.name;
     nameEditController.setText(itemName ?? "--");
-
     getWayEditController.setText(data.getWay);
     workstationEditController.setText(data.workstation);
+    raidersEditController.setText(data.raiders);
 
     introductionEditController.setText(data.introduction);
 
@@ -185,6 +187,7 @@ class QuestDetailController extends GetxController {
       workstationEditController.text,
       recipes,
       introductionEditController.text,
+      raidersEditController.text,
       iconUrl,
     );
     if (NHttpConfig.isOk(map: respMap)) {
