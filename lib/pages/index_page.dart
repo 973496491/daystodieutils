@@ -18,7 +18,7 @@ class IndexPage extends GetView<mic.IndexController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                   Container(
@@ -59,12 +59,12 @@ class IndexPage extends GetView<mic.IndexController> {
                           () => Get.toNamed(RouteNames.joinServicePage),
                         ),
                         _optionWidget(
+                          "我要加群   ",
+                          Icons.account_circle_outlined,
+                          () => Get.toNamed(RouteNames.roomList),
                           "意见反馈   ",
                           Icons.account_balance_wallet_outlined,
-                          () => Get.toNamed(RouteNames.message),
-                          "更多功能   ",
-                          Icons.question_answer_outlined,
-                          () => Get.context?.showMessageDialog("敬请期待"),
+                              () => Get.toNamed(RouteNames.message),
                         ),
                       ],
                     ),

@@ -1,20 +1,17 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/module/entity/item_info_resp.dart';
-import 'package:daystodieutils/module/entity/upload_image_resp.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/upload_utils.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile;
-import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_for_web/image_picker_for_web.dart';
 
 class ItemInfoController extends GetxController {
   static const String idContent = "idContent";
@@ -24,8 +21,6 @@ class ItemInfoController extends GetxController {
   static const String idDelete = "idDelete";
   static const String idReject = "idReject";
   static const String idPass = "idPass";
-
-  final _picker = ImagePickerPlugin();
 
   bool isNewItem = false;
   String status = "${Config.itemStatusReviewed}";
@@ -257,34 +252,18 @@ class ItemInfoController extends GetxController {
 
   void selectImage() async {
     itemName = nameEditController.text;
-    if (itemName!.isEmpty) {
+    if (true != itemName?.isNotEmpty) {
       Get.context?.showMessageDialog("请输入古神名称再进行后续操作.");
       return;
     }
 
-    var xFile = await _picker.getImageFromSource(source: ImageSource.gallery);
-    if (xFile == null) {
-      return;
-    }
-    var name = xFile.name;
-    var suffix = name.substring(name.lastIndexOf("."));
-    var bytes = await xFile.readAsBytes();
-    var fileName = "$itemName$suffix";
-
-    var file = MultipartFile.fromBytes(bytes.toList(), filename: fileName);
-    var respMap = await NHttpRequest.uploadImage(fileName, file);
-    var resp = NRespFactory.parseObject(respMap, UploadImageResp());
-    if (NHttpConfig.isOk(bizCode: resp.code)) {
-      var url = resp.data?.url;
-      if (url == null) {
-        Get.context?.showMessageDialog("图片地址为空");
-      } else {
-        iconUrl = resp.data?.url ?? "";
-        thumbnailUrl = resp.data?.thumbnailUrl;
-        update([idIcon]);
-      }
-    } else {
-      Get.context?.showMessageDialog(resp.message!);
+    var url = await UploadUtils.uploadImage(itemName!);
+    if (url != null) {
+      iconUrl = "$url?${DateTime.now().millisecondsSinceEpoch}";
+      update([idIcon]);
+      Future.delayed(const Duration(milliseconds: 100), () {
+        iconUrl = url;
+      });
     }
   }
 }

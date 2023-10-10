@@ -208,6 +208,16 @@ class NHttpRequest {
     );
   }
 
+  /// 获取QQ群详情
+  static getRoomItemInfo(String id) {
+    var reqMap = <String, String>{"id": id};
+    return Http.get(
+      NHttpApi.getRoomItemInfo,
+      params: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
   /// 获取任务详情
   static getQuestDetail(String id) {
     var reqMap = <String, String>{"id": id};
@@ -223,6 +233,16 @@ class NHttpRequest {
     var reqMap = <String, String>{"id": "$id"};
     return Http.post(
       NHttpApi.deleteItem,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 删除QQ群
+  static deleteRoomItem(String id) {
+    var reqMap = <String, String>{"id": id};
+    return Http.post(
+      NHttpApi.deleteRoomItem,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
@@ -329,6 +349,42 @@ class NHttpRequest {
     );
   }
 
+  /// 更新QQ群详情
+  static updateQQRoomItemInfo(
+    int? id,
+    String name,
+    String roomNumber,
+    String roomUrl,
+    String? roomIcon,
+    String? desc,
+  ) async {
+    var reqMap = <String, String>{
+      "name": name,
+      "roomNumber": roomNumber,
+      "roomUrl": roomUrl,
+    };
+    if (null != id) {
+      reqMap["id"] = "$id";
+    }
+    if (true == roomIcon?.isNotEmpty) {
+      reqMap["roomIcon"] = roomIcon!;
+    }
+    if (true == desc?.isNotEmpty) {
+      reqMap["desc"] = desc!;
+    }
+    String url;
+    if (id != null) {
+      url = NHttpApi.updateQQRoomItem;
+    } else {
+      url = NHttpApi.insertQQRoomItem;
+    }
+    return Http.post(
+      url,
+      data: reqMap,
+      contentType: NHttpContentType.applicationJson.type,
+    );
+  }
+
   /// 查询道具列表
   static getServiceList(
     int pageIndex,
@@ -339,6 +395,20 @@ class NHttpRequest {
     };
     return Http.get(
       NHttpApi.serviceList,
+      params: reqMap,
+    );
+  }
+
+  /// 查询QQ群列表
+  static getQQRoomList(
+    int pageIndex,
+  ) {
+    var reqMap = <String, String>{
+      "pageIndex": "$pageIndex",
+      "pageSize": "${NHttpConfig.defaultPageSize}"
+    };
+    return Http.get(
+      NHttpApi.qqRoomList,
       params: reqMap,
     );
   }
@@ -362,6 +432,18 @@ class NHttpRequest {
     var reqMap = <String, String>{"name": name};
     return Http.post(
       NHttpApi.getItemNameIsExist,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 查询群是否存在
+  static getRoomNumberIsExist(
+    String roomNumber,
+  ) async {
+    var reqMap = <String, String>{"roomNumber": roomNumber};
+    return Http.post(
+      NHttpApi.checkRoomNotExist,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );

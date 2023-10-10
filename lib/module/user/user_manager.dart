@@ -22,6 +22,10 @@ class UserManager {
     return info.token;
   }
 
+  static bool hasToken() {
+    return true == getToken()?.isNotEmpty;
+  }
+
   static void setServiceToken(String? token) {
     UserInfo info = getUserInfo();
     info.serviceToken = token;

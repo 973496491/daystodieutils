@@ -16,6 +16,10 @@ import 'package:daystodieutils/pages/quest/detail/quest_detail_binding.dart';
 import 'package:daystodieutils/pages/quest/detail/quest_detail_page.dart';
 import 'package:daystodieutils/pages/quest/list/quest_list_binding.dart';
 import 'package:daystodieutils/pages/quest/list/quest_list_page.dart';
+import 'package:daystodieutils/pages/room/add/add_room_binding.dart';
+import 'package:daystodieutils/pages/room/add/add_room_page.dart';
+import 'package:daystodieutils/pages/room/room_list_binding.dart';
+import 'package:daystodieutils/pages/room/room_list_page.dart';
 import 'package:daystodieutils/pages/service/item/info/service_item_info_binding.dart';
 import 'package:daystodieutils/pages/service/item/info/service_item_info_page.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_binding.dart';
@@ -101,6 +105,16 @@ class RoutePages {
       page: () => const QuestDetailPage(),
       binding: QuestDetailBinding(),
     ),
+    GetPage(
+      name: RouteNames.roomList,
+      page: () => const RoomListPage(),
+      binding: RoomListBinding(),
+    ),
+    GetPage(
+      name: RouteNames.addRoom,
+      page: () => const AddRoomPage(),
+      binding: AddRoomBinding(),
+    ),
   ];
 }
 
@@ -119,4 +133,6 @@ class RouteNames {
   static String message = "/message";
   static String questList = "/questList";
   static String questDetail = "/questDetail";
+  static String roomList = "/roomList";
+  static String addRoom = "/addRoom";
 }

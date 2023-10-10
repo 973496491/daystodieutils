@@ -45,6 +45,9 @@ class NHttpApi {
   /// 查询招人服务器信息
   static const String serviceList = "/info/getJoinServiceList";
 
+  /// 查询单机QQ群列表
+  static const String qqRoomList = "/config/getQQRoomList";
+
   /// 获取腾讯云COS临时密钥
   static const String getCosPrivateKey = "/file/getCosTmpSecretId";
 
@@ -63,11 +66,17 @@ class NHttpApi {
   /// 查询道具详情
   static const String getItemInfo = "/info/getItemInfo";
 
+  /// 查询QQ群详情
+  static const String getRoomItemInfo = "/config/getRoomItemInfo";
+
   /// 查询任务详情
   static const String getQuestDetail = "/quest/getItemInfo";
 
   /// 删除道具
   static const String deleteItem = "/info/deleteItemInfo";
+
+  /// 删除道具
+  static const String deleteRoomItem = "/config/deleteRoomItem";
 
   /// 删除任务
   static const String deleteQuest = "/quest/deleteItemInfo";
@@ -75,11 +84,17 @@ class NHttpApi {
   /// 更新道具
   static const String updateItemInfo = "/info/updateItemInfo";
 
+  /// 更新道具
+  static const String updateQQRoomItem = "/config/updateQQRoomItem";
+
   /// 更新任务信息
   static const String updateQuestInfo = "/quest/updateItemInfo";
 
   /// 插入道具
   static const String insertItemInfo = "/info/insertItemInfo";
+
+  /// 插入QQ群信息
+  static const String insertQQRoomItem = "/config/insertQQRoomItem";
 
   /// 插入任务信息
   static const String insertQuestInfo = "/quest/insertItemInfo";
@@ -89,6 +104,9 @@ class NHttpApi {
 
   /// 查询道具是否存在
   static const String getItemNameIsExist = "/info/getItemNameIsExist";
+
+  /// 查询群号是否存在
+  static const String checkRoomNotExist = "/config/checkRoomNotExist";
 
   /// 查询任务是否存在
   static const String checkItemNotExist = "/quest/checkItemNotExist";
