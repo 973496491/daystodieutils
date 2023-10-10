@@ -1,3 +1,4 @@
+import 'package:daystodieutils/pages/login/login_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,12 +26,17 @@ class ViewUtils {
     );
   }
 
-  static bool checkOptionPermissions(BuildContext? context) {
+  static Future<bool> checkOptionPermissions(BuildContext? context) async {
     if (UserManager.getToken() == null) {
-      context?.showMessageDialog("权限不足");
-      return false;
+      var isLogin = await Get.find<LoginController>().showLoginDialog();
+      if (isLogin) {
+        return Future.value(true);
+      } else {
+        context?.showMessageDialog("权限不足");
+        return Future.value(false);
+      }
     } else {
-      return true;
+      return Future.value(true);
     }
   }
 }

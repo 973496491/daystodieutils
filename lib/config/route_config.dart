@@ -12,6 +12,10 @@ import 'package:daystodieutils/pages/menu/main_menu_binding.dart';
 import 'package:daystodieutils/pages/menu/main_menu_page.dart';
 import 'package:daystodieutils/pages/message/message_binding.dart';
 import 'package:daystodieutils/pages/message/message_page.dart';
+import 'package:daystodieutils/pages/quest/detail/quest_detail_binding.dart';
+import 'package:daystodieutils/pages/quest/detail/quest_detail_page.dart';
+import 'package:daystodieutils/pages/quest/list/quest_list_binding.dart';
+import 'package:daystodieutils/pages/quest/list/quest_list_page.dart';
 import 'package:daystodieutils/pages/service/item/info/service_item_info_binding.dart';
 import 'package:daystodieutils/pages/service/item/info/service_item_info_page.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_binding.dart';
@@ -87,6 +91,16 @@ class RoutePages {
       page: () => const ServiceItemInfoPage(),
       binding: ServiceItemInfoBinding(),
     ),
+    GetPage(
+      name: RouteNames.questList,
+      page: () => const QuestListPage(),
+      binding: QuestListBinding(),
+    ),
+    GetPage(
+      name: RouteNames.questDetail,
+      page: () => const QuestDetailPage(),
+      binding: QuestDetailBinding(),
+    ),
   ];
 }
 
@@ -103,4 +117,6 @@ class RouteNames {
   static String itemInfo = "/itemInfo";
   static String serviceItemInfo = "/serviceItemInfo";
   static String message = "/message";
+  static String questList = "/questList";
+  static String questDetail = "/questDetail";
 }

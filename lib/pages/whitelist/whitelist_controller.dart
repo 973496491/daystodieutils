@@ -57,7 +57,7 @@ class WhitelistController extends GetxController {
   }
 
   void showAddWhitelistDialog(BuildContext context) async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     final result = await showTextInputDialog(
@@ -123,11 +123,11 @@ class WhitelistController extends GetxController {
   }
 
   void showEditDialog(BuildContext context, int? id) async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var key = await showConfirmationDialog(
-      context: context,
+      context: Get.context!,
       title: "请选择功能项",
       style: AdaptiveStyle.iOS,
       actions: [
@@ -159,7 +159,7 @@ class WhitelistController extends GetxController {
   }
 
   void _deleteItem(int id) async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var reqMap = {"id": "$id"};

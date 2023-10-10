@@ -35,12 +35,12 @@ class MainMenuController extends GetxController {
     update([idListView]);
   }
 
-  void showEditDialog(BuildContext context, MainMenuItemResp item) async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+  void showEditDialog(MainMenuItemResp item) async {
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var key = await showConfirmationDialog(
-      context: context,
+      context: Get.context!,
       title: "请选择功能项",
       style: AdaptiveStyle.iOS,
       actions: [
@@ -67,7 +67,7 @@ class MainMenuController extends GetxController {
       case _typeEdit:
         {
           // ignore: use_build_context_synchronously
-          showEditBtnInfoDialog(context, false, item: item);
+          showEditBtnInfoDialog(false, item: item);
           break;
         }
     }
@@ -90,9 +90,11 @@ class MainMenuController extends GetxController {
     }
   }
 
-  void showEditBtnInfoDialog(BuildContext context, bool isAdd,
-      {MainMenuItemResp? item}) async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+  void showEditBtnInfoDialog(
+    bool isAdd, {
+    MainMenuItemResp? item,
+  }) async {
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var title = "添加主菜单按钮信息";
@@ -102,7 +104,7 @@ class MainMenuController extends GetxController {
     if (!isAdd) okLabel = "编辑";
 
     final result = await showTextInputDialog(
-      context: context,
+      context: Get.context!,
       title: title,
       okLabel: okLabel,
       cancelLabel: "取消",

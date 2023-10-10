@@ -4,6 +4,7 @@ import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/event_bus_utils.dart';
 import 'package:get/get.dart';
 
 import '../../module/entity/login_resp.dart';
@@ -70,14 +71,13 @@ class LoginController extends GetxController {
       if (token != null) {
         UserManager.setToken(resp.data?.token);
         Get.context?.showMessageDialog("登录成功");
+        EventBusUtils.pushLoginEvent(true);
         return Future.value(true);
       } else {
-        UserManager.setToken(null);
         return Future.value(false);
       }
     } else {
-      UserManager.setToken(null);
-      Get.context?.showMessageDialog(resp.message ?? "登录失败");
+      Get.context?.showMessageDialog(resp.message);
       return Future.value(false);
     }
   }

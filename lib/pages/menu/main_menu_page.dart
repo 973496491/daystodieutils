@@ -50,7 +50,7 @@ class MainMenuPage extends GetView<MainMenuController> {
                   fontSize: 16,
                 ),
               ),
-              onPressed: () => _.showEditBtnInfoDialog(context, true),
+              onPressed: () => _.showEditBtnInfoDialog(true),
             );
           },
         ),
@@ -93,6 +93,6 @@ class MainMenuPage extends GetView<MainMenuController> {
           const Divider(height: 1, color: Colors.black26),
         ],
       ),
-    ).onClick(() => controller.showEditDialog(context, item!));
+    ).onClick(() => controller.showEditDialog(item!));
   }
 }

@@ -116,7 +116,7 @@ class ItemInfoController extends GetxController {
   }
 
   delete() async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
@@ -206,9 +206,8 @@ class ItemInfoController extends GetxController {
   }
 
   void review() async {
-    if (!ViewUtils.checkOptionPermissions(Get.context)) {
-      return;
-    }
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
 
     var result = await Get.context?.showAskMessageDialog("是否通过此提交?");
     if (OkCancelResult.ok == result) {

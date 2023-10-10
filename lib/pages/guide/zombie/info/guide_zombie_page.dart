@@ -1,3 +1,4 @@
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
@@ -81,12 +82,12 @@ class GuideZombiePage extends GetView<GuideZombieController> {
                                 const Divider(color: Colors.black12),
                                 _itemWidget("掉  落  物: ", _.bootyListEditController)
                                     .onClick(
-                                      () => _.showItemDetailPageDialog(_.bootyListArray),
+                                      () => PageUtils.showItemDetailPageDialog(_.bootyListArray),
                                 ),
                                 const Divider(color: Colors.black12),
                                 _itemWidget("尸体材料: ", _.corpseDropEditController)
                                     .onClick(
-                                      () => _.showItemDetailPageDialog(_.corpseDropArray),
+                                      () => PageUtils.showItemDetailPageDialog(_.corpseDropArray),
                                 ),
                                 const Divider(color: Colors.black12),
                                 _itemWidget(

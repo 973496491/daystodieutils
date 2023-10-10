@@ -57,23 +57,41 @@ class NHttpApi {
   /// 查询道具列表
   static const String getItemList = "/info/getItemList";
 
+  /// 查询任务列表
+  static const String getQuestList = "/quest/getItemList";
+
   /// 查询道具详情
   static const String getItemInfo = "/info/getItemInfo";
+
+  /// 查询任务详情
+  static const String getQuestDetail = "/quest/getItemInfo";
 
   /// 删除道具
   static const String deleteItem = "/info/deleteItemInfo";
 
+  /// 删除任务
+  static const String deleteQuest = "/quest/deleteItemInfo";
+
   /// 更新道具
   static const String updateItemInfo = "/info/updateItemInfo";
 
+  /// 更新任务信息
+  static const String updateQuestInfo = "/quest/updateItemInfo";
+
   /// 插入道具
   static const String insertItemInfo = "/info/insertItemInfo";
+
+  /// 插入任务信息
+  static const String insertQuestInfo = "/quest/insertItemInfo";
 
   /// 审核道具
   static const String reviewItemInfo = "/info/reviewItemInfo";
 
   /// 查询道具是否存在
   static const String getItemNameIsExist = "/info/getItemNameIsExist";
+
+  /// 查询任务是否存在
+  static const String checkItemNotExist = "/quest/checkItemNotExist";
 
   /// 提交意见反馈
   static const String commitFeedback = "/users/addFeedback";

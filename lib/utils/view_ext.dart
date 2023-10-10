@@ -12,8 +12,8 @@ extension WidgetExt on Widget {
 }
 
 extension TextEditingControllerExt on TextEditingController {
-  void setText(String content) {
-    text = content;
+  void setText(String? content) {
+    text = content ?? "";
     selection = TextSelection.fromPosition(
       TextPosition(offset: text.length),
     );

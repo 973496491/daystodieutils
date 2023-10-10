@@ -53,7 +53,7 @@ class IndexPage extends GetView<mic.IndexController> {
                         _optionWidget(
                           "任务攻略   ",
                           Icons.question_answer_outlined,
-                          () => Get.context?.showMessageDialog("敬请期待"),
+                          () => Get.toNamed(RouteNames.questList),
                           "我要联机   ",
                           Icons.add_home_outlined,
                           () => Get.toNamed(RouteNames.joinServicePage),

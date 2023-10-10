@@ -1,38 +1,52 @@
+import 'dart:async';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
+import 'package:daystodieutils/module/event/login_event.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
-import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/event_bus_utils.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:get/get.dart';
 
 class IndexController extends GetxController {
   static String idLogin = "idLogin";
 
-  bool _isLogin = false;
   String loginText = "管理员登录";
+
+  StreamSubscription<LoginEvent>? event;
 
   @override
   void onInit() {
-    _isLogin = true == UserManager.getToken()?.isNotEmpty;
-    setLoginText();
+    var isLogin = true == UserManager.getToken()?.isNotEmpty;
+    setLoginText(isLogin);
     super.onInit();
   }
 
-  void toWhitelistPage() {
-    if (!ViewUtils.checkOptionPermissions(Get.context)) {
-      return;
-    }
+  @override
+  void onReady() {
+    super.onReady();
+    EventBusUtils.listenLoginEvent((event) => setLoginText(event.isLogin));
+  }
+
+  @override
+  void onClose() {
+    event?.cancel();
+    super.onClose();
+  }
+
+  void toWhitelistPage() async {
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
     Get.toNamed(RouteNames.whitelist);
   }
 
-  void toMainMenuPage() {
-    if (!ViewUtils.checkOptionPermissions(Get.context)) {
-      return;
-    }
+  void toMainMenuPage() async {
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
+    if (!canNext) return;
     Get.toNamed(RouteNames.mainMenu);
   }
 
@@ -95,25 +109,24 @@ class IndexController extends GetxController {
   login() async {
     var context = Get.context;
     if (context == null) return;
-    if (_isLogin) {
+    var isLogin = true == UserManager.getToken()?.isNotEmpty;
+    if (isLogin) {
       var result = await context.showAskMessageDialog("是否注销登录?");
       if (OkCancelResult.ok == result) {
         UserManager.setToken(null);
-        _isLogin = false;
+        EventBusUtils.pushLoginEvent(false);
       }
     } else {
-      _isLogin = await _loginController().showLoginDialog();
+      _loginController().showLoginDialog();
     }
-    setLoginText();
   }
 
-  void setLoginText() {
-    if (_isLogin) {
+  void setLoginText(bool isLogin) {
+    if (isLogin) {
       loginText = "登出           ";
     } else {
       loginText = "管理员登录";
     }
-    "loginText: $loginText".logD();
     update([idLogin]);
   }
 

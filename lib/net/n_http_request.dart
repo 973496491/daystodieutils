@@ -180,11 +180,39 @@ class NHttpRequest {
     );
   }
 
+  /// 查询任务列表
+  static getQuestList(
+    int pageIndex, {
+    String? name,
+  }) {
+    var reqMap = <String, String>{
+      "pageIndex": "$pageIndex",
+      "pageSize": "${NHttpConfig.defaultPageSize}"
+    };
+    if (name != null) {
+      reqMap["name"] = name;
+    }
+    return Http.get(
+      NHttpApi.getQuestList,
+      params: reqMap,
+    );
+  }
+
   /// 获取道具详情
   static getItemInfo(String id) {
-    var reqMap = <String, String>{"id": "$id"};
+    var reqMap = <String, String>{"id": id};
     return Http.post(
       NHttpApi.getItemInfo,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 获取任务详情
+  static getQuestDetail(String id) {
+    var reqMap = <String, String>{"id": id};
+    return Http.post(
+      NHttpApi.getQuestDetail,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
@@ -195,6 +223,18 @@ class NHttpRequest {
     var reqMap = <String, String>{"id": "$id"};
     return Http.post(
       NHttpApi.deleteItem,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 删除任务
+  static deleteQuest(String id) {
+    var reqMap = <String, String>{
+      "id": id,
+    };
+    return Http.post(
+      NHttpApi.deleteQuest,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );
@@ -241,6 +281,50 @@ class NHttpRequest {
     );
   }
 
+  /// 更新任务详情
+  static updateQuestInfo(
+    String? id,
+    String name,
+    String? getWay,
+    String? workstation,
+    String? recipes,
+    String? introduction,
+    String? imageUrl,
+  ) async {
+    var reqMap = <String, String>{
+      "name": name,
+    };
+    if (null != id) {
+      reqMap["id"] = "$id";
+    }
+    if (true == imageUrl?.isNotEmpty) {
+      reqMap["imageUrl"] = imageUrl!;
+    }
+    if (true == getWay?.isNotEmpty) {
+      reqMap["getWay"] = getWay!;
+    }
+    if (true == workstation?.isNotEmpty) {
+      reqMap["workstation"] = workstation!;
+    }
+    if (true == recipes?.isNotEmpty) {
+      reqMap["recipes"] = recipes!;
+    }
+    if (true == introduction?.isNotEmpty) {
+      reqMap["introduction"] = introduction!;
+    }
+    String url;
+    if (id != null) {
+      url = NHttpApi.updateQuestInfo;
+    } else {
+      url = NHttpApi.insertQuestInfo;
+    }
+    return Http.post(
+      url,
+      data: reqMap,
+      contentType: NHttpContentType.applicationJson.type,
+    );
+  }
+
   /// 查询道具列表
   static getServiceList(
     int pageIndex,
@@ -274,6 +358,20 @@ class NHttpRequest {
     var reqMap = <String, String>{"name": name};
     return Http.post(
       NHttpApi.getItemNameIsExist,
+      data: reqMap,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
+  /// 查询任务是否存在
+  static checkItemNotExist(
+    String name,
+  ) async {
+    var reqMap = <String, String>{
+      "name": name,
+    };
+    return Http.post(
+      NHttpApi.checkItemNotExist,
       data: reqMap,
       contentType: NHttpContentType.formUrlencoded.type,
     );

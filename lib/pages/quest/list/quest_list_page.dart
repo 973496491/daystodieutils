@@ -1,4 +1,7 @@
-import 'package:daystodieutils/config/config.dart';
+import 'package:daystodieutils/module/entity/quest_list_resp.dart';
+import 'package:daystodieutils/module/user/user_manager.dart';
+import 'package:daystodieutils/pages/quest/list/quest_list_controller.dart';
+import 'package:daystodieutils/utils/string_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -6,21 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../module/entity/item_list_resp.dart';
-import 'item_list_controller.dart';
-
-class ItemListPage extends GetView<ItemListController> {
-  const ItemListPage({Key? key}) : super(key: key);
+class QuestListPage extends GetView<QuestListController> {
+  const QuestListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ViewUtils.getAppBar(
-        "道具列表",
+        "任务列表",
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GetBuilder<ItemListController>(builder: (_) {
+            child: GetBuilder<QuestListController>(builder: (_) {
               return const Text(
                 "搜索",
                 style: TextStyle(
@@ -41,8 +41,8 @@ class ItemListPage extends GetView<ItemListController> {
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 30),
-                child: GetBuilder<ItemListController>(
-                  id: ItemListController.idListView,
+                child: GetBuilder<QuestListController>(
+                  id: QuestListController.idListView,
                   builder: (_) {
                     return SizedBox(
                       width: 1000,
@@ -65,9 +65,9 @@ class ItemListPage extends GetView<ItemListController> {
       floatingActionButton: SizedBox(
         width: 100,
         height: 100,
-        child: GetBuilder<ItemListController>(
+        child: GetBuilder<QuestListController>(
           builder: (_) {
-            if (_.status == "${Config.itemStatusUnreview}") {
+            if (UserManager.getToken() == null) {
               return Container();
             } else {
               return Container(
@@ -81,7 +81,7 @@ class ItemListPage extends GetView<ItemListController> {
                 child: IconButton(
                   color: Colors.blue,
                   icon: const Icon(Icons.add),
-                  onPressed: () => _.toDetailPage("-1", true),
+                  onPressed: () => _.toDetailPage(null),
                 ),
               );
             }
@@ -91,10 +91,10 @@ class ItemListPage extends GetView<ItemListController> {
     );
   }
 
-  _gridViewWidget(ItemListController controller) {
-    return PagedGridView<int, ItemListResp>(
+  _gridViewWidget(QuestListController controller) {
+    return PagedGridView<int, QuestListResp>(
       pagingController: controller.pagingController,
-      builderDelegate: PagedChildBuilderDelegate<ItemListResp>(
+      builderDelegate: PagedChildBuilderDelegate<QuestListResp>(
         itemBuilder: (context, item, index) => _itemWidget(item),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,7 +105,7 @@ class ItemListPage extends GetView<ItemListController> {
     );
   }
 
-  _itemWidget(ItemListResp? item) {
+  _itemWidget(QuestListResp? item) {
     double imageSize = 80;
     return Card(
       color: Colors.white,
@@ -114,28 +114,30 @@ class ItemListPage extends GetView<ItemListController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "名称: ${item?.name ?? "--"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-          Container(
+          SizedBox(
             width: imageSize,
             height: imageSize,
-            margin: const EdgeInsets.only(top: 20),
             child: FastCachedImage(
-              url: item?.thumbnailUrl ?? "",
+              url: item?.imageUrl?.thumbnailUrl() ?? "",
               width: imageSize,
               height: imageSize,
               fit: BoxFit.cover,
             ),
           ),
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Text(
+              item?.name ?? "--",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+          ),
         ],
       ),
-    ).onClick(() => controller.toDetailPage("${item?.id}", false));
+    ).onClick(() => controller.toDetailPage(item?.id));
   }
 }

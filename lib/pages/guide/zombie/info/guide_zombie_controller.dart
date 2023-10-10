@@ -1,10 +1,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
-import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:dio/dio.dart';
@@ -127,8 +125,8 @@ class GuideZombieController extends GetxController {
     }
   }
 
-  void changeCanEdit() {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+  void changeCanEdit() async {
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     canEdit = !canEdit;
@@ -197,7 +195,7 @@ class GuideZombieController extends GetxController {
   }
 
   void delete() async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
@@ -226,7 +224,7 @@ class GuideZombieController extends GetxController {
   }
 
   void selectImage() async {
-    var canNext = ViewUtils.checkOptionPermissions(Get.context);
+    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
     if (!canNext) return;
 
     zombieName = nameEditController.text;
@@ -257,31 +255,6 @@ class GuideZombieController extends GetxController {
       }
     } else {
       Get.context?.showMessageDialog(resp.message!);
-    }
-  }
-
-  void showItemDetailPageDialog(List<String> array) async {
-    if (array.isEmpty) return;
-    var actions = array.map((e) => ListDialogEntity(e, e)).toList();
-    var result = await Get.context?.showListDialog(actions);
-    if (result == null) return;
-    var respMap = await NHttpRequest.getItemIds(result);
-    if (NHttpConfig.isOk(map: respMap)) {
-      try {
-        var data = NHttpConfig.data(respMap);
-        var id = (data as List)[0];
-        if (id == null) return;
-        var parameters = {
-          "id": "$id",
-          "canEdit": "${false}",
-        };
-        Get.toNamed(RouteNames.itemInfo, parameters: parameters);
-      } catch (ex) {
-        ex.printError();
-      }
-    } else {
-      var msg = NHttpConfig.message(respMap);
-      Get.context?.showMessageDialog(msg);
     }
   }
 }
