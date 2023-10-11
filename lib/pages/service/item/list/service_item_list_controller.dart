@@ -1,12 +1,12 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
+import 'package:daystodieutils/module/entity/service_item_list_resp.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../module/entity/item_list_resp.dart';
 import '../../../../net/n_http_request.dart';
 import '../../../../net/n_resp_factory.dart';
 
@@ -15,7 +15,7 @@ class ServiceItemListController extends GetxController {
   static const String idAddBtn = "idAddBtn";
   static const String keyServiceKey = "keyServiceKey";
 
-  final PagingController<int, ItemListResp> pagingController =
+  final PagingController<int, ServiceItemListResp> pagingController =
       PagingController(firstPageKey: NHttpConfig.defaultPageIndex);
 
   String serviceKey = "";
@@ -55,9 +55,9 @@ class ServiceItemListController extends GetxController {
     }
   }
 
-  Future<List<ItemListResp>> _getItemList(int pageKey) async {
+  Future<List<ServiceItemListResp>> _getItemList(int pageKey) async {
     var respMap = await NHttpRequest.getServiceItemList(pageKey, serviceKey, name: filterName);
-    var resp = NRespFactory.parseArray<ItemListResp>(respMap, ItemListResp());
+    var resp = NRespFactory.parseArray(respMap, ServiceItemListResp());
     var data = resp.data;
     return data ?? [];
   }

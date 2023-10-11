@@ -63,7 +63,7 @@ class RoomListController extends GetxController {
         {
           if (url != null) {
             var uri = Uri.parse(url);
-            launchUrl(uri);
+            launchUrl(uri, mode: LaunchMode.inAppWebView);
           }
           break;
         }

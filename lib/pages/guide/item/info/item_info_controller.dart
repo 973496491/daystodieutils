@@ -251,13 +251,15 @@ class ItemInfoController extends GetxController {
   }
 
   void selectImage() async {
+    if (!canEdit) return;
+
     itemName = nameEditController.text;
     if (true != itemName?.isNotEmpty) {
-      Get.context?.showMessageDialog("请输入古神名称再进行后续操作.");
+      Get.context?.showMessageDialog("请输入道具名称再进行后续操作.");
       return;
     }
 
-    var url = await UploadUtils.uploadImage(itemName!);
+    var url = await UploadUtils.uploadImage(itemName!, needToken: false);
     if (url != null) {
       iconUrl = "$url?${DateTime.now().millisecondsSinceEpoch}";
       update([idIcon]);

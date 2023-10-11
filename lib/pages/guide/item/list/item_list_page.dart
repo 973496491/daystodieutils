@@ -1,4 +1,5 @@
 import 'package:daystodieutils/config/config.dart';
+import 'package:daystodieutils/utils/string_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -128,7 +129,7 @@ class ItemListPage extends GetView<ItemListController> {
             height: imageSize,
             margin: const EdgeInsets.only(top: 20),
             child: FastCachedImage(
-              url: item?.thumbnailUrl ?? "",
+              url: item?.imageUrl?.thumbnailUrl() ?? "",
               width: imageSize,
               height: imageSize,
               fit: BoxFit.cover,

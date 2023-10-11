@@ -53,6 +53,7 @@ class NHttpApi {
 
   /// 上传图片
   static const String uploadImage = "/file/uploadImage";
+  static const String uploadImageNotToken = "/file/uploadImageNotToken";
 
   /// 上传图片
   static const String uploadServiceImage = "/file/uploadServiceImage";

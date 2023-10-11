@@ -11,7 +11,10 @@ import 'package:image_picker_for_web/image_picker_for_web.dart';
 class UploadUtils {
   static final _picker = ImagePickerPlugin();
 
-  static Future<String?> uploadImage(String itemName) async {
+  static Future<String?> uploadImage(
+    String itemName, {
+    bool needToken = true,
+  }) async {
     var xFile = await _picker.getImageFromSource(source: ImageSource.gallery);
     if (xFile == null) {
       return Future.value(null);
@@ -22,7 +25,7 @@ class UploadUtils {
     var fileName = "$itemName$suffix";
 
     var file = MultipartFile.fromBytes(bytes.toList(), filename: fileName);
-    var respMap = await NHttpRequest.uploadImage(fileName, file);
+    var respMap = await NHttpRequest.uploadImage(fileName, file, needToken: needToken);
     var resp = NRespFactory.parseObject(respMap, UploadImageResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var url = resp.data?.url;

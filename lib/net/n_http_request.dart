@@ -138,13 +138,20 @@ class NHttpRequest {
 
   static uploadImage(
     String fileName,
-    MultipartFile imageFile,
-  ) {
+    MultipartFile imageFile, {
+    bool needToken = true,
+  }) {
     var reqMap = FormData.fromMap({
       "fileName": fileName,
       "file": imageFile,
     });
-    return Http.postFile(NHttpApi.uploadImage, reqMap);
+    String url;
+    if (needToken) {
+      url = NHttpApi.uploadImage;
+    } else {
+      url = NHttpApi.uploadImageNotToken;
+    }
+    return Http.postFile(url, reqMap);
   }
 
   static uploadServiceImage(

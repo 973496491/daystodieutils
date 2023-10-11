@@ -2,16 +2,16 @@ import 'package:daystodieutils/core/safe_map.dart';
 
 import '../../net/n_resp_common.dart';
 
-class ItemListResp extends NRespCommon {
-  ItemListResp({
+class ServiceItemListResp extends NRespCommon {
+  ServiceItemListResp({
     this.id,
     this.name,
-    this.imageUrl,
+    this.thumbnailUrl,
   });
 
   int? id;
   String? name;
-  String? imageUrl;
+  String? thumbnailUrl;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -30,10 +30,10 @@ class ItemListResp extends NRespCommon {
   T? parseObject<T>(data) {
     if (data != null) {
       var map = SafeMap(data);
-      return ItemListResp(
+      return ServiceItemListResp(
         id: map["id"].value,
         name: map["name"].value,
-        imageUrl: map["imageUrl"].value,
+        thumbnailUrl: map["thumbnailUrl"].value,
       ) as T;
     } else {
       return null;

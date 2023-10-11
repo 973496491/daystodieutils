@@ -1,3 +1,4 @@
+import 'package:daystodieutils/module/entity/service_item_list_resp.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../module/entity/item_list_resp.dart';
 import 'service_item_list_controller.dart';
 
 class ServiceItemListPage extends GetView<ServiceItemListController> {
@@ -92,9 +92,9 @@ class ServiceItemListPage extends GetView<ServiceItemListController> {
   }
 
   _gridViewWidget(ServiceItemListController controller) {
-    return PagedGridView<int, ItemListResp>(
+    return PagedGridView<int, ServiceItemListResp>(
       pagingController: controller.pagingController,
-      builderDelegate: PagedChildBuilderDelegate<ItemListResp>(
+      builderDelegate: PagedChildBuilderDelegate<ServiceItemListResp>(
         itemBuilder: (context, item, index) => _itemWidget(item),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,7 +105,7 @@ class ServiceItemListPage extends GetView<ServiceItemListController> {
     );
   }
 
-  _itemWidget(ItemListResp? item) {
+  _itemWidget(ServiceItemListResp? item) {
     double imageSize = 80;
     return Card(
       color: Colors.white,
