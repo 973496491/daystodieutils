@@ -8,12 +8,14 @@ class ZombieListResp extends NRespCommon {
     this.zombieType,
     this.zombieName,
     this.zombieHp,
+    this.imageUrl,
   });
 
   int? id;
   String? zombieType;
   String? zombieName;
   String? zombieHp;
+  String? imageUrl;
 
   @override
   List<T>? parseArray<T>(data) {
@@ -37,6 +39,7 @@ class ZombieListResp extends NRespCommon {
         zombieType: map["zombieType"].value,
         zombieName: map["zombieName"].value,
         zombieHp: map["zombieHp"].value,
+        imageUrl: map["imageUrl"].value,
       ) as T;
     } else {
       return null;
