@@ -19,6 +19,12 @@ class MapBigController extends GetxController {
     _initInfo();
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+    controller.dispose();
+  }
+
   void _initInfo() {
     var imageUrl = Get.parameters["url"];
     if (imageUrl != null) {
@@ -36,19 +42,24 @@ class MapBigController extends GetxController {
 
   void zoomIn() {
     defaultScale ??= controller.scale ?? 0.0;
+    "defaultScale: $defaultScale".logI();
+
     var scale = controller.scale ?? 0.0;
     if (scale + 0.1 >= defaultScale! + 1.0) {
-      return;
+      controller.scale = defaultScale! + 1.0;
+    } else {
+      controller.scale = controller.scale! + 0.1;
     }
-    controller.scale = controller.scale! + 0.1;
   }
 
   void zoomOut() {
     defaultScale ??= controller.scale ?? 0.0;
     var scale = controller.scale ?? 0.0;
     if (scale - 0.1 <= defaultScale!) {
-      return;
+      controller.scale = defaultScale;
+      changeFullScreen(false);
+    } else {
+      controller.scale = controller.scale! - 0.1;
     }
-    controller.scale = controller.scale! - 0.1;
   }
 }
