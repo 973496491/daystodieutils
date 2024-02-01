@@ -1,25 +1,23 @@
+import 'package:daystodieutils/module/entity/map_list_resp.dart';
+import 'package:daystodieutils/pages/map/map_list_controller.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../../module/entity/zombie_list_resp.dart';
-import 'zombie_list_controller.dart';
-
-class ZombieListPage extends GetView<ZombieListController> {
-  const ZombieListPage({Key? key}) : super(key: key);
+class MapListPage extends GetView<MapListController> {
+  const MapListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ViewUtils.getAppBar(
-        "古神列表",
+        "地图列表",
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GetBuilder<ZombieListController>(builder: (_) {
+            child: GetBuilder<MapListController>(builder: (_) {
               return const Text(
                 "搜索",
                 style: TextStyle(
@@ -40,17 +38,22 @@ class ZombieListPage extends GetView<ZombieListController> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 30),
-                child: GetBuilder<ZombieListController>(
-                  id: ZombieListController.idListView,
+                child: GetBuilder<MapListController>(
+                  id: MapListController.idListView,
                   builder: (_) {
                     return SizedBox(
                       width: 1000,
-                      child: RefreshIndicator(
-                        displacement: 5,
-                        onRefresh: () => Future.sync(
-                          () => _.pagingController.refresh(),
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          childAspectRatio: 0.80,
                         ),
-                        child: _gridViewWidget(_),
+                        itemCount: _.itemList.length,
+                        itemBuilder: (context, index) {
+                          return _itemWidget(_.itemList[index]);
+                        },
                       ),
                     );
                   },
@@ -64,7 +67,7 @@ class ZombieListPage extends GetView<ZombieListController> {
       floatingActionButton: SizedBox(
         width: 100,
         height: 100,
-        child: GetBuilder<ZombieListController>(
+        child: GetBuilder<MapListController>(
           builder: (_) {
             return Container(
               decoration: BoxDecoration(
@@ -77,7 +80,7 @@ class ZombieListPage extends GetView<ZombieListController> {
               child: IconButton(
                 color: Colors.blue,
                 icon: const Icon(Icons.add),
-                onPressed: () => _.toDetailPage("-1", true),
+                onPressed: () => _.addMapItem(),
               ),
             );
           },
@@ -86,26 +89,11 @@ class ZombieListPage extends GetView<ZombieListController> {
     );
   }
 
-  _gridViewWidget(ZombieListController controller) {
-    return PagedGridView<int, ZombieListResp>(
-      pagingController: controller.pagingController,
-      builderDelegate: PagedChildBuilderDelegate<ZombieListResp>(
-        itemBuilder: (context, item, index) => _itemWidget(item),
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 10, // 横轴方向子元素的间距。
-        mainAxisSpacing: 10, // 主轴方向的间距。
-        childAspectRatio: 0.65,
-      ),
-    );
-  }
-
-  _itemWidget(ZombieListResp? item) {
-    double size = (1000 - 10 * 3) / 4;
+  _itemWidget(MapListResp? item) {
+    double size = (1000 - 15 * 3) / 4;
     var imageUrl = item?.imageUrl ?? "";
     if (imageUrl.isNotEmpty) {
-      imageUrl = "$imageUrl?imageView2/1/w/100/q/85";
+      imageUrl = "$imageUrl?imageView2/1/w/100/q/15";
     }
     return Card(
       color: Colors.white,
@@ -131,25 +119,7 @@ class ZombieListPage extends GetView<ZombieListController> {
               ),
             ),
             Text(
-              "名称: ${item?.zombieName ?? "--"}",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ).marginOnly(top: 10),
-            Text(
-              "类型: ${item?.zombieType ?? "--"}",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ).marginOnly(top: 10),
-            Text(
-              "血量: ${item?.zombieHp ?? "--"}",
+              item?.name ?? "--",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -160,6 +130,6 @@ class ZombieListPage extends GetView<ZombieListController> {
           ],
         ),
       ),
-    ).onClick(() => controller.toDetailPage("${item?.id}", false));
+    ).onClick(() => controller.toDetailPage("${item?.imageUrl}"));
   }
 }

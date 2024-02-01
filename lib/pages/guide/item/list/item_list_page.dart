@@ -108,6 +108,10 @@ class ItemListPage extends GetView<ItemListController> {
 
   _itemWidget(ItemListResp? item) {
     double imageSize = 80;
+    var imageUrl = item?.imageUrl ?? "";
+    if (imageUrl.isNotEmpty) {
+      imageUrl = "$imageUrl?imageView2/1/w/100/q/85";
+    }
     return Card(
       color: Colors.white,
       elevation: 5,
@@ -129,7 +133,7 @@ class ItemListPage extends GetView<ItemListController> {
             height: imageSize,
             margin: const EdgeInsets.only(top: 20),
             child: FastCachedImage(
-              url: item?.imageUrl?.thumbnailUrl() ?? "",
+              url: imageUrl,
               width: imageSize,
               height: imageSize,
               fit: BoxFit.cover,

@@ -8,6 +8,10 @@ import 'package:daystodieutils/pages/guide/zombie/list/zombie_list_binding.dart'
 import 'package:daystodieutils/pages/guide/zombie/list/zombie_list_page.dart';
 import 'package:daystodieutils/pages/index_binding.dart';
 import 'package:daystodieutils/pages/index_page.dart';
+import 'package:daystodieutils/pages/map/big/map_big_binding.dart';
+import 'package:daystodieutils/pages/map/big/map_big_page.dart';
+import 'package:daystodieutils/pages/map/map_list_binding.dart';
+import 'package:daystodieutils/pages/map/map_list_page.dart';
 import 'package:daystodieutils/pages/menu/main_menu_binding.dart';
 import 'package:daystodieutils/pages/menu/main_menu_page.dart';
 import 'package:daystodieutils/pages/message/message_binding.dart';
@@ -115,6 +119,16 @@ class RoutePages {
       page: () => const AddRoomPage(),
       binding: AddRoomBinding(),
     ),
+    GetPage(
+      name: RouteNames.mapList,
+      page: () => const MapListPage(),
+      binding: MapListBinding(),
+    ),
+    GetPage(
+      name: RouteNames.mapBig,
+      page: () => const MapBigPage(),
+      binding: MapBigBinding(),
+    ),
   ];
 }
 
@@ -135,4 +149,6 @@ class RouteNames {
   static String questDetail = "/questDetail";
   static String roomList = "/roomList";
   static String addRoom = "/addRoom";
+  static String mapList = "/mapList";
+  static String mapBig = "/mapBig";
 }

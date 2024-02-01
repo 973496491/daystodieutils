@@ -132,4 +132,7 @@ class NHttpApi {
 
   /// 获取道具Id列表
   static const String getItemIds = "/info/getItemIds";
+
+  /// 获取全景地图列表
+  static const String getPanoramicMapList = "/map/getPanoramicMapList";
 }

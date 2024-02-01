@@ -600,4 +600,12 @@ class NHttpRequest {
       params: reqMap,
     );
   }
+
+  /// 获取全景地图列表
+  static getMapList() async {
+    return Http.get(
+      NHttpApi.getPanoramicMapList,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
 }
