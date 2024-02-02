@@ -632,4 +632,12 @@ class NHttpRequest {
       contentType: NHttpContentType.applicationJson.type,
     );
   }
+
+  /// 获取首页banner
+  static getBannerList() async {
+    return Http.get(
+      NHttpApi.indexBanner,
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
 }

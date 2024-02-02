@@ -2,8 +2,12 @@ import 'dart:async';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/route_config.dart';
+import 'package:daystodieutils/module/entity/banner_list_resp.dart';
 import 'package:daystodieutils/module/event/login_event.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
+import 'package:daystodieutils/net/n_http_config.dart';
+import 'package:daystodieutils/net/n_http_request.dart';
+import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_controller.dart';
@@ -14,6 +18,9 @@ import 'package:get/get.dart';
 
 class IndexController extends GetxController {
   static String idLogin = "idLogin";
+  static const String idBanner = "idBanner";
+
+  List<BannerListEntity> banners = [];
 
   String loginText = "管理员登录";
 
@@ -24,6 +31,7 @@ class IndexController extends GetxController {
     var isLogin = true == UserManager.getToken()?.isNotEmpty;
     setLoginText(isLogin);
     super.onInit();
+    getBannerList();
   }
 
   @override
@@ -36,6 +44,16 @@ class IndexController extends GetxController {
   void onClose() {
     event?.cancel();
     super.onClose();
+  }
+
+  void getBannerList() async {
+    var respMap = await NHttpRequest.getBannerList();
+    var resp = NRespFactory.parseArray<BannerListEntity>(respMap, BannerListEntity());
+    var data = resp.data;
+    if (NHttpConfig.isOk(bizCode: resp.code)) {
+      banners = data!;
+    }
+    update([idBanner]);
   }
 
   void toWhitelistPage() async {

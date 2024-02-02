@@ -138,4 +138,7 @@ class NHttpApi {
 
   /// 提交定制信息
   static const String commitCustomization = "/customization/insert/item";
+
+  /// 首页banner
+  static const String indexBanner = "/config/banner";
 }
