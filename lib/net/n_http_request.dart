@@ -608,4 +608,28 @@ class NHttpRequest {
       contentType: NHttpContentType.formUrlencoded.type,
     );
   }
+
+  /// 提交定制
+  static commitCustomization(
+      String name,
+      String? desc,
+      String contact,
+      int type,
+      String typeDesc,
+  ) async {
+    var reqMap = <String, String>{
+      "name": name,
+      "contact": contact,
+      "type": "$type",
+      "typeDesc": typeDesc,
+    };
+    if (true == desc?.isNotEmpty) {
+      reqMap["content"] = desc!;
+    }
+    return Http.post(
+      NHttpApi.commitCustomization,
+      data: reqMap,
+      contentType: NHttpContentType.applicationJson.type,
+    );
+  }
 }

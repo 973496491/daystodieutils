@@ -42,8 +42,6 @@ class MapBigController extends GetxController {
 
   void zoomIn() {
     defaultScale ??= controller.scale ?? 0.0;
-    "defaultScale: $defaultScale".logI();
-
     var scale = controller.scale ?? 0.0;
     if (scale + 0.1 >= defaultScale! + 1.0) {
       controller.scale = defaultScale! + 1.0;

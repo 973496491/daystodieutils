@@ -1,3 +1,5 @@
+import 'package:daystodieutils/pages/customization/customization_binding.dart';
+import 'package:daystodieutils/pages/customization/customization_page.dart';
 import 'package:daystodieutils/pages/guide/item/info/item_info_binding.dart';
 import 'package:daystodieutils/pages/guide/item/info/item_info_page.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_binding.dart';
@@ -129,6 +131,11 @@ class RoutePages {
       page: () => const MapBigPage(),
       binding: MapBigBinding(),
     ),
+    GetPage(
+      name: RouteNames.customization,
+      page: () => const CustomizationPage(),
+      binding: CustomizationBinding(),
+    ),
   ];
 }
 
@@ -151,4 +158,5 @@ class RouteNames {
   static String addRoom = "/addRoom";
   static String mapList = "/mapList";
   static String mapBig = "/mapBig";
+  static String customization = "/customization";
 }

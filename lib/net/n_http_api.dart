@@ -135,4 +135,7 @@ class NHttpApi {
 
   /// 获取全景地图列表
   static const String getPanoramicMapList = "/map/getPanoramicMapList";
+
+  /// 提交定制信息
+  static const String commitCustomization = "/customization/insert/item";
 }
