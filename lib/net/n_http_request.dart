@@ -624,7 +624,7 @@ class NHttpRequest {
       "typeDesc": typeDesc,
     };
     if (true == desc?.isNotEmpty) {
-      reqMap["content"] = desc!;
+      reqMap["desc"] = desc!;
     }
     return Http.post(
       NHttpApi.commitCustomization,

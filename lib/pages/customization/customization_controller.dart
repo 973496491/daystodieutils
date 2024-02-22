@@ -11,8 +11,8 @@ class CustomizationController extends GetxController {
   TextEditingController descController = TextEditingController();
   TextEditingController contactInfoController = TextEditingController();
 
-  int type = CustomizationTypeEnum.props.type;
-  String typeDesc = CustomizationTypeEnum.props.typeDesc;
+  int type = CustomizationTypeEnum.typeList[0].type;
+  String typeDesc = CustomizationTypeEnum.typeList[0].typeDesc;
 
   @override
   void onClose() {

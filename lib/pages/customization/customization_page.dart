@@ -40,17 +40,13 @@ class CustomizationPage extends GetView<CustomizationController> {
                         height: 60,
                         margin: EdgeInsets.only(left: _marginLeft),
                         child: Form(
-                          child: DropdownButtonFormField<String>(
-                            value: _.typeDesc,
-                            items: <String>[
-                              CustomizationTypeEnum.props.typeDesc,
-                              CustomizationTypeEnum.module.typeDesc,
-                              CustomizationTypeEnum.map.typeDesc,
-                            ].map(
+                          child: DropdownButtonFormField<int>(
+                            value: _.type,
+                            items: CustomizationTypeEnum.typeList.map(
                               (value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                                return DropdownMenuItem<int>(
+                                  value: value.type,
+                                  child: Text(value.typeDesc),
                                 );
                               },
                             ).toList(),
@@ -72,9 +68,15 @@ class CustomizationPage extends GetView<CustomizationController> {
                                 ),
                               ),
                             ),
-                            onChanged: (String? newValue) {
+                            onChanged: (int? newValue) {
                               if (newValue != null) {
-                                _.typeDesc = newValue;
+                                _.type = newValue;
+                                for (var element in CustomizationTypeEnum.typeList) {
+                                  if (element.type == newValue) {
+                                    _.typeDesc = element.typeDesc;
+                                    continue;
+                                  }
+                                }
                               }
                             },
                           ),
@@ -83,8 +85,7 @@ class CustomizationPage extends GetView<CustomizationController> {
                     ],
                   ),
                 ),
-                _inputContainer(
-                    300, "简略描述: ", _controller().descController),
+                _inputContainer(300, "简略描述: ", _controller().descController),
                 _inputContainer(
                     60, "*联络方式: ", _controller().contactInfoController),
                 Container(

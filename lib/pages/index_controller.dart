@@ -13,6 +13,7 @@ import 'package:daystodieutils/pages/login/login_controller.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/event_bus_utils.dart';
+import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:get/get.dart';
 
@@ -31,13 +32,13 @@ class IndexController extends GetxController {
     var isLogin = true == UserManager.getToken()?.isNotEmpty;
     setLoginText(isLogin);
     super.onInit();
-    getBannerList();
   }
 
   @override
   void onReady() {
     super.onReady();
     EventBusUtils.listenLoginEvent((event) => setLoginText(event.isLogin));
+    getBannerList();
   }
 
   @override
@@ -52,8 +53,9 @@ class IndexController extends GetxController {
     var data = resp.data;
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       banners = data!;
+      "banner init".logI();
+      update([idBanner]);
     }
-    update([idBanner]);
   }
 
   void toWhitelistPage() async {

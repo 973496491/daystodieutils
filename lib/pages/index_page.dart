@@ -3,6 +3,8 @@ import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/index_controller.dart' as mic;
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +25,7 @@ class IndexPage extends GetView<mic.IndexController> {
                     Container(
                       margin: const EdgeInsets.only(top: 50),
                       child: GetBuilder<mic.IndexController>(
+                        id: mic.IndexController.idBanner,
                         builder: (_) {
                           return _banner(_);
                         },
@@ -279,8 +282,8 @@ class IndexPage extends GetView<mic.IndexController> {
       height: 300,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            _.banners[index].imageUrl ?? "",
+          return FastCachedImage(
+            url: _.banners[index].imageUrl ?? "",
             fit: BoxFit.cover,
           );
         },
