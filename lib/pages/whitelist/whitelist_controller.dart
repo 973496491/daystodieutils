@@ -1,9 +1,10 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/permission_config.dart';
 import 'package:daystodieutils/net/n_http_api.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
-import 'package:daystodieutils/utils/view_utils.dart';
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -57,9 +58,9 @@ class WhitelistController extends GetxController {
   }
 
   void showAddWhitelistDialog(BuildContext context) async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.whiteList)) {
+      return;
+    }
     final result = await showTextInputDialog(
       context: context,
       title: "添加白名单",
@@ -123,9 +124,9 @@ class WhitelistController extends GetxController {
   }
 
   void showEditDialog(BuildContext context, int? id) async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.whiteList)) {
+      return;
+    }
     var key = await showConfirmationDialog(
       context: Get.context!,
       title: "请选择功能项",
@@ -159,9 +160,9 @@ class WhitelistController extends GetxController {
   }
 
   void _deleteItem(int id) async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.whiteList)) {
+      return;
+    }
     var reqMap = {"id": "$id"};
     var resp = await Http.post(
       NHttpApi.deleteWhitelist,

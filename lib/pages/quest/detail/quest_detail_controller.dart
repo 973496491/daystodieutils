@@ -1,13 +1,14 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/permission_config.dart';
 import 'package:daystodieutils/module/entity/quest_detail_resp.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:daystodieutils/utils/upload_utils.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
-import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile;
 
@@ -124,9 +125,9 @@ class QuestDetailController extends GetxController {
   }
 
   delete() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.deleteQuests)) {
+      return;
+    }
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
     if (OkCancelResult.ok == result) {
       _delete();
@@ -154,9 +155,9 @@ class QuestDetailController extends GetxController {
   }
 
   void commit() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.editQuests)) {
+      return;
+    }
     var result = await Get.context?.showAskMessageDialog(
       "是否提交修改?\n此操作将返回上级页面.",
     );

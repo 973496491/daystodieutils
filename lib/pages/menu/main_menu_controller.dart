@@ -1,9 +1,11 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/permission_config.dart';
 import 'package:daystodieutils/net/n_http_api.dart';
 import 'package:daystodieutils/net/http.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_content_type.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,9 +38,9 @@ class MainMenuController extends GetxController {
   }
 
   void showEditDialog(MainMenuItemResp item) async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.mainMenu)) {
+      return;
+    }
     var key = await showConfirmationDialog(
       context: Get.context!,
       title: "请选择功能项",
@@ -94,9 +96,9 @@ class MainMenuController extends GetxController {
     bool isAdd, {
     MainMenuItemResp? item,
   }) async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.mainMenu)) {
+      return;
+    }
     var title = "添加主菜单按钮信息";
     if (!isAdd) title = "编辑主菜单按钮信息";
 

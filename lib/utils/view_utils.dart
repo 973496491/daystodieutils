@@ -25,18 +25,4 @@ class ViewUtils {
       ),
     );
   }
-
-  static Future<bool> checkOptionPermissions(BuildContext? context) async {
-    if (UserManager.getToken() == null) {
-      var isLogin = await Get.find<LoginController>().showLoginDialog();
-      if (isLogin) {
-        return Future.value(true);
-      } else {
-        context?.showMessageDialog("权限不足");
-        return Future.value(false);
-      }
-    } else {
-      return Future.value(true);
-    }
-  }
 }

@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/config/config.dart';
+import 'package:daystodieutils/config/permission_config.dart';
 import 'package:daystodieutils/module/entity/item_info_resp.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
@@ -7,6 +8,7 @@ import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:daystodieutils/utils/upload_utils.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
@@ -111,9 +113,9 @@ class ItemInfoController extends GetxController {
   }
 
   delete() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.deleteGuideItem)) {
+      return;
+    }
     var result = await Get.context?.showAskMessageDialog("是否删除此条目?");
     if (OkCancelResult.ok == result) {
       _delete();
@@ -201,9 +203,9 @@ class ItemInfoController extends GetxController {
   }
 
   void review() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
-
+    if (!PageUtils.permissionCheck(PermissionConfig.reviewGuideItem)) {
+      return;
+    }
     var result = await Get.context?.showAskMessageDialog("是否通过此提交?");
     if (OkCancelResult.ok == result) {
       _review();

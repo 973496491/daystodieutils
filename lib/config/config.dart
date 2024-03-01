@@ -1,3 +1,5 @@
+import 'package:flutter/physics.dart';
+
 class Config {
   static bool isRelease = const bool.fromEnvironment("dart.vm.product");
 

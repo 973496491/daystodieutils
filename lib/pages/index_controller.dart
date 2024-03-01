@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:daystodieutils/config/config.dart';
+import 'package:daystodieutils/config/permission_config.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/module/entity/banner_list_resp.dart';
 import 'package:daystodieutils/module/event/login_event.dart';
@@ -15,6 +17,7 @@ import 'package:daystodieutils/pages/service/item/list/service_item_list_control
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/event_bus_utils.dart';
 import 'package:daystodieutils/utils/logger_ext.dart';
+import 'package:daystodieutils/utils/page_utils.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:get/get.dart';
 
@@ -61,18 +64,25 @@ class IndexController extends GetxController {
   }
 
   void toWhitelistPage() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
+    if (!PageUtils.permissionCheck(PermissionConfig.whiteList)) {
+      return;
+    }
     Get.toNamed(RouteNames.whitelist);
   }
 
   void toMainMenuPage() async {
-    var canNext = await ViewUtils.checkOptionPermissions(Get.context);
-    if (!canNext) return;
+    if (!PageUtils.permissionCheck(PermissionConfig.mainMenu)) {
+      return;
+    }
     Get.toNamed(RouteNames.mainMenu);
   }
 
   toItemPage(int itemStatus) {
+    if (itemStatus != Config.itemStatusReviewed) {
+      if (!PageUtils.permissionCheck(PermissionConfig.reviewGuideItem)) {
+        return;
+      }
+    }
     Get.toNamed(
       RouteNames.guildItemList,
       parameters: {ItemListController.keyStatus: "$itemStatus"},
@@ -154,9 +164,7 @@ class IndexController extends GetxController {
 
   void register(bool isLeaveRegister) {
     if (isLeaveRegister) {
-      var adminLeave = UserManager.getUserInfo().userLeave ?? 0;
-      if (adminLeave <= 3) {
-        Get.context?.showAskMessageDialog("权限不足");
+      if (!PageUtils.permissionCheck(PermissionConfig.leaveRegister)) {
         return;
       }
     }

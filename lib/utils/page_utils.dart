@@ -1,4 +1,5 @@
 import 'package:daystodieutils/config/route_config.dart';
+import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
 import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,16 @@ class PageUtils {
     } else {
       var msg = NHttpConfig.message(respMap);
       Get.context?.showMessageDialog(msg);
+    }
+  }
+
+  static bool permissionCheck(int permissionLeave) {
+    var adminLeave = UserManager.getUserInfo().userLeave ?? 0;
+    if (adminLeave <= permissionLeave) {
+      Get.context?.showAskMessageDialog("权限不足");
+      return false;
+    } else {
+      return true;
     }
   }
 }
