@@ -7,6 +7,23 @@ import 'package:dio/dio.dart';
 import 'n_http_api.dart';
 
 class NHttpRequest {
+  /// 注册
+  static register(
+    String username,
+    String password,
+    int userLeave,
+  ) {
+    return Http.post(
+      NHttpApi.register,
+      data: {
+        "username": username,
+        "password": password,
+        "userLeave": userLeave,
+      },
+      contentType: NHttpContentType.formUrlencoded.type,
+    );
+  }
+
   /// 登录
   static login(
     String username,
@@ -611,11 +628,11 @@ class NHttpRequest {
 
   /// 提交定制
   static commitCustomization(
-      String name,
-      String? desc,
-      String contact,
-      int type,
-      String typeDesc,
+    String name,
+    String? desc,
+    String contact,
+    int type,
+    String typeDesc,
   ) async {
     var reqMap = <String, String>{
       "name": name,

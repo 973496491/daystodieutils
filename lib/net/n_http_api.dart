@@ -1,7 +1,10 @@
 class NHttpApi {
 
   /// 登录
-  static const String login = "/users/login";
+  static const String register = "/user/register";
+
+  /// 登录
+  static const String login = "/user/login";
 
   /// 服务器登录
   static const String serviceLogin = "/service/login";

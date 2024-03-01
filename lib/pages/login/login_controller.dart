@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:daystodieutils/module/user/user_manager.dart';
 import 'package:daystodieutils/net/n_http_config.dart';
@@ -20,7 +22,7 @@ class LoginController extends GetxController {
     }
     final result = await showTextInputDialog(
       context: context,
-      title: "管理员登录",
+      title: "登录",
       okLabel: "登录",
       cancelLabel: "取消",
       style: AdaptiveStyle.iOS,
@@ -56,19 +58,24 @@ class LoginController extends GetxController {
     if (isService) {
       return _serviceLogin(username, password);
     } else {
-      return _adminLogin(username, password);
+      return _login(username, password);
     }
   }
 
-  Future<bool> _adminLogin(
+  Future<bool> _login(
     String username,
     String password,
   ) async {
-    var respMap = await NHttpRequest.login(username, password);
+    var respMap = await NHttpRequest.login(
+      username,
+      base64.encode(utf8.encode(password)).toString(),
+    );
     var resp = NRespFactory.parseObject<LoginResp>(respMap, LoginResp());
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       var token = resp.data?.token;
+      var userLeave = resp.data?.userLeave ?? 0;
       if (token != null) {
+        UserManager.setUserLeave(userLeave);
         UserManager.setToken(resp.data?.token);
         Get.context?.showMessageDialog("登录成功");
         EventBusUtils.pushLoginEvent(true);

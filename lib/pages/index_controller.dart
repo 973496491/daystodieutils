@@ -10,6 +10,7 @@ import 'package:daystodieutils/net/n_http_request.dart';
 import 'package:daystodieutils/net/n_resp_factory.dart';
 import 'package:daystodieutils/pages/guide/item/list/item_list_controller.dart';
 import 'package:daystodieutils/pages/login/login_controller.dart';
+import 'package:daystodieutils/pages/register/register_controller.dart';
 import 'package:daystodieutils/pages/service/item/list/service_item_list_controller.dart';
 import 'package:daystodieutils/utils/dialog_ext.dart';
 import 'package:daystodieutils/utils/event_bus_utils.dart';
@@ -23,7 +24,7 @@ class IndexController extends GetxController {
 
   List<BannerListEntity> banners = [];
 
-  String loginText = "管理员登录";
+  String loginText = "登录";
 
   StreamSubscription<LoginEvent>? event;
 
@@ -49,7 +50,8 @@ class IndexController extends GetxController {
 
   void getBannerList() async {
     var respMap = await NHttpRequest.getBannerList();
-    var resp = NRespFactory.parseArray<BannerListEntity>(respMap, BannerListEntity());
+    var resp =
+        NRespFactory.parseArray<BannerListEntity>(respMap, BannerListEntity());
     var data = resp.data;
     if (NHttpConfig.isOk(bizCode: resp.code)) {
       banners = data!;
@@ -145,12 +147,27 @@ class IndexController extends GetxController {
     if (isLogin) {
       loginText = "登出           ";
     } else {
-      loginText = "管理员登录";
+      loginText = "登录           ";
     }
     update([idLogin]);
   }
 
+  void register(bool isLeaveRegister) {
+    if (isLeaveRegister) {
+      var adminLeave = UserManager.getUserInfo().userLeave ?? 0;
+      if (adminLeave <= 3) {
+        Get.context?.showAskMessageDialog("权限不足");
+        return;
+      }
+    }
+    _registerController().register(isLeaveRegister);
+  }
+
   LoginController _loginController() {
     return Get.find<LoginController>();
+  }
+
+  RegisterController _registerController() {
+    return Get.find<RegisterController>();
   }
 }

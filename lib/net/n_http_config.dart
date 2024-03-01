@@ -5,8 +5,8 @@ class NHttpConfig {
   static const String _testUrl = "http://127.0.0.1:8080/api";
   static const String _prodUrl = "https://www.lolko.xyz/api";
 
-  // static const String baseUrl = _testUrl;
-  static const String baseUrl = _prodUrl;
+  static const String baseUrl = _testUrl;
+  // static const String baseUrl = _prodUrl;
 
   static bool isOk({Map<String, dynamic>? map, int? bizCode}) {
     if (null != bizCode) return bizCode == _success;

@@ -22,6 +22,12 @@ class UserManager {
     return info.token;
   }
 
+  static void setUserLeave(int userLeave) {
+    UserInfo info = getUserInfo();
+    info.userLeave = userLeave;
+    SpUtil.putObject(_key, info);
+  }
+
   static bool hasToken() {
     return true == getToken()?.isNotEmpty;
   }

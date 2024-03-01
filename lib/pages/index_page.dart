@@ -3,7 +3,6 @@ import 'package:daystodieutils/config/config.dart';
 import 'package:daystodieutils/config/route_config.dart';
 import 'package:daystodieutils/pages/index_controller.dart' as mic;
 import 'package:daystodieutils/utils/dialog_ext.dart';
-import 'package:daystodieutils/utils/logger_ext.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -107,7 +106,48 @@ class IndexPage extends GetView<mic.IndexController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            "服务器专用",
+                            "用户",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                            ),
+                          ),
+                          GetBuilder<mic.IndexController>(
+                            id: mic.IndexController.idLogin,
+                            builder: (_) {
+                              return _optionWidget(
+                                _.loginText,
+                                Icons.manage_accounts,
+                                () => _.login(),
+                                "注册           ",
+                                Icons.data_saver_on_sharp,
+                                () => _.register(false),
+                                "更多功能   ",
+                                Icons.read_more_rounded,
+                                () => {},
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                        border: Border.all(
+                          width: 0.5,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "私人服务器专用",
                             style: TextStyle(
                               color: Colors.black87,
                               fontSize: 16,
@@ -149,37 +189,32 @@ class IndexPage extends GetView<mic.IndexController> {
                               fontSize: 16,
                             ),
                           ),
-                          GetBuilder<mic.IndexController>(
-                            id: mic.IndexController.idLogin,
-                            builder: (_) {
-                              return _optionWidget(
-                                _.loginText,
-                                Icons.manage_accounts,
-                                () => _.login(),
-                                "物品审核   ",
-                                Icons.add_chart,
-                                () => _.toItemPage(Config.itemStatusUnreview),
-                                "图鉴审核   ",
-                                Icons.add_chart,
-                                () => Get.context?.showMessageDialog("敬请期待"),
-                              );
-                            },
+                          _optionWidget(
+                            "物品审核   ",
+                            Icons.add_chart,
+                            () => _.toItemPage(Config.itemStatusUnreview),
+                            "图鉴审核   ",
+                            Icons.add_chart,
+                            () => Get.context?.showMessageDialog("敬请期待"),
+                            "高级注册   ",
+                            Icons.menu,
+                            () => _.register(true),
                           ),
                           _optionWidget(
-                            "主菜单按钮",
-                            Icons.menu,
-                            () => _.toMainMenuPage(),
                             "白名单列表",
                             Icons.playlist_add_check_outlined,
                             () => _.toWhitelistPage(),
+                            "主菜单按钮",
+                            Icons.read_more_rounded,
+                            () => _.toMainMenuPage(),
                             "更多功能   ",
-                            Icons.question_answer_outlined,
+                            Icons.read_more_rounded,
                             () => Get.context?.showMessageDialog("敬请期待"),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 100,
                     ),
                   ],

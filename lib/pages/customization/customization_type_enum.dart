@@ -10,7 +10,7 @@ class CustomizationTypeEnum {
   static const CustomizationTypeEnumMember map =
       CustomizationTypeEnumMember(3, '地图');
   static const CustomizationTypeEnumMember prefabs =
-      CustomizationTypeEnumMember(4, '预制件/副本');
+      CustomizationTypeEnumMember(4, '预制件&副本');
 }
 
 class CustomizationTypeEnumMember {
