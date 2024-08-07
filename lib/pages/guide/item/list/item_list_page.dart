@@ -1,5 +1,4 @@
 import 'package:daystodieutils/config/config.dart';
-import 'package:daystodieutils/utils/string_ext.dart';
 import 'package:daystodieutils/utils/view_ext.dart';
 import 'package:daystodieutils/utils/view_utils.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -37,6 +36,7 @@ class ItemListPage extends GetView<ItemListController> {
       body: SafeArea(
         child: Column(
           children: [
+            _filterWidget(),
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -87,6 +87,39 @@ class ItemListPage extends GetView<ItemListController> {
               );
             }
           },
+        ),
+      ),
+    );
+  }
+
+  _filterWidget() {
+    return Container(
+      margin: const EdgeInsets.only(top: 20, bottom: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _filterBtnWidget("全部"),
+          _filterBtnWidget("道具"),
+          _filterBtnWidget("尸体材料"),
+          _filterBtnWidget("一般材料"),
+        ],
+      ),
+    );
+  }
+
+  _filterBtnWidget(String name) {
+    return Container(
+      width: 120,
+      height: 40,
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      child: ElevatedButton(
+        onPressed: () => {},
+        child: Text(
+          name,
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 16,
+          ),
         ),
       ),
     );
